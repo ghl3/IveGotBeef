@@ -7,6 +7,13 @@ from flask import jsonify
 import pymongo
 import bson.objectid
 
+#import flask_login
+from flask.ext.login import UserMixin
+
+
+
+
+
 #
 # The tools used by the app
 # to connect to, update, and

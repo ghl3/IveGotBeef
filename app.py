@@ -8,7 +8,13 @@ from flask import url_for
 from flask import render_template
 from flask import request
 from flask import jsonify
-import login_manager
+
+from flask.ext.login import LoginManager
+from flask.ext.login import login_required
+
+#from Flask_Login import *
+#import flask_login
+#from flask.ext.login import UserMixin
 
 import pymongo
 import bson.objectid
@@ -79,7 +85,7 @@ def login():
         # if username entered matches database, log user in
         if username == user.name: #db_result['username']:
             login_user(User)
-            return url_for("index"))
+            return url_for("index")
         else:
             flash("Invalid username.")
     else:
