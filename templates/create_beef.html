@@ -1,0 +1,31 @@
+
+
+<!-- Inherit from the main template -->
+{% extends "main_template.html" %}
+
+<!-- Fill in the Middle template -->
+{% block body %}
+
+Create Beef:
+
+    <form id="NewBeefForm" >
+      <fieldset>
+	<legend>New Beef:</legend>
+
+	<label class="required" accesskey="f">Beef Title: </label>
+	<input type="text" id="beef_title" name="beef_title" tabindex="1" value="" title="beef title"><br>
+
+	<label accesskey="e">Opponent: </label>
+	<input type="text" id="beef_opponent" name="beef_opponent" tabindex="3" title="beef_opponent"><br>
+
+	<label accesskey="e">Description: </label>
+	<textarea  name="comment"  id="beef_description" rows="5" style="text-align: left" 
+		   maxlength="1000" cols="30"> </textarea> 
+
+      </fieldset>
+    </form>
+
+    <button id="CreateBeef">Create Beef</button>
+
+{% endblock %}
+

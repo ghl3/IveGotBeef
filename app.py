@@ -17,6 +17,8 @@ import beef
 app = Flask(__name__)
 
 
+# Public Pages:
+
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -24,6 +26,13 @@ def index():
 @app.route('/MyBeef')
 def my_beef():
     return render_template('my_beef.html')
+
+@app.route('/CreateBeef')
+def my_beef():
+    return render_template('create_beef.html')
+
+
+# API:
 
 @app.route('/latest_beef', methods=['GET', 'POST'])
 def latext_beef():
@@ -33,20 +42,20 @@ def latext_beef():
     response = beef.latest()
     return response
 
+@app.route('/create_beef', methods=['GET', 'POST'])
+def submit_beef( ):
+    """ Create a new beef activity to the db
+
+    """
+    response = beef.submit()
+    return response
+
 @app.route('/get_beef', methods=['GET', 'POST'])
 def get_beef():
     """ Get a specific beef topic
 
     """
     response = beef.get()
-    return response
-
-@app.route('/submit_beef', methods=['GET', 'POST'])
-def submit_beef( ):
-    """ Submit a new beef activity to the db
-
-    """
-    response = beef.submit()
     return response
 
 @app.route('/update_beef', methods=['GET', 'POST'])

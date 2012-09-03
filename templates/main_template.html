@@ -40,6 +40,9 @@ BLOCKS:
     <!-- Include google's jquery -->
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript"></script>
 
+    <!-- Finally, include our javascript -->
+    <script type="text/javascript" src="{{url_for('static', filename='beef.js')}}" ></script>
+
     {% block head %}
     {% endblock %}
 
