@@ -8,6 +8,7 @@ from flask import url_for
 from flask import render_template
 from flask import request
 from flask import jsonify
+import login_manager
 
 import pymongo
 import bson.objectid
@@ -16,6 +17,8 @@ import beef
 
 app = Flask(__name__)
 
+login_manager = LoginManager()
+login_manager.setup_app(app)
 
 # Public Pages:
 
@@ -31,6 +34,7 @@ def latest_beef():
     return render_template('latest_beef.html', beef_list=beef_list )
 
 @app.route('/MyBeef')
+@login_required
 def my_beef():
     return render_template('my_beef.html')
 
@@ -46,6 +50,62 @@ def get_beef():
     _id = request.args.get('_id', '')
     beef_dict = beef.get_beef(_id=_id)
     return render_template('get_beef.html', beef_dict=beef_dict)
+
+#
+#
+#
+
+@login_manager.user_loader
+def load_user(id):
+    return beef._check_db(id)
+
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    if request.method == "POST" and "username" in request.form:
+        username = request.form["username"]
+
+        '''
+        # check MongoDB for the existence of the entered username
+        db_result = users_collection.find_one({ 'username' : username })
+        
+        result_id = int(db_result['userid'])
+        
+        # create User object/instance
+        User = UserClass(db_result['username'], result_id, active=True)
+        '''
+
+        User = beef._get_user(username)
+
+        # if username entered matches database, log user in
+        if username == user.name: #db_result['username']:
+            login_user(User)
+            return url_for("index"))
+        else:
+            flash("Invalid username.")
+    else:
+        flash(u"Invalid login.")
+        return render_template("login.html")
+#
+#
+#
+
+# User Login
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        # login and validate the user...
+        login_user(user)
+        flash("Logged in successfully.")
+        return redirect(request.args.get("next") or url_for("index"))
+    return render_template("login.html", form=form)
+
+@app.route("/logout")
+@login_required
+def logout():
+    logout_user()
+    return redirect("/")
+
 
 # API:
 
