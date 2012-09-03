@@ -22,7 +22,7 @@ def index():
     return render_template('index.html')
 
 @app.route('/MyBeef')
-def index():
+def my_beef():
     return render_template('my_beef.html')
 
 @app.route('/latest_beef', methods=['GET', 'POST'])
