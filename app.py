@@ -23,6 +23,13 @@ app = Flask(__name__)
 def index():
     return render_template('index.html')
 
+@app.route('/LatestBeef')
+def latest_beef():
+    # Get the list of activities 
+    beef_list = beef.latest()
+    # Return the html with the activities rendered
+    return render_template('latest_beef.html', beef_list=beef_list )
+
 @app.route('/MyBeef')
 def my_beef():
     return render_template('my_beef.html')
@@ -34,7 +41,7 @@ def my_beef():
 
 # API:
 
-@app.route('/latest_beef', methods=['GET', 'POST'])
+@app.route('/api/latest_beef', methods=['GET', 'POST'])
 def latext_beef():
     """ Get a list of the lastest beef topics
 
@@ -42,15 +49,15 @@ def latext_beef():
     response = beef.latest()
     return response
 
-@app.route('/create_beef', methods=['GET', 'POST'])
+@app.route('/api/create_beef', methods=['GET', 'POST'])
 def submit_beef( ):
     """ Create a new beef activity to the db
 
     """
-    response = beef.submit()
+    response = beef.create_beef(request)
     return response
 
-@app.route('/get_beef', methods=['GET', 'POST'])
+@app.route('/api/get_beef', methods=['GET', 'POST'])
 def get_beef():
     """ Get a specific beef topic
 
@@ -58,7 +65,7 @@ def get_beef():
     response = beef.get()
     return response
 
-@app.route('/update_beef', methods=['GET', 'POST'])
+@app.route('/api/update_beef', methods=['GET', 'POST'])
 def update_beef( ):
     """ Update an activity in the db
 
@@ -66,7 +73,7 @@ def update_beef( ):
     response = beef.update()
     return response
 
-@app.route('/delete_beef', methods=['GET', 'POST'])
+@app.route('/api/delete_beef', methods=['GET', 'POST'])
 def delete_beef( ):
     """ Delete a beef activity
 

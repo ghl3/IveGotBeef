@@ -1,10 +1,18 @@
 
 
+import json
+
+from flask import jsonify
+
+import pymongo
+import bson.objectid
+
 #
 # The tools used by the app
 # to connect to, update, and
 # display the beef.
 #
+
 
 
 def _connectToDatabase():
@@ -26,6 +34,30 @@ def _connectToDatabase():
     return db
 
 
+def _getCollection(collection_name):
+    """ Get a collection from the database
+
+    """
+    try:
+        db = _connectToDatabase()
+    except:
+        print "_addToDatabase() - Error: Failed to connect to database"
+        raise
+
+    # Check if the 'activities' collection exists:
+    if not 'beef' in db.collection_names():
+        print "_addToDatabase() - ERROR: 'beef' collection doesn't exist"
+        raise Exception("Collection 'beef' Doesn't Exist in Database")
+
+    try:
+        beef_collection = db[collection_name]
+    except:
+        print "_addToDatabase() - Failed to connect to %s collection" % collection_name
+        raise
+
+    return beef_collection
+
+
 def _addToDatabase(beef_dict):
     """ Add (or update) a beef to the database
     
@@ -33,6 +65,13 @@ def _addToDatabase(beef_dict):
 
     """
 
+    try:
+        beef_collection = _getCollection("beef")
+    except:
+        print "Failed to get collection in _addToDatabase"
+        raise
+
+    '''
     try:
         db = _connectToDatabase()
     except:
@@ -49,6 +88,7 @@ def _addToDatabase(beef_dict):
     except:
         print "_addToDatabase() - Failed to connect to 'beef' collection"
         raise
+    '''
 
     try:
         # Edit the activity's id
@@ -66,7 +106,7 @@ def _addToDatabase(beef_dict):
     return
 
 
-def add_beef(request):
+def create_beef(request):
     """ Add an activity to the database
 
     """
@@ -94,3 +134,18 @@ def add_beef(request):
 
     print "add_beef() - Success"
     return jsonify(flag="success")
+
+
+def latest(num_entries=10):
+    """ Return a list of 10 entries
+
+    """
+
+    # Get the database
+    try:
+        beef_collection = _getCollection("beef")
+    except:
+        print "Failed to get collection in _addToDatabase"
+        raise
+
+    return list(beef_collection.find(limit=num_entries))
