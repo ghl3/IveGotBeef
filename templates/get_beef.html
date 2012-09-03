@@ -1,0 +1,18 @@
+
+
+<!-- Inherit from the main template -->
+{% extends "main_template.html" %}
+
+<!-- Fill in the Middle template -->
+{% block body %}
+
+<table border="1">
+<tr>
+{% for (name, val) in beef_dict.iteritems() if name != '_id' %}
+    <td>{{ val }}</td>
+{% endfor %}
+<td> <button class="GoToBeefButton" id="beef_{{ beef_dict['_id'] }}">View Beef</button> </td>
+</tr> 
+</table>
+
+{% endblock %}

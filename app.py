@@ -45,9 +45,7 @@ def get_beef():
     print request.args.get('_id', '')
     _id = request.args.get('_id', '')
     beef_dict = beef.get_beef(_id=_id)
-    return render_template('create_beef.html')
-
-    #return render_template('get_beef.html', beef_dict=beef_dict)
+    return render_template('get_beef.html', beef_dict=beef_dict)
 
 # API:
 
