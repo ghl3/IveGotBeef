@@ -1,0 +1,21 @@
+
+
+<!-- Inherit from the main template -->
+{% extends "main_template.html" %}
+
+<!-- Fill in the Middle template -->
+{% block body %}
+
+<table border="1">
+
+{% for beef in beef_list %}
+<tr>
+{% for (name, val) in beef.iteritems() %}
+    <td>{{ val }}</td>
+{% endfor %}
+</tr>
+{% endfor %}
+
+</table>
+
+{% endblock %}
