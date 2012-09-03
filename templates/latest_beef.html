@@ -13,7 +13,7 @@
 {% for (name, val) in beef.iteritems() if name != '_id' %}
     <td>{{ val }}</td>
 {% endfor %}
-<td> <button class="GoToBeefButton" id="beef_{{ beef['_id'] }}">View Beef</button> </td>
+<td> <button class="GetBeefButton" id="beef_{{ beef['_id'] }}">View Beef</button> </td>
 </tr> 
 {% endfor %}
 

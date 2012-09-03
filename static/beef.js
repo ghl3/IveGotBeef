@@ -18,6 +18,31 @@ $(document).ready(function() {
     });
 });
 
+
+
+
+$(document).ready(function() {
+    $('.GetBeefButton').live('click', function() {
+	
+	console.log("GetBeefButton() - Begin");
+	console.log( this.getAttribute("id") );
+	return;
+
+	// Get the html form by id,
+	// serialize it, 
+	// and send it to python
+	// using jquery/ajax
+	var NewBeefForm = $('#NewBeefForm');
+	CreateBeefFromForm( NewBeefForm );
+	//HideNewBeefForm();
+
+	console.log("CreateBeef() - End");
+	return false;
+    });
+});
+
+
+
 function CreateBeefFromForm( form ) {
 
     console.log("CreateBeefFromFor() - Begin");
