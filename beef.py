@@ -11,9 +11,6 @@ import bson.objectid
 from flask.ext.login import UserMixin
 
 
-
-
-
 #
 # The tools used by the app
 # to connect to, update, and
