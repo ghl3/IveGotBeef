@@ -35,14 +35,24 @@ def my_beef():
     return render_template('my_beef.html')
 
 @app.route('/CreateBeef')
-def my_beef():
+def create_beef():
     return render_template('create_beef.html')
 
+@app.route('/Beef', methods=['GET'])
+def get_beef():
+    print "At get_beef()"
+    print request.args
+    print request.args.get('_id', '')
+    _id = request.args.get('_id', '')
+    beef_dict = beef.get_beef(_id=_id)
+    return render_template('create_beef.html')
+
+    #return render_template('get_beef.html', beef_dict=beef_dict)
 
 # API:
 
 @app.route('/api/latest_beef', methods=['GET', 'POST'])
-def latext_beef():
+def api_latest_beef():
     """ Get a list of the lastest beef topics
 
     """
@@ -50,7 +60,7 @@ def latext_beef():
     return response
 
 @app.route('/api/create_beef', methods=['GET', 'POST'])
-def submit_beef( ):
+def api_submit_beef( ):
     """ Create a new beef activity to the db
 
     """
@@ -58,7 +68,7 @@ def submit_beef( ):
     return response
 
 @app.route('/api/get_beef', methods=['GET', 'POST'])
-def get_beef():
+def api_get_beef():
     """ Get a specific beef topic
 
     """
@@ -66,7 +76,7 @@ def get_beef():
     return response
 
 @app.route('/api/update_beef', methods=['GET', 'POST'])
-def update_beef( ):
+def api_update_beef( ):
     """ Update an activity in the db
 
     """
@@ -74,7 +84,7 @@ def update_beef( ):
     return response
 
 @app.route('/api/delete_beef', methods=['GET', 'POST'])
-def delete_beef( ):
+def api_delete_beef( ):
     """ Delete a beef activity
 
     """

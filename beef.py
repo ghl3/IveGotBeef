@@ -149,3 +149,25 @@ def latest(num_entries=10):
         raise
 
     return list(beef_collection.find(limit=num_entries))
+
+def get_beef(_id):
+    """ Return a list of 10 entries
+
+    """
+
+    # Get the database
+    try:
+        beef_collection = _getCollection("beef")
+    except:
+        print "Failed to get collection in _addToDatabase"
+        raise
+    
+    beef_entry = beef_collection.find_one({"_id" : bson.objectid.ObjectId(_id)})
+    
+    if beef_entry==None:
+        print "get_beef(): Failed to find entry with _id %s:" % _id
+        raise Exception("Id Not Found")
+    else:
+        print "Successfully found entry: %s" % _id
+
+    return beef_entry
