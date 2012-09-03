@@ -10,10 +10,11 @@
 
 {% for beef in beef_list %}
 <tr>
-{% for (name, val) in beef.iteritems() %}
+{% for (name, val) in beef.iteritems() if name != '_id' %}
     <td>{{ val }}</td>
 {% endfor %}
-</tr>
+<td> <button class="GoToBeefButton" id="beef_{{ beef['_id'] }}">View Beef</button> </td>
+</tr> 
 {% endfor %}
 
 </table>
