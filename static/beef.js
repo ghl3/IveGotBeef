@@ -11,16 +11,16 @@ $(document).ready(function() {
 	// using jquery/ajax
 	var NewBeefForm = $('#NewBeefForm');
 	CreateBeefFromForm( NewBeefForm );
-	HideNewBeefForm();
+	//HideNewBeefForm();
 
 	console.log("CreateBeef() - End");
 	return false;
     });
 });
 
-function AddBeefFromForm( form ) {
+function CreateBeefFromForm( form ) {
 
-    console.log("AddBeefFromFor() - Begin");
+    console.log("CreateBeefFromFor() - Begin");
 
     var BeefArray = form.serializeArray();
 
@@ -40,8 +40,8 @@ function AddBeefFromForm( form ) {
     function successCallback(data) {
 	if( data["flag"]=="success" ) {
 	    console.log("Successfully added Activity");
-	    ClearActivityTable();
-	    RefreshActivityList();
+	    //ClearActivityTable();
+	    //RefreshActivityList();
 	}
 	else {
 	    console.log("ERROR: Failed to add Activity");
@@ -49,7 +49,7 @@ function AddBeefFromForm( form ) {
     }
     
     // Submit the AJAX query
-    $.post( "/create_beef", {beef : BeefJSON}, successCallback );
+    $.post( "/api/create_beef", {beef : BeefJSON}, successCallback );
     console.log("CreateBeefFromForm() - Submittted Activity AJAX request");
 
     return false;
