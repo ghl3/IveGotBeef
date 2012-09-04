@@ -4,7 +4,15 @@ import traceback
 from beef import _getCollection
 
 from flask import jsonify
+from flask import redirect
+from flask import url_for
 from flask.ext.login import UserMixin
+from flask.ext.login import login_user
+from flask.ext.login import LoginManager
+from flask.ext.login import login_required
+from flask.ext.login import current_user
+from flask.ext.login import login_user
+from flask.ext.login import logout_user
 
 import bson.objectid
 
@@ -27,25 +35,8 @@ class UserClass(UserMixin):
         #def check_password(self, password):
         #    return check_password_hash(self.pw_hash, password)
 
-
-def _check_db(_id):
-    """ Check that a user session id is valid
-
-    This is a required method for flask_login
-    """
-    try:
-        users_collection = _getCollection("users")
-    except:
-        print "Failed to get collection in _check_db"
-        raise
-
-    db_check = users_collection.find_one({ '_id' : bson.objectid.ObjectId(_id) })
-    UserObject = UserClass(db_check['username'], _id, active=True)
-
-    if UserObject.id == _id:
-        return UserObject
-    else:
-        return None
+class InvalidUser(Exception):
+    pass
 
 
 def add_user(request):
@@ -83,8 +74,61 @@ def add_user(request):
     return
 
 
-class InvalidUser(Exception):
-    pass
+def login_user_request(request):
+    """ Take a request object and login a user
+
+    """
+    if request.method == "POST" \
+            and "username" in request.form \
+            and "password" in request.form:
+        username = request.form["username"]
+        password = request.form["password"]
+
+        User = _get_user(username)
+
+        try: 
+            authenticated = _authenticate(username, password)
+        except InvalidUser:
+            print "Warning: Invalid User: %s" % username
+            return jsonify(flag=0, UserLoggedIn=1, Message="Invalid User")
+
+        if authenticated:
+            login_user(User, remember=True)
+            print "Successfully logged in user: %s " % username
+            print "Current User: ", current_user, current_user.name, current_user.id
+            return jsonify(flag=0, UserLoggedIn=0)
+            #return redirect(request.args.get("next") or url_for("index"))
+        else:
+            print "Failed to login user: %s" % username
+            return jsonify(flag=0, UserLoggedIn=1, Message="Failed to log in user")
+            flash("Invalid username.")
+    else:
+        flash(u"Invalid login.")
+        return render_template("login.html")
+
+
+
+def _check_db(_id):
+    """ Check that a user session id is valid
+
+    This is a required method for flask_login
+    """
+    try:
+        users_collection = _getCollection("users")
+    except:
+        print "Failed to get collection in _check_db"
+        raise
+
+    db_check = users_collection.find_one({ '_id' : bson.objectid.ObjectId(_id) })
+    UserObject = UserClass(db_check['username'], _id, active=True)
+
+    if UserObject.id == _id:
+        return UserObject
+    else:
+        return None
+
+
+
 
 def _authenticate(username, password):
 

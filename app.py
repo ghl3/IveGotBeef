@@ -9,11 +9,13 @@ from flask import render_template
 from flask import request
 from flask import jsonify
 from flask import flash
+from flask import redirect
 
 from flask.ext.login import LoginManager
 from flask.ext.login import login_required
 from flask.ext.login import current_user
 from flask.ext.login import login_user
+from flask.ext.login import logout_user
 
 #from Flask_Login import *
 #import flask_login
@@ -95,6 +97,9 @@ def api_login():
 
     """
 
+    result = login_tools.login_user_request(request)
+
+    '''
     if request.method == "POST" \
             and "username" in request.form \
             and "password" in request.form:
@@ -121,11 +126,13 @@ def api_login():
     else:
         flash(u"Invalid login.")
         return render_template("login.html")
+    '''
+    return result
 #
 #
 #
 
-@app.route("/logout")
+@app.route("/api/logout")
 @login_required
 def logout():
     logout_user()

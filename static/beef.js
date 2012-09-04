@@ -109,6 +109,7 @@ $(document).ready(function() {
 	    }
 
 	    console.log("Successfully Added User");
+	    window.location.href = '/';
 	    return;
 	}
 
@@ -137,7 +138,7 @@ $(document).ready(function() {
 	function successfulCallback(data) {
 
 	    if( data["flag"]!=0 ) {
-		console.log("Error: failed to add User");
+		console.log("Error: failed to login User");
 		return;
 	    }
 
@@ -148,12 +149,13 @@ $(document).ready(function() {
 	    }
 
 	    console.log("Successfully Logged In User");
+
 	    return;
 	}
 
 	$.post("/api/login", {username: UserName, password: UserPass}, successfulCallback );
-
 	console.log("LoginUser() - End");
+
 	return false;
     });
 });
