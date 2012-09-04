@@ -1,7 +1,12 @@
 
-from beef import *
+import traceback
 
+from beef import _getCollection
+
+from flask import jsonify
 from flask.ext.login import UserMixin
+
+import bson.objectid
 
 from werkzeug.security import generate_password_hash
 from werkzeug.security import check_password_hash
@@ -34,10 +39,10 @@ def _check_db(_id):
         print "Failed to get collection in _check_db"
         raise
 
-    db_check = users_collection.find_one({ '_id' : _id })
-    UserObject = UserClass(db_check['username'], userid, active=True)
+    db_check = users_collection.find_one({ '_id' : bson.objectid.ObjectId(_id) })
+    UserObject = UserClass(db_check['username'], _id, active=True)
 
-    if UserObject._id == _id:
+    if UserObject.id == _id:
         return UserObject
     else:
         return None
@@ -48,30 +53,43 @@ def add_user(request):
 
     """
 
-    username = request.form["user"]
-    pw_hash = generate_password_hash(request.form["pass"])
+    print "Adding user"
+
+    if "username" not in request.form:
+        print "Error: 'username' not in request"
+        return jsonify(flag=1)
+
+    username = request.form["username"]
     
-    if _user_exists(username):
-        raise Exception("User Exists")
+    #if _user_exists(username):
+    #    print "Warning: User already exists"
+    #    return jsonify(flag=0, UserAdded="UserAlreadyExists")
 
     try:
         users_collection = _getCollection("users")
     except:
-        print "Failed to get collection in _add_user"
-        raise
+        print "add_user(): Failed to get collection 'users'"
+        print traceback.format_exc()
+        return jsonify(flag=1)
 
     if users_collection.find_one({'username' : username}) != None:
         print "Cannot create use: %s, user already exists" % username
-        raise Exception("User Already Exists")
+        return jsonify(flag=0, UserAdded=1, Message="User Already Exists")
 
-    users_collection.update( {"username": username, "pw_has": pw_hash} )
+    pw_hash = generate_password_hash(request.form["password"])
+    users_collection.save( {"username": username, "pw_hash": pw_hash} )
     print "Successfully Created user: %s" % username
+    return jsonify(flag=0, UserAdded=0)
     return
 
 
-def _authenticate(username, pw_hash):
-    if _user_exists(username):
-        raise Exception("User Exists")
+class InvalidUser(Exception):
+    pass
+
+def _authenticate(username, password):
+
+    if not _user_exists(username):
+        raise InvalidUser
 
     try:
         users_collection = _getCollection("users")
@@ -81,7 +99,11 @@ def _authenticate(username, pw_hash):
 
     user = users_collection.find_one({'username' : username})
 
-    if user["pw_hash"] == pw_hash:
+    if "pw_hash" not in user:
+        print "Error: _authenticate() - attribute 'pw_hash' not in user entry in database"
+        raise Exception
+
+    if check_password_hash(user["pw_hash"], password):
         print "Successfully authenticated user: %s" % username
         return True
     else:
@@ -102,7 +124,7 @@ def _user_exists(username):
 
     db_check = users_collection.find_one({'username' : username})
               
-    if db_check=None:
+    if db_check==None:
         return False
 
     return True
@@ -117,7 +139,7 @@ def _get_user(username):
         raise
 
     db_result = users_collection.find_one({ 'username' : username })
-    result_id = db_result['_id']
+    result_id = db_result['_id'].__str__()
     
     # create User object/instance
     User = UserClass(db_result['username'], result_id, active=True)

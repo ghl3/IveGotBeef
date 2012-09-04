@@ -11,11 +11,10 @@
 
 <div id="User" style="text-align: right; margin-right: 100px;"> 
   <div id="CurrentUser">
-    User Name:
-    {% if not current_user.is_anonymous%}
-    {{ current_user.name }}
+    {% if not current_user.is_anonymous() %}
+    User Name: {{ current_user.name }}
     {% else %}
-    Anonymous
+    Not Logged In
     {% endif %}
   </div>
 </div>

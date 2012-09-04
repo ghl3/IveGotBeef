@@ -20,10 +20,10 @@ from flask.ext.login import login_user
 #from flask.ext.login import UserMixin
 
 import pymongo
-import bson.objectid
+
 
 import beef
-import login
+import login_tools
 
 app = Flask(__name__)
 app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
@@ -62,41 +62,13 @@ def get_beef():
     beef_dict = beef.get_beef(_id=_id)
     return render_template('get_beef.html', beef_dict=beef_dict)
 
-#
-#
-#
 
-@login_manager.user_loader
-def load_user(id):
-    return login._check_db(id)
-
-@app.route("/api/login", methods=["GET", "POST"])
-def api_login():
-    """ Login a user and store session with flask_login
-
-    """
-
-    if request.method == "POST" \
-            and "username" in request.form \
-            and "pw_hash" in request.form:
-        username = request.form["username"]
-        pw_hash = request.form["username"]
-
-        User = login._get_user(username)
-
-        if login._authenticate(username, pw_hash):
-            login_user(User, remember=True)
-            return url_for("index")
-        else:
-            flash("Invalid username.")
-    else:
-        flash(u"Invalid login.")
-        return render_template("login.html")
-#
-#
-#
-'''
 # User Login
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    return render_template("login.html")
+
+'''
 @app.route("/login", methods=["GET", "POST"])
 def login():
     form = LoginForm()
@@ -107,6 +79,51 @@ def login():
         return redirect(request.args.get("next") or url_for("index"))
     return render_template("login.html", form=form)
 '''
+
+#
+#
+#
+
+@login_manager.user_loader
+def load_user(id):
+    return login_tools._check_db(id)
+
+
+@app.route("/api/login", methods=["GET", "POST"])
+def api_login():
+    """ Login a user and store session with flask_login
+
+    """
+
+    if request.method == "POST" \
+            and "username" in request.form \
+            and "password" in request.form:
+        username = request.form["username"]
+        password = request.form["password"]
+
+        User = login_tools._get_user(username)
+
+        try: 
+            authenticated = login_tools._authenticate(username, password)
+        except InvalidUser:
+            print "Warning: Invalid User: %s" % username
+            return jsonify(flag=0, UserLoggedIn=1, Message="Invalid User")
+
+        if authenticated:
+            login_user(User, remember=True)
+            print "Successfully logged in user: %s " % username
+            print "Current User: ", current_user, current_user.name, current_user.id
+            return jsonify(flag=0, UserLoggedIn=0)
+        else:
+            print "Failed to login user: %s" % username
+            return jsonify(flag=0, UserLoggedIn=1, Message="Failed to log in user")
+            flash("Invalid username.")
+    else:
+        flash(u"Invalid login.")
+        return render_template("login.html")
+#
+#
+#
 
 @app.route("/logout")
 @login_required
@@ -125,6 +142,7 @@ def api_latest_beef():
     response = beef.latest()
     return response
 
+
 @app.route('/api/create_beef', methods=['GET', 'POST'])
 def api_submit_beef( ):
     """ Create a new beef activity to the db
@@ -132,6 +150,7 @@ def api_submit_beef( ):
     """
     response = beef.create_beef(request)
     return response
+
 
 @app.route('/api/get_beef', methods=['GET', 'POST'])
 def api_get_beef():
@@ -141,6 +160,7 @@ def api_get_beef():
     response = beef.get()
     return response
 
+
 @app.route('/api/update_beef', methods=['GET', 'POST'])
 def api_update_beef( ):
     """ Update an activity in the db
@@ -148,6 +168,7 @@ def api_update_beef( ):
     """
     response = beef.update()
     return response
+
 
 @app.route('/api/delete_beef', methods=['GET', 'POST'])
 def api_delete_beef( ):
@@ -157,20 +178,22 @@ def api_delete_beef( ):
     response = beef.delete()
     return response
 
+
 @app.route('/api/add_user', methods=['GET', 'POST'])
 def api_add_user( ):
     """ Add a user to the database
 
     """
-    response = login.add_user(request)
+    response = login_tools.add_user(request)
     return response
+
 
 @app.route('/api/check_user', methods=['GET', 'POST'])
 def api_check_user( ):
     """ Check
 
     """
-    response = login.check_user(request)
+    response = login_tools.check_user(request)
     return response
 
 if __name__ == '__main__':

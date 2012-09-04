@@ -6,11 +6,20 @@
 {% block body %}
 
 Please log in:
-<table border="1" id="UserTable">
+<table border="1" id="LoginUserTable" >
 <tr> <td>UserName: </td> <td> <input type="text" id="UserName"></input> </td> </tr> 
 <tr> <td>Password: </td> <td> <input type="password" id="UserPass"></input> </td> </tr> 
 </table>
 <button id="LoginUser">Login</button>
+
+<div style="margin-top: 50px">&nbsp;</div>
+
+Create New user:
+<table border="1" id="CreateUserTable" >
+<tr> <td>UserName: </td> <td> <input type="text" id="UserName"></input> </td> </tr> 
+<tr> <td>Password: </td> <td> <input type="password" id="UserPass"></input> </td> </tr> 
+</table>
+<button id="CreateUser">Create</button>
 
 
 {% endblock %}

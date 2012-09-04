@@ -41,18 +41,18 @@ def _getCollection(collection_name):
     try:
         db = _connectToDatabase()
     except:
-        print "_addToDatabase() - Error: Failed to connect to database"
+        print "_getCollection() - Error: Failed to connect to database"
         raise
 
     # Check if the 'activities' collection exists:
     if not 'beef' in db.collection_names():
-        print "_addToDatabase() - ERROR: 'beef' collection doesn't exist"
-        raise Exception("Collection 'beef' Doesn't Exist in Database")
+        print "_getCollection() - ERROR: 'beef' collection doesn't exist"
+        raise Exception("Collection " + collection_name + " Doesn't Exist in Database")
 
     try:
         beef_collection = db[collection_name]
     except:
-        print "_addToDatabase() - Failed to connect to %s collection" % collection_name
+        print "_getCollection() - Failed to connect to %s collection" % collection_name
         raise
 
     return beef_collection

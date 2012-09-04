@@ -82,6 +82,45 @@ function CreateBeefFromForm( form ) {
 
 
 $(document).ready(function() {
+    $('#CreateUser').live('click', function() {
+	
+	console.log("CreateUser - Begin");
+	
+	// Get the html form by id,
+	// serialize it, 
+	// and send it to python
+	// using jquery/ajax
+	var UserTable = $('#CreateUserTable');
+	
+	var UserName = $('#CreateUserTable #UserName').val();
+	var UserPass = $('#CreateUserTable #UserPass').val();
+
+	function successfulCallback(data) {
+
+	    if( data["flag"]!=0 ) {
+		console.log("Error: failed to add User");
+		return;
+	    }
+
+	    if( data["UserAdded"]!=0) {
+		console.log("Error: Failed to add user");
+		console.log(data["Message"]);
+		return;
+	    }
+
+	    console.log("Successfully Added User");
+	    return;
+	}
+
+	$.post("/api/add_user", {username: UserName, password: UserPass}, successfulCallback );
+
+	console.log("CreateUser() - End");
+	return false;
+    });
+});
+
+
+$(document).ready(function() {
     $('#LoginUser').live('click', function() {
 	
 	console.log("LoginUser - Begin");
@@ -90,36 +129,31 @@ $(document).ready(function() {
 	// serialize it, 
 	// and send it to python
 	// using jquery/ajax
-	var UserTable = $('#UserTable');
+	var UserTable = $('#LoginUserTable');
 	
-	var UserName = $('#UserTable #UserName').val();
-	var UserPass = $('#UserTable #UserPass').val();
+	var UserName = $('#LoginUserTable #UserName').val();
+	var UserPass = $('#LoginUserTable #UserPass').val();
 
 	function successfulCallback(data) {
 
-	    if( data["flag"]!="success" ) {
+	    if( data["flag"]!=0 ) {
 		console.log("Error: failed to add User");
 		return;
 	    }
 
-	    if( data["UserAdded"]=="UserAlreadyExists") {
-		console.log("User with that name already exists");
+	    if( data["UserLoggedIn"]!=0) {
+		console.log("Error: Failed to login user");
+		console.log(data["Message"]);
 		return;
 	    }
 
-	    if( data["UserAdded"]=="Success" ){
-		console.log("Successfully Added User");
-	    }
-	    else {
-		console.log("Uh, error.  I don't know what happened");
-	    }
-	    
+	    console.log("Successfully Logged In User");
 	    return;
 	}
 
-	$.post('/api/add_user', {username: UserName, password: UserPass}, successCallBack );
+	$.post("/api/login", {username: UserName, password: UserPass}, successfulCallback );
 
-	console.log("CreateBeef() - End");
+	console.log("LoginUser() - End");
 	return false;
     });
 });
