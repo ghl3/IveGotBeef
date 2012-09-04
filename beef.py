@@ -8,16 +8,12 @@ import pymongo
 import bson.objectid
 
 #import flask_login
-from flask.ext.login import UserMixin
-
 
 #
 # The tools used by the app
 # to connect to, update, and
 # display the beef.
 #
-
-
 
 def _connectToDatabase():
     """ Get a handle on the mongo db object
@@ -109,50 +105,6 @@ def _addToDatabase(beef_dict):
 
     return
 
-
-class UserClass(UserMixin):
-    def __init__(self, name, id, active=True):
-        self.name = name
-        self.id = id
-        self.active = active
-
-        def is_active(self):
-            return self.active
-
-def _check_db(userid):
-    # query database (again), just so we can pass an object to the callback
-
-    try:
-        users_collection = _getCollection("users")
-    except:
-        print "Failed to get collection in _check_db"
-        raise
-
-    db_check = users_collection.find_one({ 'userid' : userid })
-    UserObject = UserClass(db_check['username'], userid, active=True)
-
-    if UserObject.id == userid:
-        return UserObject
-    else:
-        return None
-
-def _get_user(username):
-    # check MongoDB for the existence of the entered username
-
-    try:
-        users_collection = _getCollection("users")
-    except:
-        print "Failed to get collection in _get_user"
-        raise
-
-    db_result = users_collection.find_one({ 'username' : username })
-    
-    result_id = int(db_result['userid'])
-    
-    # create User object/instance
-    User = UserClass(db_result['username'], result_id, active=True)
-
-    return User
 
 
 def create_beef(request):
