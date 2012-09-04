@@ -1,4 +1,5 @@
 
+import traceback
 
 import json
 
@@ -6,6 +7,8 @@ from flask import jsonify
 
 import pymongo
 import bson.objectid
+
+from flask.ext.login import current_user
 
 #import flask_login
 
@@ -58,7 +61,7 @@ def _getCollection(collection_name):
     return beef_collection
 
 
-def _addToDatabase(beef_dict):
+def _addToBeefDatabase(beef_dict):
     """ Add (or update) a beef to the database
     
     The argument is a dictionary of the beef information
@@ -68,30 +71,10 @@ def _addToDatabase(beef_dict):
     try:
         beef_collection = _getCollection("beef")
     except:
-        print "Failed to get collection in _addToDatabase"
+        print "Failed to get collection in _addToBeefDatabase"
         raise
 
-    '''
     try:
-        db = _connectToDatabase()
-    except:
-        print "_addToDatabase() - Error: Failed to connect to database"
-        raise
-
-    # Check if the 'activities' collection exists:
-    if not 'beef' in db.collection_names():
-        print "_addToDatabase() - ERROR: 'beef' collection doesn't exist"
-        raise Exception("Collection 'beef' Doesn't Exist in Database")
-
-    try:
-        beef_collection = db['beef']
-    except:
-        print "_addToDatabase() - Failed to connect to 'beef' collection"
-        raise
-    '''
-
-    try:
-        # Edit the activity's id
         if "_id" in beef_dict:
             print "Saving object with id: %s" % beef_dict["_id"]
             beef_dict["_id"] = bson.objectid.ObjectId(beef_dict["_id"])
@@ -100,10 +83,10 @@ def _addToDatabase(beef_dict):
         saved_id = beef_collection.save(beef_dict)
         print "Saved beef with id %s" % saved_id
     except:
-        print "_addToDatabase() - Error: Failed to add beef to database"
+        print "_addToBeefDatabase() - Error: Failed to add beef to database"
         raise
 
-    return
+    return saved_id
 
 
 
@@ -116,25 +99,48 @@ def create_beef(request):
 
     if request.method != 'POST':
         print "add_beef - ERROR: Expected POST http request"
-        return jsonify(flag="error")
+        return jsonify(flag=1)
 
     # Get the serialized activity JSON object
     # from the request
     beef_dict = json.loads( request.form['beef'] )
 
+    beef_dict["CreatedByName"] =  current_user.name
+    beef_dict["CreatedById"] =  bson.objectid.ObjectId(current_user.id)
+
     if beef_dict == None:
         print "add_beef() - ERROR: Input beef_dict is 'None'"
-        return jsonify(flag="error")
+        return jsonify(flag=1)
     
     # Add it to the database
     try:
-        _addToDatabase(beef_dict)
+       beef_id = _addToBeefDatabase(beef_dict)
     except:
-        print "add_beef() - Caught exception in _addToDatabase"
-        return jsonify(flags="error")
+        print "add_beef() - Caught exception in _addToBeefDatabase"
+        print traceback.format_exc()
+        return jsonify(flag=1)
+
+    # Add this beef to the list
+    # of the current user's beef
+    
+    current_user_id = bson.objectid.ObjectId(current_user.id)
+
+    try:
+        users_collection = _getCollection("users")
+    except:
+        print "Failed to get collection in create_beef()"
+        raise
+
+    user_in_db = users_collection.find_one({"_id": current_user_id})
+    if "beef" not in user_in_db:
+        print "Error: Cannot find list of beef in user entry"
+        raise Exception("Invalid User Entry in DB")
+
+    user_in_db["beef"].append(beef_id)
+    users_collection.save(user_in_db)
 
     print "add_beef() - Success"
-    return jsonify(flag="success")
+    return jsonify(flag=0, beef_id=beef_id)
 
 
 def latest(num_entries=10):
@@ -146,7 +152,7 @@ def latest(num_entries=10):
     try:
         beef_collection = _getCollection("beef")
     except:
-        print "Failed to get collection in _addToDatabase"
+        print "Failed to get collection in _latest"
         raise
 
     return list(beef_collection.find(limit=num_entries))
