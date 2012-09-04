@@ -13,6 +13,7 @@ from flask import flash
 from flask.ext.login import LoginManager
 from flask.ext.login import login_required
 from flask.ext.login import current_user
+from flask.ext.login import login_user
 
 #from Flask_Login import *
 #import flask_login
@@ -22,6 +23,7 @@ import pymongo
 import bson.objectid
 
 import beef
+import login
 
 app = Flask(__name__)
 app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
@@ -66,34 +68,29 @@ def get_beef():
 
 @login_manager.user_loader
 def load_user(id):
-    return beef._check_db(id)
+    return login._check_db(id)
 
-@app.route("/login", methods=["GET", "POST"])
-def login():
-    if request.method == "POST" and "username" in request.form:
+@app.route("/api/login", methods=["GET", "POST"])
+def api_login():
+    """ Login a user and store session with flask_login
+
+    """
+
+    if request.method == "POST" \
+            and "username" in request.form \
+            and "pw_hash" in request.form:
         username = request.form["username"]
+        pw_hash = request.form["username"]
 
-        '''
-        # check MongoDB for the existence of the entered username
-        db_result = users_collection.find_one({ 'username' : username })
-        
-        result_id = int(db_result['userid'])
-        
-        # create User object/instance
-        User = UserClass(db_result['username'], result_id, active=True)
-        '''
+        User = login._get_user(username)
 
-        User = beef._get_user(username)
-
-        # if username entered matches database, log user in
-        if username == user.name: #db_result['username']:
+        if login._authenticate(username, pw_hash):
             login_user(User, remember=True)
             return url_for("index")
         else:
             flash("Invalid username.")
     else:
         flash(u"Invalid login.")
-        #return render_template("login.html", current_user=current_user)
         return render_template("login.html")
 #
 #
@@ -165,7 +162,7 @@ def api_add_user( ):
     """ Add a user to the database
 
     """
-    response = beef.add_user(request)
+    response = login.add_user(request)
     return response
 
 @app.route('/api/check_user', methods=['GET', 'POST'])
@@ -173,7 +170,7 @@ def api_check_user( ):
     """ Check
 
     """
-    response = beef.check_user(request)
+    response = login.check_user(request)
     return response
 
 if __name__ == '__main__':
