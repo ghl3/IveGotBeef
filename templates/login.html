@@ -1,0 +1,17 @@
+
+<!-- Inherit from the main template -->
+{% extends "main_template.html" %}
+
+<!-- Fill in the Middle template -->
+{% block body %}
+
+Please log in:
+<table border="1" id="UserTable">
+<tr> <td>UserName: </td> <td> <input type="text" id="UserName"></input> </td> </tr> 
+<tr> <td>Password: </td> <td> <input type="password" id="UserPass"></input> </td> </tr> 
+</table>
+<button id="LoginUser">Login</button>
+
+
+{% endblock %}
+

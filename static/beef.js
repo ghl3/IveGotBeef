@@ -41,8 +41,6 @@ $(document).ready(function() {
     });
 });
 
-
-
 function CreateBeefFromForm( form ) {
 
     console.log("CreateBeefFromFor() - Begin");
@@ -80,3 +78,51 @@ function CreateBeefFromForm( form ) {
     return false;
 
 }
+
+
+
+$(document).ready(function() {
+    $('#LoginUser').live('click', function() {
+	
+	console.log("LoginUser - Begin");
+	
+	// Get the html form by id,
+	// serialize it, 
+	// and send it to python
+	// using jquery/ajax
+	var UserTable = $('#UserTable');
+	
+	var UserName = $('#UserTable #UserName').val();
+	var UserPass = $('#UserTable #UserPass').val();
+
+	function successfulCallback(data) {
+
+	    if( data["flag"]!="success" ) {
+		console.log("Error: failed to add User");
+		return;
+	    }
+
+	    if( data["UserAdded"]=="UserAlreadyExists") {
+		console.log("User with that name already exists");
+		return;
+	    }
+
+	    if( data["UserAdded"]=="Success" ){
+		console.log("Successfully Added User");
+	    }
+	    else {
+		console.log("Uh, error.  I don't know what happened");
+	    }
+	    
+	    return;
+	}
+
+	$.post('/api/add_user', {username: UserName, password: UserPass}, successCallBack );
+
+	console.log("CreateBeef() - End");
+	return false;
+    });
+});
+
+
+

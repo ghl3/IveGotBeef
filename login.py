@@ -24,6 +24,9 @@ class UserClass(UserMixin):
             return check_password_hash(self.pw_hash, password)
 
 def _add_user(username, pw_hash):
+    """ Add a user and pw_hash to the database
+
+    """
 
     if _user_exists(username):
         raise Exception("User Exists")

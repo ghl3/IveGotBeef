@@ -160,6 +160,22 @@ def api_delete_beef( ):
     response = beef.delete()
     return response
 
+@app.route('/api/add_user', methods=['GET', 'POST'])
+def api_add_user( ):
+    """ Add a user to the database
+
+    """
+    response = beef.add_user(request)
+    return response
+
+@app.route('/api/check_user', methods=['GET', 'POST'])
+def api_check_user( ):
+    """ Check
+
+    """
+    response = beef.check_user(request)
+    return response
+
 if __name__ == '__main__':
     # Bind to PORT if defined, otherwise default to 5000.
     port = int(os.environ.get('PORT', 5000))
