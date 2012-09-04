@@ -109,7 +109,9 @@ $(document).ready(function() {
 	    }
 
 	    console.log("Successfully Added User");
-	    window.location.href = '/';
+	    console.log("Logging in user:");
+	    LoginUser(UserName, UserPass);
+
 	    return;
 	}
 
@@ -120,6 +122,31 @@ $(document).ready(function() {
     });
 });
 
+
+function LoginUser(UserName, UserPass) {
+
+    // Create the callback
+    function successfulCallback(data) {
+
+	if( data["flag"]!=0 ) {
+	    console.log("Error: failed to login User");
+	    return;
+	}
+
+	if( data["UserLoggedIn"]!=0) {
+	    console.log("Error: Failed to login user");
+	    console.log(data["Message"]);
+	    return;
+	}
+
+	console.log("Successfully Logged In User");
+	window.location.href = '/';
+	return;
+    }
+
+    // Loging using ajax
+    $.post("/api/login", {username: UserName, password: UserPass}, successfulCallback );
+}
 
 $(document).ready(function() {
     $('#LoginUser').live('click', function() {
@@ -135,25 +162,7 @@ $(document).ready(function() {
 	var UserName = $('#LoginUserTable #UserName').val();
 	var UserPass = $('#LoginUserTable #UserPass').val();
 
-	function successfulCallback(data) {
-
-	    if( data["flag"]!=0 ) {
-		console.log("Error: failed to login User");
-		return;
-	    }
-
-	    if( data["UserLoggedIn"]!=0) {
-		console.log("Error: Failed to login user");
-		console.log(data["Message"]);
-		return;
-	    }
-
-	    console.log("Successfully Logged In User");
-
-	    return;
-	}
-
-	$.post("/api/login", {username: UserName, password: UserPass}, successfulCallback );
+	LoginUser(UserName, UserPass);
 	console.log("LoginUser() - End");
 
 	return false;

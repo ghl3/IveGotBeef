@@ -68,7 +68,10 @@ def add_user(request):
         return jsonify(flag=0, UserAdded=1, Message="User Already Exists")
 
     pw_hash = generate_password_hash(request.form["password"])
-    users_collection.save( {"username": username, "pw_hash": pw_hash} )
+    
+    user_dict = {"username": username, "pw_hash": pw_hash,
+                 "beef": [], "comments":[]}
+    users_collection.save(user_dict)
     print "Successfully Created user: %s" % username
     return jsonify(flag=0, UserAdded=0)
     return
@@ -83,6 +86,9 @@ def login_user_request(request):
             and "password" in request.form:
         username = request.form["username"]
         password = request.form["password"]
+
+        if not _user_exists(username):
+            return jsonify(flag=0, UserLoggedIn=1, Message="User does not exist")
 
         User = _get_user(username)
 
@@ -107,7 +113,6 @@ def login_user_request(request):
         return render_template("login.html")
 
 
-
 def _check_db(_id):
     """ Check that a user session id is valid
 
@@ -120,14 +125,14 @@ def _check_db(_id):
         raise
 
     db_check = users_collection.find_one({ '_id' : bson.objectid.ObjectId(_id) })
+    if db_check==None:
+        return None
     UserObject = UserClass(db_check['username'], _id, active=True)
 
     if UserObject.id == _id:
         return UserObject
     else:
         return None
-
-
 
 
 def _authenticate(username, password):
