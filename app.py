@@ -39,6 +39,7 @@ login_manager.setup_app(app)
 def index():
     return render_template('index.html')
 
+
 @app.route('/LatestBeef')
 def latest_beef():
     # Get the list of activities 
@@ -46,14 +47,17 @@ def latest_beef():
     # Return the html with the activities rendered
     return render_template('latest_beef.html', beef_list=beef_list )
 
+
 @app.route('/MyBeef')
 @login_required
 def my_beef():
     return render_template('my_beef.html')
 
+
 @app.route('/CreateBeef')
 def create_beef():
     return render_template('create_beef.html')
+
 
 @app.route('/Beef', methods=['GET'])
 def get_beef():
@@ -65,7 +69,72 @@ def get_beef():
     return render_template('get_beef.html', beef_dict=beef_dict)
 
 
-# User Login
+#
+# API:
+#
+
+@app.route('/api/latest_beef', methods=['GET', 'POST'])
+def api_latest_beef():
+    """ Get a list of the lastest beef topics
+
+    """
+    response = beef.latest()
+    return response
+
+
+@app.route('/api/create_beef', methods=['GET', 'POST'])
+@login_required
+def api_submit_beef( ):
+    """ Create a new beef activity to the db
+
+    """
+    response = beef.create_beef(request)
+    return response
+
+
+@app.route('/api/get_beef', methods=['GET', 'POST'])
+def api_get_beef():
+    """ Get a specific beef topic
+
+    """
+    response = beef.get()
+    return response
+
+
+@app.route('/api/update_beef', methods=['GET', 'POST'])
+@login_required
+def api_update_beef( ):
+    """ Update an activity in the db
+
+    """
+    response = beef.update()
+    return response
+
+
+@app.route('/api/delete_beef', methods=['GET', 'POST'])
+@login_required
+def api_delete_beef( ):
+    """ Delete a beef activity
+
+    """
+    response = beef.delete()
+    return response
+
+
+@app.route('/api/add_user', methods=['GET', 'POST'])
+def api_add_user( ):
+    """ Add a user to the database
+
+    """
+    response = login_tools.add_user(request)
+    return response
+
+
+#
+# User Management
+#
+
+
 @app.route("/login", methods=["GET", "POST"])
 def login():
     return render_template("login.html")
@@ -80,16 +149,20 @@ def login():
         flash("Logged in successfully.")
         return redirect(request.args.get("next") or url_for("index"))
     return render_template("login.html", form=form)
+
 '''
 
-#
-#
-#
 
 @login_manager.user_loader
 def load_user(id):
     return login_tools._check_db(id)
 
+
+@app.route("/api/logout")
+@login_required
+def logout():
+    logout_user()
+    return redirect("/")
 
 @app.route("/api/login", methods=["GET", "POST"])
 def api_login():
@@ -128,80 +201,16 @@ def api_login():
         return render_template("login.html")
     '''
     return result
+
+
+
+#@app.route('/api/check_user', methods=['GET', 'POST'])
+#def api_check_user( ):
+#    """ Check
 #
-#
-#
-
-@app.route("/api/logout")
-@login_required
-def logout():
-    logout_user()
-    return redirect("/")
-
-
-# API:
-
-@app.route('/api/latest_beef', methods=['GET', 'POST'])
-def api_latest_beef():
-    """ Get a list of the lastest beef topics
-
-    """
-    response = beef.latest()
-    return response
-
-
-@app.route('/api/create_beef', methods=['GET', 'POST'])
-def api_submit_beef( ):
-    """ Create a new beef activity to the db
-
-    """
-    response = beef.create_beef(request)
-    return response
-
-
-@app.route('/api/get_beef', methods=['GET', 'POST'])
-def api_get_beef():
-    """ Get a specific beef topic
-
-    """
-    response = beef.get()
-    return response
-
-
-@app.route('/api/update_beef', methods=['GET', 'POST'])
-def api_update_beef( ):
-    """ Update an activity in the db
-
-    """
-    response = beef.update()
-    return response
-
-
-@app.route('/api/delete_beef', methods=['GET', 'POST'])
-def api_delete_beef( ):
-    """ Delete a beef activity
-
-    """
-    response = beef.delete()
-    return response
-
-
-@app.route('/api/add_user', methods=['GET', 'POST'])
-def api_add_user( ):
-    """ Add a user to the database
-
-    """
-    response = login_tools.add_user(request)
-    return response
-
-
-@app.route('/api/check_user', methods=['GET', 'POST'])
-def api_check_user( ):
-    """ Check
-
-    """
-    response = login_tools.check_user(request)
-    return response
+#    """
+#    response = login_tools.check_user(request)
+#    return response
 
 if __name__ == '__main__':
     # Bind to PORT if defined, otherwise default to 5000.
