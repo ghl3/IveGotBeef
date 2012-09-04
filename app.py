@@ -139,19 +139,6 @@ def api_add_user( ):
 def login():
     return render_template("login.html")
 
-'''
-@app.route("/login", methods=["GET", "POST"])
-def login():
-    form = LoginForm()
-    if form.validate_on_submit():
-        # login and validate the user...
-        login_user(user)
-        flash("Logged in successfully.")
-        return redirect(request.args.get("next") or url_for("index"))
-    return render_template("login.html", form=form)
-
-'''
-
 
 @login_manager.user_loader
 def load_user(id):
@@ -164,6 +151,7 @@ def logout():
     logout_user()
     return redirect("/")
 
+
 @app.route("/api/login", methods=["GET", "POST"])
 def api_login():
     """ Login a user and store session with flask_login
@@ -171,46 +159,8 @@ def api_login():
     """
 
     result = login_tools.login_user_request(request)
-
-    '''
-    if request.method == "POST" \
-            and "username" in request.form \
-            and "password" in request.form:
-        username = request.form["username"]
-        password = request.form["password"]
-
-        User = login_tools._get_user(username)
-
-        try: 
-            authenticated = login_tools._authenticate(username, password)
-        except InvalidUser:
-            print "Warning: Invalid User: %s" % username
-            return jsonify(flag=0, UserLoggedIn=1, Message="Invalid User")
-
-        if authenticated:
-            login_user(User, remember=True)
-            print "Successfully logged in user: %s " % username
-            print "Current User: ", current_user, current_user.name, current_user.id
-            return jsonify(flag=0, UserLoggedIn=0)
-        else:
-            print "Failed to login user: %s" % username
-            return jsonify(flag=0, UserLoggedIn=1, Message="Failed to log in user")
-            flash("Invalid username.")
-    else:
-        flash(u"Invalid login.")
-        return render_template("login.html")
-    '''
     return result
 
-
-
-#@app.route('/api/check_user', methods=['GET', 'POST'])
-#def api_check_user( ):
-#    """ Check
-#
-#    """
-#    response = login_tools.check_user(request)
-#    return response
 
 if __name__ == '__main__':
     # Bind to PORT if defined, otherwise default to 5000.
