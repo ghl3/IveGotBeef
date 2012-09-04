@@ -41,8 +41,6 @@ $(document).ready(function() {
     });
 });
 
-
-
 function CreateBeefFromForm( form ) {
 
     console.log("CreateBeefFromFor() - Begin");
@@ -80,3 +78,87 @@ function CreateBeefFromForm( form ) {
     return false;
 
 }
+
+
+
+$(document).ready(function() {
+    $('#CreateUser').live('click', function() {
+	
+	console.log("CreateUser - Begin");
+	
+	// Get the html form by id,
+	// serialize it, 
+	// and send it to python
+	// using jquery/ajax
+	var UserTable = $('#CreateUserTable');
+	
+	var UserName = $('#CreateUserTable #UserName').val();
+	var UserPass = $('#CreateUserTable #UserPass').val();
+
+	function successfulCallback(data) {
+
+	    if( data["flag"]!=0 ) {
+		console.log("Error: failed to add User");
+		return;
+	    }
+
+	    if( data["UserAdded"]!=0) {
+		console.log("Error: Failed to add user");
+		console.log(data["Message"]);
+		return;
+	    }
+
+	    console.log("Successfully Added User");
+	    window.location.href = '/';
+	    return;
+	}
+
+	$.post("/api/add_user", {username: UserName, password: UserPass}, successfulCallback );
+
+	console.log("CreateUser() - End");
+	return false;
+    });
+});
+
+
+$(document).ready(function() {
+    $('#LoginUser').live('click', function() {
+	
+	console.log("LoginUser - Begin");
+	
+	// Get the html form by id,
+	// serialize it, 
+	// and send it to python
+	// using jquery/ajax
+	var UserTable = $('#LoginUserTable');
+	
+	var UserName = $('#LoginUserTable #UserName').val();
+	var UserPass = $('#LoginUserTable #UserPass').val();
+
+	function successfulCallback(data) {
+
+	    if( data["flag"]!=0 ) {
+		console.log("Error: failed to login User");
+		return;
+	    }
+
+	    if( data["UserLoggedIn"]!=0) {
+		console.log("Error: Failed to login user");
+		console.log(data["Message"]);
+		return;
+	    }
+
+	    console.log("Successfully Logged In User");
+
+	    return;
+	}
+
+	$.post("/api/login", {username: UserName, password: UserPass}, successfulCallback );
+	console.log("LoginUser() - End");
+
+	return false;
+    });
+});
+
+
+
