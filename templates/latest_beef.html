@@ -6,33 +6,6 @@
 <!-- Fill in the Middle template -->
 {% block body %}
 
-{% if beef_list|length==0 %}
-No Beef Yet (Database is empty.  This is probably an error.)
-{% else %}
+{% include "beef_list.html" %}
 
-
-<table border="1">
-
-{% for beef in beef_list %}
-{% if loop.first %}
-<tr>
-{% for (name, val) in beef_list[0].iteritems() if name != '_id' %}
-    <td>{{ name }}</td>
-{% endfor %}
-<td> </td>
-</tr> 
-{% endif %}
-
-<tr>
-{% for (name, val) in beef.iteritems() if name != '_id' %}
-    <td>{{ val }}</td>
-{% endfor %}
-<td> <button class="GetBeefButton" id="beef_{{ beef['_id'] }}">View Beef</button> </td>
-<!-- <td> <a class="button" href="/Beef?_id={{ beef['_id'] }}">View Beef</a> </td> -->
-</tr> 
-{% endfor %}
-
-</table>
-
-{% endif %}
 {% endblock %}

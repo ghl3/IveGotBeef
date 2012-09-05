@@ -40,9 +40,11 @@ items = ["beef_title", "beef_opponent", "comment", "_id"]
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    beef_list = beef.latest(10, items=items)
+    return render_template('index.html', beef_list=beef_list )
 
 
+''' Now incorporated into /index
 @app.route('/LatestBeef')
 def latest_beef():
     """ Show the lastest beef
@@ -51,7 +53,7 @@ def latest_beef():
     beef_list = beef.latest(10, items=items)
     # Return the html with the activities rendered
     return render_template('latest_beef.html', beef_list=beef_list )
-
+'''
 
 @app.route('/MyBeef')
 @login_required
