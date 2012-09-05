@@ -32,6 +32,7 @@ body {
 }
 
 
+
 /* Document: Contains the header, the main, the sidebar, and the footer */
 div.document {
     width: 940px;
@@ -43,6 +44,10 @@ div.documentwrapper {
   width: 100%;
 }
 
+
+.PlainText {  
+  text-align: left;
+}
 
 /* Nav bar and User info */
 
