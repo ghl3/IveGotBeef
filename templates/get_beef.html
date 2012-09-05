@@ -4,9 +4,9 @@
 {% extends "main_template.html" %}
 
 <!-- Fill in the Middle template -->
-{% block body %}
+{% block document %}
 
-<table border="1">
+<table class="BeefTable" border="1">
 <tr>
 {% for (name, val) in beef_dict.iteritems() if name != '_id' %}
     <td>{{ name }}</td>

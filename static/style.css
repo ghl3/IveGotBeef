@@ -50,7 +50,6 @@ a.button:hover {
 
 #Argument_Container{  
   margin-top: 40px;
-  width: 700px;
   min-height: 400px;
 }
 
@@ -62,16 +61,25 @@ a.button:hover {
 
 .Argument {
   min-height: 400px;
-  width: 200px;
+  width: 298px;
   float: left;
 }
 
 .Argument.Left{  
   border: 1px solid red;
-  margin-right: 10px;
+  margin-left: 150px;
+  margin-right: 20ps;
 }
 
 .Argument.Right{  
   border: 1px solid blue;
-  margin-left: 10px;
+  margin-left: 20px;
+  margin-right: 150px;
+}
+
+
+
+.BeefTable {  
+  margin-left: auto;
+  margin-right: auto;
 }
