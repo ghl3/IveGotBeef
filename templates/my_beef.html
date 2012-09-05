@@ -27,7 +27,8 @@ You haven't started any beef (yet).
 {% for (name, val) in beef.iteritems() if name != '_id' %}
     <td>{{ val }}</td>
 {% endfor %}
-<td> <button class="GetBeefButton" id="beef_{{ beef['_id'] }}">View Beef</button> </td>
+<!--<td> <button class="GetBeefButton" id="beef_{{ beef['_id'] }}">View Beef</button> </td>-->
+<td> <a class="button" href="/Beef?_id={{ beef['_id'] }}">View Beef</a> </td>
 </tr> 
 {% endfor %}
 </table>

@@ -26,7 +26,6 @@ $(document).ready(function() {
 	
 	console.log("GetBeefButton() - Begin");
 	console.log( this.getAttribute("id") );
-	return;
 
 	// Get the html form by id,
 	// serialize it, 
