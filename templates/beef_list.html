@@ -1,0 +1,38 @@
+
+
+{% if beef_list|length==0 %}
+
+<!-- In case this list is empty, display the following block: -->
+{% block empty %}
+No Beef Yet (Database is empty.  This is probably an error.)
+{% endblock %}
+
+<!-- Else, move on -->
+{% else %}
+
+<table border="1">
+{% for beef in beef_list %}
+
+<!-- Make the title -->
+{% if loop.first %}
+<tr>
+{% for (name, val) in beef_list[0].iteritems() if name != '_id' %}
+    <td>{{ name }}</td>
+{% endfor %}
+<td> </td>
+</tr> 
+{% endif %}
+
+<!-- Do the rest of the list entries -->
+<tr>
+{% for (name, val) in beef.iteritems() if name != '_id' %}
+    <td>{{ val }}</td>
+{% endfor %}
+<td> <button class="GetBeefButton" id="beef_{{ beef['_id'] }}">View Beef</button> </td>
+<!-- <td> <a class="button" href="/Beef?_id={{ beef['_id'] }}">View Beef</a> </td> -->
+</tr> 
+
+{% endfor %}
+</table>
+
+{% endif %}

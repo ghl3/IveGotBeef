@@ -5,7 +5,7 @@
 }
 
 
-button, .button {
+button, a.button, a.button:hover {
 /*
   display: block;
   width: 80px;
@@ -18,8 +18,8 @@ button, .button {
   font-weight: bold;
 */
 
--webkit-box-align: center;
--webkit-appearance: button;
+  webkit-box-align: center;
+  webkit-appearance: button;
   text-align: center;
   cursor: default;
   color: buttontext;
@@ -29,7 +29,7 @@ button, .button {
   background-color: buttonface;
   box-sizing: border-box;
 
-margin: 0em;
+  margin: 0em;
   font: -webkit-small-control;
   letter-spacing: normal;
   word-spacing: normal;
@@ -38,12 +38,15 @@ margin: 0em;
   text-shadow: none;
   display: inline-block;
 
-border-collapse: separate;
+  border-collapse: separate;
   border-spacing: 2px;
   border-color: gray;
 
 }
 
+a.button:hover { 
+  opacity:0.8;
+}
 
 #Argument_Container{  
   margin-top: 40px;
