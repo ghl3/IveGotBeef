@@ -69,6 +69,20 @@ def get_beef():
     return render_template('get_beef.html', beef_dict=beef_dict)
 
 
+
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    return render_template("login.html")
+
+
+
+@app.route("/NewUser", methods=["GET", "POST"])
+def new_user():
+    return render_template("new_user.html")
+
+
+
+
 #
 # API:
 #
@@ -134,12 +148,6 @@ def api_add_user( ):
 # User Management
 #
 
-
-@app.route("/login", methods=["GET", "POST"])
-def login():
-    return render_template("login.html")
-
-
 @login_manager.user_loader
 def load_user(id):
     return login_tools._check_db(id)
@@ -149,7 +157,7 @@ def load_user(id):
 @login_required
 def logout():
     logout_user()
-    return redirect("/")
+    return redirect(request.args.get("next") or url_for("/"))
 
 
 @app.route("/api/login", methods=["GET", "POST"])

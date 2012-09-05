@@ -12,9 +12,11 @@
 <div id="User" style="text-align: right; margin-right: 100px;"> 
   <div id="CurrentUser">
     {% if not current_user.is_anonymous() %}
-    User Name: {{ current_user.name }}
+    User Name: {{ current_user.name }} <br>
+    <a href="/api/logout">Log Out</a>
     {% else %}
-    Not Logged In
+    Not Logged In <br>
+    <a href="/login">Login</a> <a href="/NewUser">New User</a>
     {% endif %}
   </div>
 </div>

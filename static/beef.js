@@ -63,8 +63,11 @@ function CreateBeefFromForm( form ) {
     function successCallback(data) {
 	if( data["flag"]=="success" ) {
 	    console.log("Successfully added Activity");
-	    //ClearActivityTable();
-	    //RefreshActivityList();
+
+	    // We want to move to the newly created entry
+	    beef_id = data["beef_id"];
+	    window.location.href = "/Beef?_id=" + beef_id;
+
 	}
 	else {
 	    console.log("ERROR: Failed to add Activity");
@@ -136,16 +139,27 @@ function LoginUser(UserName, UserPass) {
 	if( data["UserLoggedIn"]!=0) {
 	    console.log("Error: Failed to login user");
 	    console.log(data["Message"]);
+	    $("#LoginResult").html("Login failed.  Invalid Username Password Combination").show();
 	    return;
 	}
 
 	console.log("Successfully Logged In User");
-	window.location.href = '/';
+	$("#Login").hide();
+	$("#LoginResult").html("Successfully logged in.  Welcome, " + UserName + ".").show();
+	// window.location.href = '/';
 	return;
     }
 
+    function errorCallback(data) {
+	
+	$("#LoginResult").html("An Error Occurred.  Please Try again.").show();
+
+    }
+
     // Loging using ajax
-    $.post("/api/login", {username: UserName, password: UserPass}, successfulCallback );
+    $.post("/api/login", {username: UserName, password: UserPass}, successfulCallback )
+	.error(errorCallback);
+
 }
 
 $(document).ready(function() {

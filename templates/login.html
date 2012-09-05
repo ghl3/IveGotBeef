@@ -5,22 +5,27 @@
 <!-- Fill in the Middle template -->
 {% block body %}
 
-Please log in:
-<table border="1" id="LoginUserTable" >
-<tr> <td>UserName: </td> <td> <input type="text" id="UserName"></input> </td> </tr> 
-<tr> <td>Password: </td> <td> <input type="password" id="UserPass"></input> </td> </tr> 
-</table>
-<button id="LoginUser">Login</button>
+{% if not current_user.is_authenticated() %}
+<div id="Login">
+  Please log in:
+  <table border="1" id="LoginUserTable" >
+    <tr> <td>UserName: </td> <td> <input type="text" id="UserName"></input> </td> </tr> 
+    <tr> <td>Password: </td> <td> <input type="password" id="UserPass"></input> </td> </tr> 
+  </table>
+  <button id="LoginUser">Login</button> <br>
+  
+  <div style="margin-bottom: 30px">&nbsp;</div>
+      
+  <div id="AccountInfo">
+    If you do not have an account, create one <a href="/new_user">here</a>.
+  </div>
+</div>
 
-<div style="margin-top: 50px">&nbsp;</div>
+<div id="LoginResult" style="display: none;"></div>
+{% else %}
 
-Create New user:
-<table border="1" id="CreateUserTable" >
-<tr> <td>UserName: </td> <td> <input type="text" id="UserName"></input> </td> </tr> 
-<tr> <td>Password: </td> <td> <input type="password" id="UserPass"></input> </td> </tr> 
-</table>
-<button id="CreateUser">Create</button>
+You are currently logged in.  To login as a different user, you must first <a href="/api/logout?next=/login">log out</a>.
 
-
+{% endif %}
 {% endblock %}
 
