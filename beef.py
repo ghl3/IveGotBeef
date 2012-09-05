@@ -140,7 +140,7 @@ def create_beef(request):
     users_collection.save(user_in_db)
 
     print "add_beef() - Success"
-    return jsonify(flag=0, beef_id=beef_id)
+    return jsonify(flag=0, beef_id=beef_id.__str__())
 
 
 def latest(num_entries=10):
