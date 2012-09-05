@@ -2,8 +2,6 @@
 import traceback
 import datetime
 
-from beef import _getCollection
-
 from flask import jsonify
 from flask import redirect
 from flask import url_for
@@ -20,6 +18,7 @@ import bson.objectid
 from werkzeug.security import generate_password_hash
 from werkzeug.security import check_password_hash
 
+from common import *
 
 class UserClass(UserMixin):
     def __init__(self, name, id, active=True):
@@ -35,9 +34,6 @@ class UserClass(UserMixin):
 
         #def check_password(self, password):
         #    return check_password_hash(self.pw_hash, password)
-
-class InvalidUser(Exception):
-    pass
 
 
 def add_user(request):
@@ -58,7 +54,7 @@ def add_user(request):
     #    return jsonify(flag=0, UserAdded="UserAlreadyExists")
 
     try:
-        users_collection = _getCollection("users")
+        users_collection = getCollection("users")
     except:
         print "add_user(): Failed to get collection 'users'"
         print traceback.format_exc()
@@ -121,7 +117,7 @@ def _check_db(_id):
     This is a required method for flask_login
     """
     try:
-        users_collection = _getCollection("users")
+        users_collection = getCollection("users")
     except:
         print "Failed to get collection in _check_db"
         raise
@@ -143,7 +139,7 @@ def _authenticate(username, password):
         raise InvalidUser
 
     try:
-        users_collection = _getCollection("users")
+        users_collection = getCollection("users")
     except:
         print "Failed to get collection in _add_user"
         raise
@@ -168,7 +164,7 @@ def _user_exists(username):
     Check only the username and see if it matches an entry
     """
     try:
-        users_collection = _getCollection("users")
+        users_collection = getCollection("users")
     except:
         print "Failed to get collection in _user_exists"
         raise
@@ -184,7 +180,7 @@ def _user_exists(username):
 def _get_user(username):
 
     try:
-        users_collection = _getCollection("users")
+        users_collection = getCollection("users")
     except:
         print "Failed to get collection in _get_user"
         raise
