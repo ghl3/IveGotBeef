@@ -342,7 +342,6 @@ button.Vote.VoteRight {
 
 
 #Argument_Container{  
-  margin-top: 40px;
   min-height: 400px;
 }
 
@@ -353,23 +352,32 @@ button.Vote.VoteRight {
 }
 
 .Argument {
-  min-height: 400px;
   width: 300px;
   float: left;
+  text-align: center;
 }
 
-.Argument.Left{  
-  background-color: #DDF8CC;
+.Argument.Left {  
   margin-left: 150px;
   margin-right: 20px;
 }
+.Argument.Left .Content { 
+  background-color: #DDF8CC;
+  min-height: 400px;
+  text-align: left;
+}
+
 
 .Argument.Right{  
-  background-color: #E5EDF9;
+
   margin-left: 20px;
   margin-right: 150px;
 }
-
+.Argument.Right .Content {  
+  background-color: #E5EDF9;
+  min-height: 400px;
+  text-align: left;
+}
 
 
 .BeefTable {  
