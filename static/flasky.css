@@ -53,11 +53,13 @@ div.documentwrapper {
   margin-right: auto; 
   text-align: center; 
   margin-top: 20px; 
+  min-height: 40px;
   border-bottom: 1px solid black;
   padding-bottom: 10px;
+  
 }
 
-x
+
 #navebar_padding{  
   width: 220px;
   float: left;
@@ -67,8 +69,11 @@ x
   /*width: 400px; */
   /*width: auto;*/
   width: 500px;
+  /*
   margin-left: auto; 
   margin-right: auto;
+     */
+float: left;
 }
 
 #navebar { 
@@ -97,6 +102,7 @@ nav a {
   text-align: right; 
   float: left;
   margin-left: 20px;
+  line-height: 1.1em;
 }
 
 /*

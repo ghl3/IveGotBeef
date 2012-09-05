@@ -3,6 +3,7 @@
 <div id="header">
 
   <div id="navebar_padding">
+    &nbsp;
   </div>
 
   <div id="navebar_wrapper" >
@@ -14,8 +15,8 @@
     </nav>
   </div>
 
-  <div id="User"> 
-    <div id="CurrentUser">
+  <div id="navebar_padding">
+    <div id="User"> 
       {% if not current_user.is_anonymous() %}
       User Name: {{ current_user.name }} <br>
       <a href="/api/logout">Log Out</a>
