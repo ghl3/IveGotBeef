@@ -1,0 +1,18 @@
+
+<!-- Inherit from the main template -->
+{% extends "main_template.html" %}
+
+<!-- Fill in the Middle template -->
+{% block body %}
+
+Please enter a username and password
+<table border="1" id="CreateUserTable" >
+<tr> <td>UserName: </td> <td> <input type="text" id="UserName"></input> </td> </tr> 
+<tr> <td>Password: </td> <td> <input type="password" id="UserPass"></input> </td> </tr> 
+<tr> <td>Confirm Password: </td> <td> <input type="password" id="UserPass2"></input> </td> </tr> 
+</table>
+<button id="CreateUser">Create</button>
+
+
+{% endblock %}
+
