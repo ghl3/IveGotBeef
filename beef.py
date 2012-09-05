@@ -22,6 +22,54 @@ from common import *
 #
 
 
+def _get_dict_subset(dict, items):
+    if items==None: return dict
+    beef_dict = OrderedDict()
+    for item in items:
+        beef_dict[item] = dict[item]
+    return beef_dict
+
+title_dict = {}
+title_dict["CreatedByName"] = "Created By"
+title_dict["CreatedById"] = "Created By (id)"
+title_dict["TimeCreated"] = "Creation Time"
+title_dict["BeefTitle"] = "Title"
+title_dict["beef_title"] = "Title" #deprecated
+title_dict["BeefOpponent"] = "Against"
+title_dict["beef_opponent"] = "Against" #deprecated
+title_dict["BeefDescription"] = "Beef Description"
+title_dict["comment"] = "Beef Description"
+title_dict["ArgumentLeft"] = "Beef's Argument"
+title_dict["ArgumentLeft"] = "Defence's Argument"
+title_dict["CommentList"] = "Comments"
+
+def _title_map(name):
+    """ A mapping of database column titles to html (pretty) titles
+
+    """
+
+    if name in title_dict:
+        return title_dict[name]
+
+    return name
+     
+def _format_dict(beef_dict, items):
+    """ Format the titles of a return dict
+
+    """
+
+    beef_dict = _get_dict_subset(beef_dict, items)
+
+    for key in beef_dict:
+        if key in title_dict:
+            new_key = _title_map(key)
+            beef_dict[new_key] = beef_dict.pop(key)
+        else:
+            pass
+
+    return beef_dict
+
+
 def create_beef(request):
     """ Add an activity to the database
 
@@ -54,6 +102,7 @@ def create_beef(request):
     if form_dict == None:
         print "add_beef() - ERROR: Input beef_dict is 'None'"
         return jsonify(flag=1)
+    print form_dict
     
     # Create the dictionary to be added
     # to the database
@@ -106,17 +155,9 @@ def latest(num_entries=10, items=None):
     
     return_list = []
     for entry in beef_list:
-        return_list.append(_get_dict_subset(entry, items))
+        return_list.append(_format_dict(entry, items))
 
     return return_list
-
-
-def _get_dict_subset(dict, items):
-    if items==None: return dict
-    beef_dict = OrderedDict()
-    for item in items:
-        beef_dict[item] = dict[item]
-    return beef_dict
 
 
 def get_beef(_id, items=None):
@@ -133,7 +174,7 @@ def get_beef(_id, items=None):
     else:
         print "Successfully found entry: %s" % _id
 
-    beef_dict = _get_dict_subset(beef_entry, items)
+    beef_dict = _format_dict(beef_entry, items)
     return beef_dict
 
 
@@ -144,6 +185,7 @@ def get_beef_list(user_id, items=None):
 
     user_collection = getCollection("users")
     
+    print "Getting beef for user: ", user_id
     user_entry = user_collection.find_one({"_id" : bson.objectid.ObjectId(user_id)})
     beef_id_list = user_entry["beef"]
     print "Beef for user: %s:" % user_id
@@ -154,7 +196,7 @@ def get_beef_list(user_id, items=None):
     beef_list = []
     for object_id in beef_id_list:
         beef_entry = beef_collection.find_one({"_id" : object_id})
-        beef_list.append(_get_dict_subset(beef_entry, items))
+        beef_list.append(_format_dict(beef_entry, items))
 
     print "Beef List: ", beef_list
     return beef_list

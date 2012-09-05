@@ -35,7 +35,7 @@ app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
 login_manager = LoginManager()
 login_manager.setup_app(app)
 
-items = ["beef_title", "beef_opponent", "comment", "_id"]
+items = ["BeefTitle", "BeefOpponent", "BeefDescription", "_id"]
 
 # Public Pages:
 
