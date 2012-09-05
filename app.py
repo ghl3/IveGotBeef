@@ -75,7 +75,7 @@ def get_beef():
 
     """
     _id = request.args.get('_id', '')
-    beef_dict = beef.get_beef(_id=_id)
+    beef_dict = beef.get_beef(_id, items=["beef_title", "beef_opponent", "comment", "_id"])
     return render_template('get_beef.html', beef_dict=beef_dict)
 
 

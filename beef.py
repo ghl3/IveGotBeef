@@ -158,7 +158,14 @@ def latest(num_entries=10):
     return list(beef_collection.find(limit=num_entries))
 
 
-def get_beef(_id):
+def _get_dict_subset(dict, items):
+    if items==None: return dict
+    beef_dict = {}
+    for item in items:
+        beef_dict[item] = dict[item]
+    return beef_dict
+
+def get_beef(_id, items=None):
     """ Get the sigle beef entry with the supplied id
 
     """
@@ -178,7 +185,8 @@ def get_beef(_id):
     else:
         print "Successfully found entry: %s" % _id
 
-    return beef_entry
+    beef_dict = _get_dict_subset(beef_entry, items)
+    return beef_dict
 
 
 def get_beef_list(user_id, items=None):
@@ -206,13 +214,7 @@ def get_beef_list(user_id, items=None):
     beef_list = []
     for object_id in beef_id_list:
         beef_entry = beef_collection.find_one({"_id" : object_id})
-        if items==None:
-            beef_list.append(beef_entry)
-        else:
-            beef_dict = {}
-            for item in items:
-                beef_dict[item] = beef_entry[item]
-            beef_list.append(beef_dict)
+        beef_list.append(_get_dict_subset(beef_entry, items))
 
     print "Beef List: ", beef_list
     return beef_list
