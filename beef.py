@@ -177,6 +177,13 @@ def get_beef(_id, items=None):
     beef_dict = _format_dict(beef_entry, items)
     return beef_dict
 
+def get_beef_owner(_id):
+    """ Return the id of the creater of this beef
+
+    """
+    beef_collection = getCollection("beef")
+    beef_entry = beef_collection.find_one({"_id" : bson.objectid.ObjectId(_id)})
+    return beef_entry["CreatedById"].__str__()
 
 def get_beef_list(user_id, items=None):
     """ Get the list of beef created by the user with user_id

@@ -95,15 +95,23 @@ def get_beef():
         beef_dict = beef.get_beef(_id, items=items+["ArgumentLeft","ArgumentRight"])
         argument_left = beef_dict.pop("ArgumentLeft")
         argument_right = beef_dict.pop("ArgumentRight")
+        beef_owner_id = beef.get_beef_owner(_id)
+        if current_user.id == beef_owner_id:
+            beef_owner=True
+        else:
+            beef_owner=False
+        print current_user.id, _id, beef_owner
     except:
         print traceback.format_exc()
         return render_template('my_beef.html',beef_dict=[], 
                                argument_left="",
-                               argument_right="")
+                               argument_right="",
+                               beef_owner=False)
 
     return render_template('get_beef.html', beef_dict=beef_dict,
                            argument_left=argument_left,
-                           argument_right=argument_right)
+                           argument_right=argument_right,
+                           beef_owner=beef_owner)
 
 
 @app.route("/login", methods=["GET", "POST"])

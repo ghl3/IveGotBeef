@@ -31,14 +31,14 @@
     
     <div class="Argument Left">
       <h2>Argument:</h2>
-      <textarea class="Content">
+      <textarea class="Content" {% if beef_owner %} redonly="false" {% else %} readonly="true" {% endif %} >
 	{{ argument_left }}
       </textarea>
     </div>
     
     <div class="Argument Right">
       <h2>Defense:</h2>
-      <textarea class="Content">
+      <textarea class="Content" {% if beef_owner %} redonly="false" {% else %} readonly="true" {% endif %} >
 	{{ argument_right }}
       </textarea>
     </div>
@@ -52,7 +52,7 @@
 <div class="CommentWrapper">
   <h2> Comments </h2>
   <div class="Comments">
-    <textarea>
+    <textarea readonly="true">
     </textarea>
   </div>  
 
