@@ -320,6 +320,30 @@ div.sphinxsidebar input {
 
 /*  Argument Page */
 
+#VoteWrapper{  
+  width: 100%;
+  min-height: 50px;
+}
+
+.Vote {  
+  width: 50px;
+  height: 50px;
+  float: left;
+
+}
+
+.Vote.VoteLeft {  
+  background-color: blue;  
+  margin-left: 150px;
+  margin-right: 270px;
+}
+.Vote.VoteRight {  
+  background-color: red;  
+  margin-left: 270px;
+  margin-right: 150px;
+}
+
+
 #Argument_Container{  
   margin-top: 40px;
   min-height: 400px;
@@ -340,7 +364,7 @@ div.sphinxsidebar input {
 .Argument.Left{  
   background-color: #DDF8CC;
   margin-left: 150px;
-  margin-right: 20ps;
+  margin-right: 20px;
 }
 
 .Argument.Right{  
