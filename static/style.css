@@ -8,6 +8,17 @@
  * :license: Flask Design License, see LICENSE for details.
  */
 
+/*
+background-color: #E0EAF1;
+background-color: #DEEDFF;
+background-color: #EEE;
+
+#DDF8CC;
+#E5EDF9;
+
+background-color: cornsilk;
+border-color: #E0DCBF;
+*/
 
 /* Body */
 body {
@@ -29,7 +40,7 @@ div.document {
 
 div.documentwrapper {
     /*float: left;*/
-    width: 100%;
+  width: 100%;
 }
 
 
@@ -48,7 +59,7 @@ div.documentwrapper {
   min-height: 40px;
   border-bottom: 1px solid black;
   padding-bottom: 10px;
-  
+  margin-bottom: 20px;
 }
 
 
@@ -119,10 +130,11 @@ div.body p.caption {
     text-align: inherit;
 }
 
+/*
 div.body td {
     text-align: left;
 }
-
+*/
 
 div.body p.centered {
     text-align: center;
@@ -268,9 +280,40 @@ div.sphinxsidebar input {
 }
 
 
+/*  Beef Table */
+
+
+
+.BeefTable, .BeefTable th, .BeefTable td
+{
+  border: 0px solid black;
+  text-align: center;
+}
+
+.BeefTitle td {  
+  background-color: cornsilk;
+  border-color: #E0DCBF;
+
+  margin-left: 5px;
+  margin-right: 5px;
+
+  text-align: center;
+}
+
+.BeefTable td {  
+  margin-left: 5px;
+  margin-right: 5px;
+  min-width: 120px;
+}
+
+.BeefTable td.TableEmpty {  
+  background-color: white;
+  width: 80px;
+}
+
+
+
 /*  Argument Page */
-
-
 
 #Argument_Container{  
   margin-top: 40px;
@@ -285,18 +328,18 @@ div.sphinxsidebar input {
 
 .Argument {
   min-height: 400px;
-  width: 298px;
+  width: 300px;
   float: left;
 }
 
 .Argument.Left{  
-  border: 1px solid red;
+  background-color: #DDF8CC;
   margin-left: 150px;
   margin-right: 20ps;
 }
 
 .Argument.Right{  
-  border: 1px solid blue;
+  background-color: #E5EDF9;
   margin-left: 20px;
   margin-right: 150px;
 }

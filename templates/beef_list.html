@@ -10,16 +10,16 @@ No Beef Yet (Database is empty.  This is probably an error.)
 <!-- Else, move on -->
 {% else %}
 
-<table border="1">
+<table class="BeefTable" >
 {% for beef in beef_list %}
 
 <!-- Make the title -->
 {% if loop.first %}
-<tr>
+<tr class="BeefTitle">
 {% for (name, val) in beef_list[0].iteritems() if name != '_id' %}
     <td>{{ name }}</td>
 {% endfor %}
-<td> </td>
+<td class="TableEmpty"> </td>
 </tr> 
 {% endif %}
 

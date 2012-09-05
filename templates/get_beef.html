@@ -7,7 +7,7 @@
 {% block document %}
 
 <table class="BeefTable" border="1">
-<tr>
+<tr class="BeefTitle">
 {% for (name, val) in beef_dict.iteritems() if name != '_id' %}
     <td>{{ name }}</td>
 {% endfor %}
