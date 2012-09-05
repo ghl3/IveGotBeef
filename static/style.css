@@ -16,3 +16,29 @@
   color: white;
   font-weight: bold;
 }
+
+
+#Argument_Container{  
+  width: 500px;
+}
+
+#Argument_Wrapper{  
+  margin-left: auto;
+  margin-right: auto;
+  float: left;
+}
+
+.Argument {
+  min-height: 400px;
+  margin-right: 20px;
+  margin-left: 20px;
+  width: 150px;
+}
+
+.Argument.Left{  
+  border: 1px solid red;
+}
+
+.Argument.Right{  
+  border: 1px solid blue;
+}

@@ -1,7 +1,7 @@
 
 import traceback
-
 import json
+import datetime
 
 from flask import jsonify
 
@@ -106,7 +106,8 @@ def create_beef(request):
     beef_dict = json.loads( request.form['beef'] )
 
     beef_dict["CreatedByName"] =  current_user.name
-    beef_dict["CreatedById"] =  bson.objectid.ObjectId(current_user.id)
+    beef_dict["CreatedById"] = bson.objectid.ObjectId(current_user.id)
+    beef_dict["time_created"] = datetime.datetime.utcnow()
 
     if beef_dict == None:
         print "add_beef() - ERROR: Input beef_dict is 'None'"
