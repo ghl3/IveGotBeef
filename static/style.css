@@ -287,8 +287,6 @@ div.sphinxsidebar input {
 
 /*  Beef Table */
 
-
-
 .BeefTable, .BeefTable th, .BeefTable td
 {
   border: 0px solid black;
@@ -379,6 +377,19 @@ button.Vote.VoteRight {
   margin-right: auto;
 }
 
+
+.CommentWrapper{  
+  width: 100%;
+  text-align: center;
+}
+
+.Comments{  
+  margin-left: auto;
+  margin-right: auto;
+  background-color: #EEE;
+  width: 600px;
+  min-height: 200px;
+}
 
 
 /* -- body styles ----------------------------------------------------------- */

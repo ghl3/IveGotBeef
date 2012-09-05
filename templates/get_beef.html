@@ -28,20 +28,30 @@
 
 <div id="Argument_Container">
   <div id="Argument_Wrapper">
-
-  <div class="Argument Left">
-    {{ argument_left }}
-  </div>
-  
-  <div class="Argument Right">
-    {{ argument_right }}
-  </div>
+    
+    <div class="Argument Left">
+      <h2>Argument:</h2>
+      <div class="Content">
+	{{ argument_left }}
+      </div>
+    </div>
+    
+    <div class="Argument Right">
+      <h2>Defense:</h2>
+      <div class="Content">
+	{{ argument_right }}
+      </div>
+    </div>
   
   </div>
 </div>
 
 <div style="clear:both;"></div>
-  
 
+
+<div class="CommentWrapper">
+  <h2> Comments </h2>
+  <div class="Comments">Wassup</div>  
+</div>
 
 {% endblock %}
