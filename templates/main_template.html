@@ -50,13 +50,15 @@ BLOCKS:
 
   <body>
 
-    <!-- Header -->
-    {% block header %}
-    {% include "header.html" %}
-    {% endblock %}
-
-
     <div class="document">
+
+      <!-- Header -->
+      {% block header %}
+      {% include "header.html" %}
+      {% endblock %}
+
+
+      {% block document %}
 
       <!-- Body -->
       <div class="documentwrapper">
@@ -69,8 +71,8 @@ BLOCKS:
       </div>
 
       <!-- Sidebar -->
-      <div class="sphinxsidebar">
-	<div class="sphinxsidebarwrapper">
+      <div class="sphinxsidebarwrapper">
+	<div class="sphinxsidebar">
 	  {% block sidebar %}
 	  {% endblock %}
 	</div>
@@ -78,12 +80,15 @@ BLOCKS:
             
       <div class="clearer"></div>
 
-    </div> <!-- End document -->
+    {% endblock %}
+
 
     <!-- footer -->
     <div class="footer">
       &copy; Copyright 2012, George Herbert Lewis.
     </div>
+
+    </div> <!-- End document -->
 
 <!--
     {% block analytics %}

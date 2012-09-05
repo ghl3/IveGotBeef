@@ -1,22 +1,29 @@
 
 
-<div id="header" style="margin-left: auto; margin-right: auto; text-align: center;">
-  <nav id="navebar" style="margin-top: 20px" >
-    <a href="/">Home</a> | 
-    <a href="/LatestBeef">Latest Beef</a>  |
-    <a href="/MyBeef">My Beef</a>  |
-    <a href="/CreateBeef">Create Beef</a> 
-  </nav>
+<div id="header" style="margin-left: auto; margin-right: auto; text-align: center; margin-top: 20px; border-bottom: 1px solid black;">
+
+  <div id="navebar_wrapper" style="width: 400px; margin-left: auto; margin-right: auto;">
+    <nav id="navebar" width="400px;">
+      <a href="/">Home</a> | 
+      <a href="/LatestBeef">Latest Beef</a>  |
+      <a href="/MyBeef">My Beef</a>  |
+      <a href="/CreateBeef">Create Beef</a> 
+    </nav>
+  </div>
+
+  <div id="User" style="text-align: right; float: right;"> 
+    <div id="CurrentUser">
+      {% if not current_user.is_anonymous() %}
+      User Name: {{ current_user.name }} <br>
+      <a href="/api/logout">Log Out</a>
+      {% else %}
+      Not Logged In <br>
+      <a href="/login">Login</a> <a href="/NewUser">New User</a>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="clearer"></div>
+
 </div>
 
-<div id="User" style="text-align: right; margin-right: 100px;"> 
-  <div id="CurrentUser">
-    {% if not current_user.is_anonymous() %}
-    User Name: {{ current_user.name }} <br>
-    <a href="/api/logout">Log Out</a>
-    {% else %}
-    Not Logged In <br>
-    <a href="/login">Login</a> <a href="/NewUser">New User</a>
-    {% endif %}
-  </div>
-</div>
