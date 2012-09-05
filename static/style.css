@@ -361,22 +361,35 @@ button.Vote.VoteRight {
   margin-left: 150px;
   margin-right: 20px;
 }
-.Argument.Left .Content { 
+.Argument.Left textarea.Content { 
   background-color: #DDF8CC;
-  min-height: 400px;
-  text-align: left;
 }
 
-
 .Argument.Right{  
-
   margin-left: 20px;
   margin-right: 150px;
 }
-.Argument.Right .Content {  
+.Argument.Right textarea.Content {  
   background-color: #E5EDF9;
+}
+
+.Argument textarea, .Comments textarea { 
+  width: 300px;
   min-height: 400px;
   text-align: left;
+
+  webkit-appearance: textarea;
+  background-color: white;
+  border: 1px solid;
+  border-image: initial;
+  webkit-rtl-ordering: logical;
+  webkit-user-select: text;
+  webkit-box-orient: vertical;
+  resize: auto;
+  cursor: auto;
+  padding: 2px;
+  white-space: pre-wrap;
+  word-wrap: break-word;
 }
 
 
@@ -391,7 +404,7 @@ button.Vote.VoteRight {
   text-align: center;
 }
 
-.Comments{  
+.Comments textarea{  
   margin-left: auto;
   margin-right: auto;
   background-color: #EEE;
