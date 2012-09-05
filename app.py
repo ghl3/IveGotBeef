@@ -69,12 +69,12 @@ def my_beef():
 
     """
     try:
-        beef_list = beef.get_beef_list(current_user.id, items=items)
+        beef_list = beef.get_beef_list(current_user.id, items) 
     except:
         print traceback.format_exc()
-        beef_list = []
+        return render_template('my_beef.html',[])
 
-    return render_template('my_beef.html', beef_list=beef_list)
+    return render_template('my_beef.html', beef_list=beef_list),
 
 
 @app.route('/CreateBeef')
@@ -92,12 +92,18 @@ def get_beef():
     """
     try:
         _id = request.args.get('_id', '')
-        beef_dict = beef.get_beef(_id, items=items)
+        beef_dict = beef.get_beef(_id, items=items+["ArgumentLeft","ArgumentRight"])
+        argument_left = beef_dict.pop("ArgumentLeft")
+        argument_right = beef_dict.pop("ArgumentRight")
     except:
         print traceback.format_exc()
-        beef_dict={}
+        return render_template('my_beef.html',beef_dict=[], 
+                               argument_left="",
+                               argument_right="")
 
-    return render_template('get_beef.html', beef_dict=beef_dict)
+    return render_template('get_beef.html', beef_dict=beef_dict,
+                           argument_left=argument_left,
+                           argument_right=argument_right)
 
 
 @app.route("/login", methods=["GET", "POST"])

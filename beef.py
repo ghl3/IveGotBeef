@@ -35,12 +35,12 @@ title_dict["CreatedById"] = "Created By (id)"
 title_dict["TimeCreated"] = "Creation Time"
 title_dict["BeefTitle"] = "Title"
 title_dict["beef_title"] = "Title" #deprecated
-title_dict["BeefOpponent"] = "Against"
+title_dict["BeefOpponent"] = "Beef Against"
 title_dict["beef_opponent"] = "Against" #deprecated
 title_dict["BeefDescription"] = "Beef Description"
 title_dict["comment"] = "Beef Description"
-title_dict["ArgumentLeft"] = "Beef's Argument"
-title_dict["ArgumentLeft"] = "Defence's Argument"
+#title_dict["ArgumentLeft"] = "Beef's Argument"
+#title_dict["ArgumentRight"] = "Defence's Argument"
 title_dict["CommentList"] = "Comments"
 
 def _title_map(name):
