@@ -35,6 +35,9 @@ login_manager.setup_app(app)
 
 # Public Pages:
 
+
+items = ["beef_title", "beef_opponent", "comment", "_id"]
+
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -45,7 +48,7 @@ def latest_beef():
     """ Show the lastest beef
 
     """
-    beef_list = beef.latest()
+    beef_list = beef.latest(10, items=items)
     # Return the html with the activities rendered
     return render_template('latest_beef.html', beef_list=beef_list )
 
@@ -56,8 +59,7 @@ def my_beef():
     """ Render a list of beefs created by the current user
 
     """
-    beef_list = beef.get_beef_list(current_user.id, 
-                                   items=["beef_title", "beef_opponent", "comment", "_id"])
+    beef_list = beef.get_beef_list(current_user.id, items=items)
     return render_template('my_beef.html', beef_list=beef_list)
 
 
@@ -75,7 +77,7 @@ def get_beef():
 
     """
     _id = request.args.get('_id', '')
-    beef_dict = beef.get_beef(_id, items=["beef_title", "beef_opponent", "comment", "_id"])
+    beef_dict = beef.get_beef(_id, items=items)
     return render_template('get_beef.html', beef_dict=beef_dict)
 
 

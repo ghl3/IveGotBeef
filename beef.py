@@ -144,7 +144,7 @@ def create_beef(request):
     return jsonify(flag=0, beef_id=beef_id.__str__())
 
 
-def latest(num_entries=10):
+def latest(num_entries=10, items=None):
     """ Return a list of 10 entries
 
     """
@@ -156,7 +156,13 @@ def latest(num_entries=10):
         print "Failed to get collection in _latest"
         raise
 
-    return list(beef_collection.find(limit=num_entries))
+    beef_list = beef_collection.find(limit=num_entries)
+    
+    return_list = []
+    for entry in beef_list:
+        return_list.append(_get_dict_subset(entry, items))
+
+    return return_list
 
 
 def _get_dict_subset(dict, items):
