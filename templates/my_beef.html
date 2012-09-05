@@ -6,9 +6,23 @@
 <!-- Fill in the Middle template -->
 {% block body %}
 
-<table border="1">
+{% if beef_list|length==0 %}
 
+You haven't started any beef (yet).
+{% else %}
+
+<table border="1">
 {% for beef in beef_list %}
+<!--Use first entry for header-->
+{% if loop.first %}
+<tr>
+{% for (name, val) in beef_list[0].iteritems() if name != '_id' %}
+    <td>{{ name }}</td>
+{% endfor %}
+<td> </td>
+</tr> 
+{% endif %}
+
 <tr>
 {% for (name, val) in beef.iteritems() if name != '_id' %}
     <td>{{ val }}</td>
@@ -16,7 +30,8 @@
 <td> <button class="GetBeefButton" id="beef_{{ beef['_id'] }}">View Beef</button> </td>
 </tr> 
 {% endfor %}
-
 </table>
+
+{% endif %}
 
 {% endblock %}

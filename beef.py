@@ -157,8 +157,9 @@ def latest(num_entries=10):
 
     return list(beef_collection.find(limit=num_entries))
 
+
 def get_beef(_id):
-    """ Return a list of 10 entries
+    """ Get the sigle beef entry with the supplied id
 
     """
 
@@ -178,3 +179,40 @@ def get_beef(_id):
         print "Successfully found entry: %s" % _id
 
     return beef_entry
+
+
+def get_beef_list(user_id, items=None):
+    """ Get the list of beef created by the user with user_id
+
+    """
+
+    try:
+        user_collection = _getCollection("users")
+    except:
+        print "Failed to get collection in _addToDatabase"
+        raise
+    
+    user_entry = user_collection.find_one({"_id" : bson.objectid.ObjectId(user_id)})
+    beef_id_list = user_entry["beef"]
+    print "Beef for user: %s:" % user_id
+    print beef_id_list
+
+    try:
+        beef_collection = _getCollection("beef")
+    except:
+        print "Failed to get collection in _addToDatabase"
+        raise
+
+    beef_list = []
+    for object_id in beef_id_list:
+        beef_entry = beef_collection.find_one({"_id" : object_id})
+        if items==None:
+            beef_list.append(beef_entry)
+        else:
+            beef_dict = {}
+            for item in items:
+                beef_dict[item] = beef_entry[item]
+            beef_list.append(beef_dict)
+
+    print "Beef List: ", beef_list
+    return beef_list

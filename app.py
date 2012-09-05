@@ -42,7 +42,9 @@ def index():
 
 @app.route('/LatestBeef')
 def latest_beef():
-    # Get the list of activities 
+    """ Show the lastest beef
+
+    """
     beef_list = beef.latest()
     # Return the html with the activities rendered
     return render_template('latest_beef.html', beef_list=beef_list )
@@ -51,23 +53,30 @@ def latest_beef():
 @app.route('/MyBeef')
 @login_required
 def my_beef():
-    return render_template('my_beef.html')
+    """ Render a list of beefs created by the current user
+
+    """
+    beef_list = beef.get_beef_list(current_user.id, 
+                                   items=["beef_title", "beef_opponent", "comment", "_id"])
+    return render_template('my_beef.html', beef_list=beef_list)
 
 
 @app.route('/CreateBeef')
 def create_beef():
+    """ Create a new beef
+
+    """
     return render_template('create_beef.html')
 
 
 @app.route('/Beef', methods=['GET'])
 def get_beef():
-    print "At get_beef()"
-    print request.args
-    print request.args.get('_id', '')
+    """ Show a particular beef
+
+    """
     _id = request.args.get('_id', '')
     beef_dict = beef.get_beef(_id=_id)
     return render_template('get_beef.html', beef_dict=beef_dict)
-
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -75,12 +84,9 @@ def login():
     return render_template("login.html")
 
 
-
 @app.route("/NewUser", methods=["GET", "POST"])
 def new_user():
     return render_template("new_user.html")
-
-
 
 
 #
@@ -150,12 +156,18 @@ def api_add_user( ):
 
 @login_manager.user_loader
 def load_user(id):
+    """ Map the login manager's method to a db check
+    
+    """
     return login_tools._check_db(id)
 
 
 @app.route("/api/logout")
 @login_required
 def logout():
+    """ Logout the current user, forward to current page if possible
+
+    """
     logout_user()
     return redirect(request.args.get("next") or url_for("/"))
 
@@ -165,7 +177,6 @@ def api_login():
     """ Login a user and store session with flask_login
 
     """
-
     result = login_tools.login_user_request(request)
     return result
 
