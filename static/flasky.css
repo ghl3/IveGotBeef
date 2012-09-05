@@ -9,9 +9,7 @@
  */
 
 
-
-
-@import url("basic.css");
+/*@import url("basic.css");*/
 
 #seriously-kick-ass-mcmc h2 {
     font-size: 20px;
@@ -19,6 +17,7 @@
     margin: 0 0 15px 0;
 }
 
+/* Body */
 body {
     font-family: "abril-text", serif;
     font-size: 16px;
@@ -29,6 +28,8 @@ body {
     padding: 0;
 }
 
+
+/* Document: Contains the header, the main, the sidebar, and the footer */
 div.document {
     width: 940px;
     margin: 30px auto 0 auto;
@@ -39,22 +40,90 @@ div.documentwrapper {
     width: 100%;
 }
 
+
+/* Nav bar and User info */
+
+/* Header: Total width - 940px (from document div) */
+/* Navebar: 500px */
+/* Therefore: 220px of padding on each side */
+/* Boy, html and css suck at this :(  */
+
+#header {  
+  margin-left: auto; 
+  margin-right: auto; 
+  text-align: center; 
+  margin-top: 20px; 
+  border-bottom: 1px solid black;
+  padding-bottom: 10px;
+}
+
+x
+#navebar_padding{  
+  width: 220px;
+  float: left;
+}
+
+#navebar_wrapper {  
+  /*width: 400px; */
+  /*width: auto;*/
+  width: 500px;
+  margin-left: auto; 
+  margin-right: auto;
+}
+
+#navebar { 
+  /*width: 500px;*/
+  margin-left: auto; 
+  margin-right: auto;
+}
+
+nav a {
+ /* display: block;*/
+  /*background: #F90;*/
+  font-family: Arial, 'Liberation Sans', 'DejaVu Sans', sans-serif;
+  background: #777;
+  color: white;
+  font-weight: bold;
+  padding: 6px 12px 6px 12px;
+  text-decoration: none;
+  text-align: center;
+}
+
+#navebar a:hover {
+    color: black; /*#7FD600;*/
+}
+
+#User {  
+  text-align: right; 
+  float: left;
+  margin-left: 20px;
+}
+
+/*
+a.headerlink {
+    color: #ddd;
+    padding: 0 4px;
+    text-decoration: none;
+}
+
+a.headerlink:hover {
+    color: #444;
+    background: #eaeaea;
+}
+*/
+
+
+
+/* Body (to be renamed...?): Contains the main central content */
+
 div.bodywrapper {
   /*margin: 0 0 0 220px;*/
 }
 
-div.sphinxsidebar {
-    width: 220px;
-}
-
-hr {
-    border: 1px solid #B1B4B6;
-}
-
 div.body {
-    background-color: #ffffff;
-    color: #3E4349;
-    padding: 0 30px 0 30px;
+  background-color: #ffffff;
+  color: #3E4349;
+  padding: 0 30px 0 30px;
   width: 400px;
   text-align: center;
   margin-left: auto;
@@ -62,10 +131,27 @@ div.body {
 
 }
 
-img.floatingflask {
-    padding: 0 0 10px 10px;
-    float: right;
+div.body p.caption {
+    text-align: inherit;
 }
+
+div.body td {
+    text-align: left;
+}
+
+
+div.body p.centered {
+    text-align: center;
+    margin-top: 25px;
+}
+
+
+div.body div.math p {
+    text-align: center;
+}
+
+
+/* Footer: Self explanatory */
 
 div.footer {
     width: 940px;
@@ -79,17 +165,17 @@ div.footer a {
     color: #888;
 }
 
-div.related {
-    display: none;
-}
-
-
+/* Sidebar: Floats in the document, left of main */
 
 div.sphinxsidebarwrapper {
   padding: 10px 5px 0 10px;
   padding: 18px 10px;
   float: left;
   
+}
+
+div.sphinxsidebar {
+    width: 220px;
 }
 
 div.sphinxsidebar {
@@ -196,12 +282,26 @@ div.sphinxsidebar input {
 
 /* -- body styles ----------------------------------------------------------- */
 
+
+hr {
+    border: 1px solid #B1B4B6;
+}
+
+
+
+img.floatingflask {
+    padding: 0 0 10px 10px;
+    float: right;
+}
+
 a {
-    color: #124600;
+    /*color: #124600;*/
+  color: black;
 }
 
 a:hover {
-    color: #7FD600;
+  color: blue; /*#7FD600;*/
+  text-decoration: underline;
 }
 
 div.body h1,
@@ -227,15 +327,9 @@ div.body h1, div.body h2 {
     margin: 35px 0 20px 0;
 }
 
-a.headerlink {
-    color: #ddd;
-    padding: 0 4px;
-    text-decoration: none;
-}
 
-a.headerlink:hover {
-    color: #444;
-    background: #eaeaea;
+div.related {
+    display: none;
 }
 
 div.body p, div.body dd, div.body li {

@@ -156,14 +156,6 @@ dt:hover > a.headerlink {
     visibility: visible;
 }
 
-div.body p.caption {
-    text-align: inherit;
-}
-
-div.body td {
-    text-align: left;
-}
-
 .field-list ul {
     padding-left: 1em;
 }
@@ -255,11 +247,6 @@ div.admonition dl {
 p.admonition-title {
     margin: 0px 10px 5px 0px;
     font-weight: bold;
-}
-
-div.body p.centered {
-    text-align: center;
-    margin-top: 25px;
 }
 
 /* -- tables ---------------------------------------------------------------- */
@@ -467,10 +454,6 @@ div.viewcode-block:target {
 
 img.math {
     vertical-align: middle;
-}
-
-div.body div.math p {
-    text-align: center;
 }
 
 span.eqno {

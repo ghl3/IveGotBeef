@@ -1,17 +1,20 @@
 
 
-<div id="header" style="margin-left: auto; margin-right: auto; text-align: center; margin-top: 20px; border-bottom: 1px solid black;">
+<div id="header">
 
-  <div id="navebar_wrapper" style="width: 400px; margin-left: auto; margin-right: auto;">
-    <nav id="navebar" width="400px;">
-      <a href="/">Home</a> | 
-      <a href="/LatestBeef">Latest Beef</a>  |
-      <a href="/MyBeef">My Beef</a>  |
+  <div id="navebar_padding">
+  </div>
+
+  <div id="navebar_wrapper" >
+    <nav id="navebar" >
+      <a href="/">Home</a>
+      <a href="/LatestBeef">Latest Beef</a>
+      <a href="/MyBeef">My Beef</a>
       <a href="/CreateBeef">Create Beef</a> 
     </nav>
   </div>
 
-  <div id="User" style="text-align: right; float: right;"> 
+  <div id="User"> 
     <div id="CurrentUser">
       {% if not current_user.is_anonymous() %}
       User Name: {{ current_user.name }} <br>
