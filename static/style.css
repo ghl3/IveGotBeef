@@ -325,19 +325,18 @@ div.sphinxsidebar input {
   min-height: 50px;
 }
 
-.Vote {  
+button.Vote {  
   width: 50px;
   height: 50px;
   float: left;
-
 }
 
-.Vote.VoteLeft {  
+button.Vote.VoteLeft {  
   background-color: blue;  
   margin-left: 150px;
   margin-right: 270px;
 }
-.Vote.VoteRight {  
+button.Vote.VoteRight {  
   background-color: red;  
   margin-left: 270px;
   margin-right: 150px;
@@ -385,7 +384,36 @@ div.sphinxsidebar input {
 /* -- body styles ----------------------------------------------------------- */
 
 
-button, a.button, a.button:hover {
+input[type="button"], button, a.button { 
+
+/*
+  padding: 0px;
+  border: 0px solid black;
+*/
+  text-align: center;
+  color: buttontext;
+  webkit-appearance: button;
+  border-image: initial;
+  background-color: buttonface;
+  box-sizing: border-box;
+
+  webkit-box-align: center;
+  cursor: default;
+  margin: 0em;
+  font: -webkit-small-control;
+  letter-spacing: normal;
+  word-spacing: normal;
+  text-transform: none;
+  text-indent: 0px;
+  text-shadow: none;
+  display: inline-block;
+  border-collapse: separate;
+  border-color: gray;
+
+
+}
+
+ a.button, a.button:hover {
 /*
   display: block;
   width: 80px;
@@ -398,34 +426,14 @@ button, a.button, a.button:hover {
   font-weight: bold;
 */
 
-  webkit-box-align: center;
-  webkit-appearance: button;
-  text-align: center;
-  cursor: default;
-  color: buttontext;
   padding: 2px 6px 3px;
   border: 2px outset buttonface;
-  border-image: initial;
-  background-color: buttonface;
-  box-sizing: border-box;
-
-  margin: 0em;
-  font: -webkit-small-control;
-  letter-spacing: normal;
-  word-spacing: normal;
-  text-transform: none;
-  text-indent: 0px;
-  text-shadow: none;
-  display: inline-block;
-
-  border-collapse: separate;
   border-spacing: 2px;
-  border-color: gray;
 
 }
 
-a.button:hover { 
-  opacity:0.8;
+button:hover, a.button:hover { 
+  opacity:0.7;
 }
 
 

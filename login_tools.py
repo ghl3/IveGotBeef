@@ -66,9 +66,13 @@ def add_user(request):
 
     pw_hash = generate_password_hash(request.form["password"])
     
-    user_dict = {"username": username, "pw_hash": pw_hash,
+    user_dict = {"username": username, 
+                 "pw_hash": pw_hash,
                  "time_added": datetime.datetime.utcnow(),
-                 "beef": [], "comments":[]}
+                 "beef": [], 
+                 "comments":[],
+                 "votes": []}
+    
     users_collection.save(user_dict)
     print "Successfully Created user: %s" % username
     return jsonify(flag=0, UserAdded=0)
