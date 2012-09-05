@@ -2,6 +2,7 @@
 
 import json
 import datetime
+from collections import OrderedDict
 
 from flask import jsonify
 
@@ -112,7 +113,7 @@ def latest(num_entries=10, items=None):
 
 def _get_dict_subset(dict, items):
     if items==None: return dict
-    beef_dict = {}
+    beef_dict = OrderedDict()
     for item in items:
         beef_dict[item] = dict[item]
     return beef_dict
