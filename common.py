@@ -82,3 +82,37 @@ def addToBeefDatabase(beef_dict, collection_name):
         raise
 
     return saved_id
+
+
+def _clean_database(username):
+    """ Find all invalid beefs for this user and remove their references.
+    
+    This is to be done from the command-line only
+
+    """
+
+    # Get the user item
+    user_coll = getCollection("users")
+    user = user_coll.find_one({"username" : username})
+
+    beef_list = user["beef"]
+    
+    beef_coll = getCollection("beef")
+
+    updated_list = []
+
+    for entry_id in beef_list:
+        
+        beef_entry = beef_coll.find_one({"_id": entry_id})
+        if beef_entry != None:
+            updated_list.append(entry_id)
+        else:
+            print "WARNING: Found an invalid beef id: ", entry_id
+            print "Removing from user's list"
+
+        pass
+
+    user["beef"] = updated_list
+    user_coll.save(user)
+
+    
