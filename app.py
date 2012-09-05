@@ -2,6 +2,7 @@
 
 import os
 import json
+import traceback
 
 from flask import Flask
 from flask import url_for
@@ -23,6 +24,7 @@ from flask.ext.login import logout_user
 
 import pymongo
 
+from common import *
 
 import beef
 import login_tools
@@ -33,14 +35,19 @@ app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
 login_manager = LoginManager()
 login_manager.setup_app(app)
 
-# Public Pages:
-
-
 items = ["beef_title", "beef_opponent", "comment", "_id"]
+
+# Public Pages:
 
 @app.route('/')
 def index():
-    beef_list = beef.latest(10, items=items)
+    
+    try:
+        beef_list = beef.latest(10, items=items)
+    except:
+        print traceback.format_exc()
+        beef_list = []
+        
     return render_template('index.html', beef_list=beef_list )
 
 
@@ -61,7 +68,12 @@ def my_beef():
     """ Render a list of beefs created by the current user
 
     """
-    beef_list = beef.get_beef_list(current_user.id, items=items)
+    try:
+        beef_list = beef.get_beef_list(current_user.id, items=items)
+    except:
+        print traceback.format_exc()
+        beef_list = []
+
     return render_template('my_beef.html', beef_list=beef_list)
 
 
@@ -78,8 +90,13 @@ def get_beef():
     """ Show a particular beef
 
     """
-    _id = request.args.get('_id', '')
-    beef_dict = beef.get_beef(_id, items=items)
+    try:
+        _id = request.args.get('_id', '')
+        beef_dict = beef.get_beef(_id, items=items)
+    except:
+        print traceback.format_exc()
+        beef_dict={}
+
     return render_template('get_beef.html', beef_dict=beef_dict)
 
 
@@ -102,7 +119,12 @@ def api_latest_beef():
     """ Get a list of the lastest beef topics
 
     """
-    response = beef.latest()
+    try:
+        response = beef.latest()
+    except:
+        print traceback.format_exc()
+        return jasonify(flag=1)
+
     return response
 
 
@@ -112,7 +134,12 @@ def api_submit_beef( ):
     """ Create a new beef activity to the db
 
     """
-    response = beef.create_beef(request)
+    try:
+        response = beef.create_beef(request)
+    except:
+        print traceback.format_exc()
+        return jsonify(flag=1)
+
     return response
 
 
@@ -121,7 +148,12 @@ def api_get_beef():
     """ Get a specific beef topic
 
     """
-    response = beef.get()
+    try:
+        response = beef.get()
+    except:
+        print traceback.format_exc()
+        return jsonify(flag=1)
+
     return response
 
 
@@ -131,7 +163,12 @@ def api_update_beef( ):
     """ Update an activity in the db
 
     """
-    response = beef.update()
+    try:
+        response = beef.update()
+    except:
+        print traceback.format_exc()
+        return jsonify(flag=1)
+
     return response
 
 
@@ -141,7 +178,12 @@ def api_delete_beef( ):
     """ Delete a beef activity
 
     """
-    response = beef.delete()
+    try:
+        response = beef.delete()
+    except:
+        print traceback.format_exc()
+        return jsonify(flag=1)
+        
     return response
 
 
@@ -150,7 +192,13 @@ def api_add_user( ):
     """ Add a user to the database
 
     """
-    response = login_tools.add_user(request)
+
+    try:
+        response = login_tools.add_user(request)
+    except:
+        print traceback.format_exc()
+        return jsonify(flag=1)
+
     return response
 
 
@@ -163,7 +211,14 @@ def load_user(id):
     """ Map the login manager's method to a db check
     
     """
-    return login_tools._check_db(id)
+
+    try:
+        response = login_tools._check_db(id)
+    except:
+        print traceback.format_exc()
+        return jsonify(flag=1)
+
+    return response
 
 
 @app.route("/api/logout")
@@ -172,8 +227,14 @@ def logout():
     """ Logout the current user, forward to current page if possible
 
     """
-    logout_user()
-    return redirect(request.args.get("next") or url_for("/"))
+    try:
+        logout_user()
+        response = redirect(request.args.get("next") or url_for("/"))
+    except:
+        print traceback.format_exc()
+        return jsonify(flag=1)
+
+    return response
 
 
 @app.route("/api/login", methods=["GET", "POST"])
@@ -181,8 +242,25 @@ def api_login():
     """ Login a user and store session with flask_login
 
     """
-    result = login_tools.login_user_request(request)
+    try:
+        result = login_tools.login_user_request(request)
+    except:
+        print traceback.format_exc()
+        return jsonify(flag=1)
+
     return result
+
+
+# Errors
+
+@app.errorhandler(404)
+def page_not_found(e):
+        return render_template('404.html'), 404
+
+
+@app.errorhandler(500)
+def page_not_found(e):
+        return render_template('500.html'), 500
 
 
 if __name__ == '__main__':
