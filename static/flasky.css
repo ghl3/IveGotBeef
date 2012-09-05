@@ -9,14 +9,6 @@
  */
 
 
-/*@import url("basic.css");*/
-
-#seriously-kick-ass-mcmc h2 {
-    font-size: 20px;
-    font-weight: 600;
-    margin: 0 0 15px 0;
-}
-
 /* Body */
 body {
     font-family: "abril-text", serif;
@@ -104,20 +96,6 @@ nav a {
   margin-left: 20px;
   line-height: 1.1em;
 }
-
-/*
-a.headerlink {
-    color: #ddd;
-    padding: 0 4px;
-    text-decoration: none;
-}
-
-a.headerlink:hover {
-    color: #444;
-    background: #eaeaea;
-}
-*/
-
 
 
 /* Body (to be renamed...?): Contains the main central content */
@@ -226,8 +204,6 @@ div.sphinxsidebar #searchbox input[type="submit"] {
     width: 30px;
 }
 
-
-
 div.sphinxsidebar a {
     color: #444;
     text-decoration: none;
@@ -286,7 +262,99 @@ div.sphinxsidebar input {
     font-size: 1em;
 }
 
+	
+.sidebar_image {  
+  width: 200px;
+}
+
+
+/*  Argument Page */
+
+
+
+#Argument_Container{  
+  margin-top: 40px;
+  min-height: 400px;
+}
+
+#Argument_Wrapper{  
+  margin-left: auto;
+  margin-right: auto;
+  min-height: 400px;
+}
+
+.Argument {
+  min-height: 400px;
+  width: 298px;
+  float: left;
+}
+
+.Argument.Left{  
+  border: 1px solid red;
+  margin-left: 150px;
+  margin-right: 20ps;
+}
+
+.Argument.Right{  
+  border: 1px solid blue;
+  margin-left: 20px;
+  margin-right: 150px;
+}
+
+
+
+.BeefTable {  
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
+
 /* -- body styles ----------------------------------------------------------- */
+
+
+button, a.button, a.button:hover {
+/*
+  display: block;
+  width: 80px;
+  height: 25px;
+  background: #4E9CAF;
+  padding: 10px;
+  text-align: center;
+  border-radius: 5px;
+  color: white;
+  font-weight: bold;
+*/
+
+  webkit-box-align: center;
+  webkit-appearance: button;
+  text-align: center;
+  cursor: default;
+  color: buttontext;
+  padding: 2px 6px 3px;
+  border: 2px outset buttonface;
+  border-image: initial;
+  background-color: buttonface;
+  box-sizing: border-box;
+
+  margin: 0em;
+  font: -webkit-small-control;
+  letter-spacing: normal;
+  word-spacing: normal;
+  text-transform: none;
+  text-indent: 0px;
+  text-shadow: none;
+  display: inline-block;
+
+  border-collapse: separate;
+  border-spacing: 2px;
+  border-color: gray;
+
+}
+
+a.button:hover { 
+  opacity:0.8;
+}
 
 
 hr {
