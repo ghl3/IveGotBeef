@@ -15,7 +15,12 @@ If so, then you've got beef, and we've got the solution.
 
 <h2>Latest Beef:</h2>
 
+
+{% if beef_list|length==0 %}
+No Beef Yet (Database is empty.  This is probably an error.)
+{% else %}
 {% include "beef_list.html" %}
+{% endif %}
 
 {% endblock %}
 
