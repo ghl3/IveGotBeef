@@ -1,6 +1,7 @@
 
 import traceback
 import datetime
+import json
 
 from flask import jsonify
 from flask import redirect
@@ -43,11 +44,16 @@ def add_user(request):
 
     print "Adding user"
 
-    if "username" not in request.form:
-        print "Error: 'username' not in request"
+    if "user" not in request.form:
+        print "Error: 'user' dictionary not in request"
         return jsonify(flag=1)
 
-    username = request.form["username"]
+    user_dict = json.loads(request.form["user"])
+
+    if "username" not in user_dict:
+        print "Error: 'username' not in request"
+        return jsonify(flag=1)
+    username = user_dict["username"]
     
     #if _user_exists(username):
     #    print "Warning: User already exists"
@@ -64,14 +70,14 @@ def add_user(request):
         print "Cannot create use: %s, user already exists" % username
         return jsonify(flag=0, UserAdded=1, Message="User Already Exists")
 
-    pw_hash = generate_password_hash(request.form["password"])
-    
-    user_dict = {"username": username, 
-                 "pw_hash": pw_hash,
-                 "time_added": datetime.datetime.utcnow(),
-                 "beef": [], 
-                 "comments":[],
-                 "votes": []}
+    password = user_dict.pop("password")
+    pw_hash = generate_password_hash(password)
+
+    user_dict["pw_hash"] = pw_hash
+    user_dict["time_added"] = datetime.datetime.utcnow(),
+    user_dict["beef"] =  [], 
+    user_dict["comments"] = [],
+    user_dict["votes"] = []
     
     users_collection.save(user_dict)
     print "Successfully Created user: %s" % username

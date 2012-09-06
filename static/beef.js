@@ -155,8 +155,8 @@ $(document).ready(function() {
 	// using jquery/ajax
 	var UserTable = $('#CreateUserTable');
 	
-	var UserName = $('#CreateUserTable #UserName').val();
-	var UserPass = $('#CreateUserTable #UserPass').val();
+	var UserName = $('#CreateUserTable #username').val();
+	var UserPass = $('#CreateUserTable #password').val();
 
 	var NewUserForm = $('#NewUserForm');
 
@@ -186,7 +186,9 @@ $(document).ready(function() {
 	    return false;
 	} 
 
-	return false;
+	// Don't forget to get rid of 
+	// password2 once we validate it
+	delete UserJSON["password2"];
 
 	function successfulCallback(data) {
 
@@ -208,7 +210,7 @@ $(document).ready(function() {
 	    return false;
 	}
 
-	$.post("/api/add_user", {username: UserName, password: UserPass}, successfulCallback );
+	$.post("/api/add_user", {user: JSON.stringify(UserJSON)}, successfulCallback );
 
 	console.log("CreateUser() - End");
 	return false;
