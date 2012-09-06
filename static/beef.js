@@ -216,6 +216,7 @@ $(document).ready(function() {
 });
 
 
+/* The function that logs in a user*/
 function LoginUser(UserName, UserPass) {
 
     // Create the callback
@@ -263,10 +264,17 @@ $(document).ready(function() {
 	// serialize it, 
 	// and send it to python
 	// using jquery/ajax
-	var UserTable = $('#LoginUserTable');
+	var LoginForm = $('#LoginForm');
 	
-	var UserName = $('#LoginUserTable #UserName').val();
-	var UserPass = $('#LoginUserTable #UserPass').val();
+	// Run jquery validation
+	if( ! LoginForm.valid() ) {
+	    console.log("Error: Login form is invalid.");
+	    $("#LoginResult").html("Error: Login form is invalid.").show();
+	    return false;
+	}
+
+	var UserName = $('#LoginTable #UserName').val();
+	var UserPass = $('#LoginTable #password').val();
 
 	LoginUser(UserName, UserPass);
 	console.log("LoginUser() - End");

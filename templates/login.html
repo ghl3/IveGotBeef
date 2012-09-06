@@ -1,4 +1,10 @@
 
+<!-- Additional head loads -->
+{% block head %}
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+<script type="text/javascript" src="http://jzaefferer.github.com/jquery-validation/jquery.validate.js"></script>
+{% endblock %}
+
 <!-- Inherit from the main template -->
 {% extends "main_template.html" %}
 
@@ -6,11 +12,54 @@
 {% block body %}
 
 {% if not current_user.is_authenticated() %}
+
+<div id="login_wrapper" style="text-align: center;">
+  Please log in
+  <form id="LoginForm" accept-charset="UTF-8" style="width: 250px; text-align: left; margin-left: auto; margin-right: auto;">
+
+    <fieldset >
+      <legend>Login</legend>
+
+      <style>
+	tr {border: 0px solid black;}
+	td {border: 0px solid black; width: 200px;}
+      </style>
+
+      <table border="1" id="LoginTable" style="border: 0px solid black; text-align: left; margin-left: auto; margin-right: auto; " >
+
+	<tr> 
+	  <td> 
+	    <label for="UserName" >UserName: </label>
+	  </td>
+	  <td> 
+	    <input type="text" name="UserName" id="UserName" class="required" maxlength="30" />  
+	  </td>
+	</tr>
+
+	<tr> 
+	  <td> 
+	    <label for="password" >Password:</label>
+	  </td>
+	  <td> 
+	    <input type="password" name="password" id="password" class="required password" maxlength="50" />
+	  </td>
+	</tr> 
+
+      </table>
+      <button id="LoginUser">Login</button> <br>
+      <!--<input type="submit" name="Submit" value="Submit" />-->
+    </fieldset>
+  </form>
+</div>
+
+
+
+<!--
 <div id="Login">
   Please log in:
   <table border="1" id="LoginUserTable" >
-    <tr> <td>UserName: </td> <td> <input type="text" id="UserName"></input> </td> </tr> 
-    <tr> <td>Password: </td> <td> <input type="password" id="UserPass"></input> </td> </tr> 
+    <tr> <td>UserName: </td> <td> <input type="text" id="UserName" class="required"></input> </td> </tr> 
+    <tr> <td>Password: </td> <td> <input type="password" id="UserPass" class="required password"></input> </td> </tr> 
   </table>
   <button id="LoginUser">Login</button> <br>
   
@@ -20,7 +69,7 @@
     If you do not have an account, create one <a href="/new_user">here</a>.
   </div>
 </div>
-
+-->
 <div id="LoginResult" style="display: none;"></div>
 {% else %}
 
