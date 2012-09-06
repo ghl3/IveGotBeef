@@ -1,4 +1,13 @@
 
+
+// Get the url parameters (the GET parameters)
+// (For some reason, javascript or jquery don't
+// do this natively.  Seems odd to me...?
+function getURLParameter(name) {
+    return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search)||[,""])[1].replace(/\+/g, '%20'))||null;
+}
+
+
 // Take a UserName and UserPass, pack them into
 // a JSON and send it to the server/database bia
 // an ajax post request.  Get the result and determine
@@ -6,6 +15,11 @@
 // If it was successful, send the user to the home page
 // (May want to consider using the "Next" variable in the head)
 function LoginUser(UserName, UserPass) {
+
+
+    // Get the "next" variable, if it exists
+    var next = decoreURIComponent("Next");
+    
 
     // Create the callback
     function successfulCallback(data) {
@@ -26,8 +40,8 @@ function LoginUser(UserName, UserPass) {
 	$("#Login").hide();
 	$("#LoginResult").html("Successfully logged in.  Welcome, " + UserName + ".").show();
 	//window.location.reload()
-	window.location.href = "/";
-	// window.location.href = '/';
+	if( next != null ) window.location.href = next;
+	else window.location.href = "/";
 	return;
     }
 
