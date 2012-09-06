@@ -14,12 +14,8 @@ function getURLParameter(name) {
 // if the login was successful or not.
 // If it was successful, send the user to the home page
 // (May want to consider using the "Next" variable in the head)
-function LoginUser(UserName, UserPass) {
+function LoginUser(UserName, UserPass, next) {
 
-
-    // Get the "next" variable, if it exists
-    var next = decoreURIComponent("Next");
-    
 
     // Create the callback
     function successfulCallback(data) {

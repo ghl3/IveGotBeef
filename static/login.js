@@ -28,7 +28,9 @@ $(document).ready(function() {
 	var UserName = $('#LoginTable #UserName').val();
 	var UserPass = $('#LoginTable #password').val();
 
-	LoginUser(UserName, UserPass);
+	var next = getURLParameter("next");
+
+	LoginUser(UserName, UserPass, next);
 	console.log("LoginUser() - End");
 
 	return false;

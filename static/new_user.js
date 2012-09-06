@@ -53,6 +53,9 @@ $(document).ready(function() {
 	// password2 once we validate it
 	// delete UserJSON["password2"];
 
+	// Figure out where to send the user
+	var next = getURLParameter("next");
+
 	function successfulCallback(data) {
 
 	    if( data["flag"]!=0 ) {
@@ -68,7 +71,7 @@ $(document).ready(function() {
 
 	    console.log("Successfully Added User");
 	    console.log("Logging in user:");
-	    LoginUser(UserName, UserPass);
+	    LoginUser(UserName, UserPass, next);
 
 	    return false;
 	}
