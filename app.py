@@ -47,7 +47,7 @@ def index():
         beef_list = beef.latest(10, items=items)
     except:
         print traceback.format_exc()
-        beef_list = []
+        return render_template('500.html')
         
     return render_template('index.html', beef_list=beef_list )
 
@@ -76,7 +76,8 @@ def my_beef():
         beef_list = beef.get_beef_list(current_user.id, items) 
     except:
         print traceback.format_exc()
-        return render_template('my_beef.html', beef_list=[])
+        return render_template('500.html')
+        #return render_template('my_beef.html', beef_list=[])
 
     return render_template('my_beef.html', beef_list=beef_list),
 
@@ -97,19 +98,12 @@ def get_beef():
     try:
         _id = request.args.get('_id', '')
         (beef_dict, kwargs) = beef.get_beef(_id, items=items)
-        '''
-        argument_left = beef_dict.pop("ArgumentLeft")
-        argument_right = beef_dict.pop("ArgumentRight")
-        beef_owner_id = beef.get_beef_owner(_id)
-        if current_user.get_id() == beef_owner_id:
-            beef_owner=True
-        else:
-            beef_owner=False
-        print current_user.id, _id, beef_owner
-        '''
+    except InvalidEntry:
+        print traceback.format_exc()
+        return render_template('404.html')
     except:
         print traceback.format_exc()
-        return render_template('my_beef.html', beef_dict=[])
+        return render_template('500.html')
 
     return render_template('get_beef.html', beef_dict=beef_dict, **kwargs)
 
@@ -215,11 +209,8 @@ def api_add_user( ):
     try:
         form = login_tools.RegistrationForm(request.form)
         if form.validate():
-            print "Form is valid"
-            #response = jsonify(flag=0)
             response = login_tools.add_user(form)
         else:
-            print "Form is Invalid"
             return jsonify(flag=1, message="Form Is Invalid")
     except:
         print traceback.format_exc()
