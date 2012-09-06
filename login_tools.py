@@ -214,7 +214,7 @@ from wtforms import Form, BooleanField, TextField, PasswordField, validators
 class RegistrationForm(Form):
     FirstName = TextField('First Name', [validators.Required(), validators.Length(min=1, max=25)])
     LastName  = TextField('Last Name',   [validators.Required(), validators.Length(min=1, max=25)])
-    username  = TextField('username', [validators.Required(), validators.Length(min=4, max=20)])
+    username  = TextField('UserName', [validators.Required(), validators.Length(min=4, max=20)])
     email     = TextField('Email Address', [validators.Required(), validators.Length(min=6, max=35), validators.Email()])
     password  = PasswordField('Password', [
             validators.Required(),
