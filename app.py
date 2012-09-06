@@ -52,25 +52,14 @@ def index():
     return render_template('index.html', beef_list=beef_list )
 
 
-''' Now incorporated into /index
-@app.route('/LatestBeef')
-def latest_beef():
-    """ Show the lastest beef
-
-    """
-    beef_list = beef.latest(10, items=items)
-    # Return the html with the activities rendered
-    return render_template('latest_beef.html', beef_list=beef_list )
-'''
-
 @app.route('/MyBeef')
 @login_required
 def my_beef():
     """ Render a list of beefs created by the current user
 
     """
-    if not current_user.is_authenticated():
-        return render_template('login.html')
+    #if not current_user.is_authenticated():
+    #    return render_template('login.html')
 
     try:
         beef_list = beef.get_beef_list(current_user.id, items) 
@@ -118,9 +107,8 @@ def new_user():
     registration_form = login_tools.RegistrationForm()
     return render_template("new_user.html", form=registration_form)
 
-
 #
-# API:
+# Ajax requests
 #
 
 @app.route('/api/latest_beef', methods=['GET', 'POST'])
@@ -218,16 +206,6 @@ def api_add_user( ):
 
     return response
 
-'''
-@app.route('/register', methods=['GET', 'POST'])
-def register():
-    form = RegistrationForm(request.form)
-    if request.method == 'POST' and form.validate():
-        result = login_tools.add_user(form)
-        return result
-    return jsonify(flag=1)
-'''
-
 #
 # User Management
 #
@@ -261,9 +239,6 @@ def api_logout():
     else:
         print "Successfully Logged out"
 
-    #print "Target Url: ", url_for("/")
-    #return redirect(request.args.get("next") or url_for("/"))
-    #print request.args.get("next")
     return redirect("/")
 
 
@@ -280,8 +255,9 @@ def api_login():
 
     return result
 
-
+#
 # Errors
+#
 
 @app.errorhandler(404)
 def page_not_found(e):
