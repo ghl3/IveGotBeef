@@ -72,10 +72,12 @@ def add_user(request):
 
     password = user_dict.pop("password")
     pw_hash = generate_password_hash(password)
+    if "password2" in user_dict:
+        del user_dict["password2"]
 
     user_dict["pw_hash"] = pw_hash
     user_dict["time_added"] = datetime.datetime.utcnow(),
-    user_dict["beef"] =  [], 
+    user_dict["beef"] = [], 
     user_dict["comments"] = [],
     user_dict["votes"] = []
     
