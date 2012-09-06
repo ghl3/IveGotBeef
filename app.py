@@ -212,15 +212,35 @@ def api_add_user( ):
     """ Add a user to the database
 
     """
+    print "Adding User"
+    if request.method != 'POST':
+        print "Error: Requires POST requiest"
+        return jsonify(flag=1)
 
     try:
-        response = login_tools.add_user(request)
+        form = login_tools.RegistrationForm(request.form)
+        if form.validate():
+            print "Form is valid"
+            #response = jsonify(flag=0)
+            response = login_tools.add_user(form)
+        else:
+            print "Form is Invalid"
+            return jsonify(flag=1, message="Form Is Invalid")
     except:
         print traceback.format_exc()
         return jsonify(flag=1)
 
     return response
 
+'''
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    form = RegistrationForm(request.form)
+    if request.method == 'POST' and form.validate():
+        result = login_tools.add_user(form)
+        return result
+    return jsonify(flag=1)
+'''
 
 #
 # User Management

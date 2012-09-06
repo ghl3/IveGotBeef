@@ -175,12 +175,12 @@ $(document).ready(function() {
 	//UserJSON=JSON.stringify(UserJSON);
 	console.log(UserJSON);
 
-	if( UserJSON["password"]=="" || UserJSON["password2"]=="" ){
+	if( UserJSON["password"]=="" || UserJSON["confirm"]=="" ){
 	    console.log("Error: You must enter your password, and again for confirmation");
 	    $("#Result").html("Error: You must enter your password, and again for confirmation").show();
 	    return false;
 	} 
-	if( UserJSON["password"] != UserJSON["password2"] ){
+	if( UserJSON["password"] != UserJSON["confirm"] ){
 	    console.log("Error: Passwords don't match");
 	    $("#Result").html("Error: Your passwords don't match").show();
 	    return false;
@@ -188,7 +188,7 @@ $(document).ready(function() {
 
 	// Don't forget to get rid of 
 	// password2 once we validate it
-	delete UserJSON["password2"];
+	// delete UserJSON["password2"];
 
 	function successfulCallback(data) {
 
@@ -210,7 +210,8 @@ $(document).ready(function() {
 	    return false;
 	}
 
-	$.post("/api/add_user", {user: JSON.stringify(UserJSON)}, successfulCallback );
+	//$.post("/api/add_user", {user: JSON.stringify(UserJSON)}, successfulCallback );
+	$.post("/api/add_user", NewUserForm.serialize(), successfulCallback );
 
 	console.log("CreateUser() - End");
 	return false;
