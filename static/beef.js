@@ -135,6 +135,12 @@ $(document).ready(function() {
 */
 
 
+/*
+$(document).ready(function() {
+    var NewUserForm = $('#NewUserForm');
+    NewUserForm.validate();
+});
+*/
 
 $(document).ready(function() {
     $('#CreateUser').live('click', function() {
@@ -153,6 +159,14 @@ $(document).ready(function() {
 	var UserPass = $('#CreateUserTable #UserPass').val();
 
 	var NewUserForm = $('#NewUserForm');
+
+	// Run jquery validation
+	if( ! NewUserForm.valid() ) {
+	    console.log("Error: Form is invalid.");
+	    $("#Result").html("Error: Form is invalid.").show();
+	    return false;
+	}
+
 	var UserArray = NewUserForm.serializeArray();
 	var UserJSON = {};
 	for (i in UserArray) {

@@ -1,4 +1,10 @@
 
+<!-- -->
+{% block head %}
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+<script type="text/javascript" src="http://jzaefferer.github.com/jquery-validation/jquery.validate.js"></script>
+{% endblock %}
+
 <!-- Inherit from the main template -->
 {% extends "main_template.html" %}
 
@@ -26,13 +32,13 @@
 	    <label for="FirstName" >First Name: </label>
 	  </td>
 	  <td> 
-	    <input type="text" name="FirstName" id="FirstName" maxlength="50" />  
+	    <input type="text" name="FirstName" id="FirstName" class="required" maxlength="30" />  
 	  </td>
 	  <td> 
 	    <label for="LastName" >Last Name: </label>
 	  </td>
 	  <td> 
-	    <input type="text" name="LastName" id="LastName" maxlength="50" />
+	    <input type="text" name="LastName" id="LastName" class="required" maxlength="50" />
 	  </td>
 	</tr>
 
@@ -41,13 +47,13 @@
 	    <label for="UserName" >UserName:</label>
 	  </td>
 	  <td> 
-	    <input type="text" name="UserName" id="UserName" maxlength="50" />
+	    <input type="text" name="UserName" id="UserName" class="required" maxlength="15" />
 	  </td>
 	  <td> 
 	    <label for="email" >Email Address:</label>
 	  </td>
 	  <td> 
-	    <input type="email" name="email" id="email" maxlength="50" />
+	    <input type="email" name="email" id="email" class="required email" maxlength="50" />
 	  </td>
 	</tr> 
 
@@ -56,7 +62,7 @@
 	    <label for="password" >Password:</label>
 	  </td>
 	  <td> 
-	    <input type="password" name="password" id="pasword" maxlength="50" />
+	    <input type="password" name="password" id="pasword" class="required password" maxlength="50" />
 	  </td>
 	</tr> 
 	<tr> 
@@ -64,7 +70,7 @@
 	    <label for="password" >Password:</label>
 	  </td>
 	  <td> 
-	    <input type="password" name="password2" id="password2" maxlength="50" />
+	    <input type="password" name="password2" id="password2" class="required password" equalTo="#password" maxlength="50" />
 	  </td>
 	</tr> 
 
