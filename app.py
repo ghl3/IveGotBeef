@@ -33,7 +33,9 @@ app = Flask(__name__)
 app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
 
 login_manager = LoginManager()
+login_manager.login_view = "/login"
 login_manager.setup_app(app)
+
 
 items = ["BeefTitle", "BeefOpponent", "BeefDescription", "_id"]
 
@@ -68,6 +70,9 @@ def my_beef():
     """ Render a list of beefs created by the current user
 
     """
+    if not current_user.is_authenticated():
+        return render_template('login.html')
+
     try:
         beef_list = beef.get_beef_list(current_user.id, items) 
     except:
