@@ -317,10 +317,13 @@ div.sphinxsidebar input {
 
 
 /*  Argument Page */
+/*  Recall, width = 940 */
 
 #VoteWrapper{  
-  width: 100%;
+  width: 940px;
   min-height: 50px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 button.Vote {  
@@ -332,12 +335,26 @@ button.Vote {
 button.Vote.VoteLeft {  
   background-color: blue;  
   margin-left: 150px;
-  margin-right: 270px;
+  margin-right: 100px; /* 270 */
+  float: left;
+}
+#VotesTotalLeft {  
+/* 170 */
+  width: 20px;
+  margin-right: 150px;
+  float: left;
+}
+#VotesTotalRight {  
+/* 170 */
+  width: 20px;
+  margin-left: 150px;
+  float: left ;
 }
 button.Vote.VoteRight {  
   background-color: red;  
-  margin-left: 270px;
+  margin-left: 100px;
   margin-right: 150px;
+  float: left;
 }
 
 
