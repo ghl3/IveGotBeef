@@ -6,6 +6,10 @@
 <!-- Fill in the Middle template -->
 {% block body %}
 
+{% if beef_list|length==0 %}
+You haven't started any beef yet (this is probably a good thing...)
+{% else %}
 {% include "beef_list.html" %}
+{% endif %}
 
 {% endblock %}
