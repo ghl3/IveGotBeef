@@ -380,6 +380,11 @@ button.Vote.VoteRight {
   text-align: center;
 }
 
+.ArgumentTitle{  
+  margin-bottom: 5px;
+  margin-top: 0px;
+}
+
 .Argument.Left {  
   margin-left: 150px;
   margin-right: 20px;

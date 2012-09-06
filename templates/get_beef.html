@@ -21,25 +21,26 @@
 
 <div style="clear:both;"></div>
 
-<div id="VoteWrapper">
+<div id="VoteWrapper" style="margin-bottom: -50px;">
   <button class="Vote VoteLeft">Vote For Me</button>  
   <div id="VotesTotalLeft">{{ VotesFor }}</div>
   <div id="VotesTotalRight">{{ VotesAgainst }}</div>
   <button class="Vote VoteRight">Vote For Me</button> 
+  <div style="clear:both;"></div>
 </div>
 
 <div id="Argument_Container">
   <div id="Argument_Wrapper">
     
     <div class="Argument Left">
-      <h2>Argument:</h2>
+      <h2 class="ArgumentTitle" >Argument:</h2>
       <textarea class="Content" {% if beef_owner %} redonly="false" {% else %} readonly="true" {% endif %} >
 	{{ argument_left }}
       </textarea>
     </div>
     
     <div class="Argument Right">
-      <h2>Defense:</h2>
+      <h2 class="ArgumentTitle">Defense:</h2>
       <textarea class="Content" {% if beef_owner %} redonly="false" {% else %} readonly="true" {% endif %} >
 	{{ argument_right }}
       </textarea>
