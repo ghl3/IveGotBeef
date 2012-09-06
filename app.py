@@ -77,7 +77,7 @@ def my_beef():
         beef_list = beef.get_beef_list(current_user.id, items) 
     except:
         print traceback.format_exc()
-        return render_template('my_beef.html',[])
+        return render_template('my_beef.html', beef_list=[])
 
     return render_template('my_beef.html', beef_list=beef_list),
 

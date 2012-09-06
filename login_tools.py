@@ -37,22 +37,17 @@ class UserClass(UserMixin):
         #    return check_password_hash(self.pw_hash, password)
 
 
-def add_user(request):
+def add_user(user_form):
     """ Add a user and pw_hash to the database
 
     """
 
-    print "Adding user"
+    print "Adding user from form"
 
-    if "user" not in request.form:
-        print "Error: 'user' dictionary not in request"
-        return jsonify(flag=1)
+    # Get the dictionary (Immutable, to be specific)
+    # From the WTForm object
+    user_dict = user_form.data
 
-    user_dict = json.loads(request.form["user"])
-
-    if "username" not in user_dict:
-        print "Error: 'username' not in request"
-        return jsonify(flag=1)
     username = user_dict["username"]
     
     #if _user_exists(username):
@@ -72,8 +67,8 @@ def add_user(request):
 
     password = user_dict.pop("password")
     pw_hash = generate_password_hash(password)
-    if "password2" in user_dict:
-        del user_dict["password2"]
+    if "confirm" in user_dict:
+        del user_dict["confirm"]
 
     user_dict["pw_hash"] = pw_hash
     user_dict["time_added"] = datetime.datetime.utcnow(),

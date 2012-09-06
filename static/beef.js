@@ -135,12 +135,12 @@ $(document).ready(function() {
 */
 
 
-
+/*
 $(document).ready(function() {
     var NewUserForm = $('#NewUserForm');
     NewUserForm.validate();
 });
-
+*/
 
 $(document).ready(function() {
     $('#CreateUser').live('click', function() {
@@ -161,6 +161,7 @@ $(document).ready(function() {
 	var NewUserForm = $('#NewUserForm');
 
 	// Run jquery validation
+	NewUserForm.validate();
 	if( ! NewUserForm.valid() ) {
 	    console.log("Error: Form is invalid.");
 	    $("#Result").html("Error: Form is invalid.").show();
