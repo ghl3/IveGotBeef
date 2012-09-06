@@ -71,9 +71,9 @@ def add_user(user_form):
         del user_dict["confirm"]
 
     user_dict["pw_hash"] = pw_hash
-    user_dict["time_added"] = datetime.datetime.utcnow(),
-    user_dict["beef"] = [], 
-    user_dict["comments"] = [],
+    user_dict["time_added"] = datetime.datetime.utcnow()
+    user_dict["beef"] = [] 
+    user_dict["comments"] = []
     user_dict["votes"] = []
     
     users_collection.save(user_dict)
