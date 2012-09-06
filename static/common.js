@@ -142,85 +142,13 @@ $(document).ready(function() {
 });
 */
 
-$(document).ready(function() {
-    $('#CreateUser').live('click', function() {
-	
-	console.log("CreateUser - Begin");
 
-	$("#Result").html("").hide();
-
-	// Get the html form by id,
-	// serialize it, 
-	// and send it to python
-	// using jquery/ajax
-	var UserTable = $('#CreateUserTable');
-	
-	var UserName = $('#CreateUserTable #username').val();
-	var UserPass = $('#CreateUserTable #password').val();
-
-	var NewUserForm = $('#NewUserForm');
-
-	// Run jquery validation
-	NewUserForm.validate();
-	if( ! NewUserForm.valid() ) {
-	    console.log("Error: Form is invalid.");
-	    $("#Result").html("Error: Form is invalid.").show();
-	    return false;
-	}
-
-	var UserArray = NewUserForm.serializeArray();
-	var UserJSON = {};
-	for (i in UserArray) {
-	    UserJSON[UserArray[i].name] = UserArray[i].value
-	}
-	//UserJSON=JSON.stringify(UserJSON);
-	console.log(UserJSON);
-
-	if( UserJSON["password"]=="" || UserJSON["confirm"]=="" ){
-	    console.log("Error: You must enter your password, and again for confirmation");
-	    $("#Result").html("Error: You must enter your password, and again for confirmation").show();
-	    return false;
-	} 
-	if( UserJSON["password"] != UserJSON["confirm"] ){
-	    console.log("Error: Passwords don't match");
-	    $("#Result").html("Error: Your passwords don't match").show();
-	    return false;
-	} 
-
-	// Don't forget to get rid of 
-	// password2 once we validate it
-	// delete UserJSON["password2"];
-
-	function successfulCallback(data) {
-
-	    if( data["flag"]!=0 ) {
-		console.log("Error: failed to add User");
-		return false;
-	    }
-
-	    if( data["UserAdded"]!=0) {
-		console.log("Error: Failed to add user");
-		console.log(data["Message"]);
-		return false;
-	    }
-
-	    console.log("Successfully Added User");
-	    console.log("Logging in user:");
-	    LoginUser(UserName, UserPass);
-
-	    return false;
-	}
-
-	//$.post("/api/add_user", {user: JSON.stringify(UserJSON)}, successfulCallback );
-	$.post("/api/add_user", NewUserForm.serialize(), successfulCallback );
-
-	console.log("CreateUser() - End");
-	return false;
-    });
-});
-
-
-/* The function that logs in a user*/
+// Take a UserName and UserPass, pack them into
+// a JSON and send it to the server/database bia
+// an ajax post request.  Get the result and determine
+// if the login was successful or not.
+// If it was successful, send the user to the home page
+// (May want to consider using the "Next" variable in the head)
 function LoginUser(UserName, UserPass) {
 
     // Create the callback
@@ -248,9 +176,7 @@ function LoginUser(UserName, UserPass) {
     }
 
     function errorCallback(data) {
-	
 	$("#LoginResult").html("An Error Occurred.  Please Try again.").show();
-
     }
 
     // Loging using ajax
@@ -259,6 +185,15 @@ function LoginUser(UserName, UserPass) {
 
 }
 
+
+// Bind the 'LoginUser' button to an action that
+// collects the information from the user form and 
+// calls the LoginUser function.
+// (Refactor: Take the specific parts of the LoginUser
+//  method above (ie the page redirect at the end) and
+//  put them into this method.  Keep the above method
+//  as a pure javascript function that submits a requiest
+//  and returns a flag.  It's... cleaner)
 $(document).ready(function() {
     $('#LoginUser').live('click', function() {
 	
