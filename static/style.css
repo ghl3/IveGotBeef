@@ -293,6 +293,12 @@ div.sphinxsidebar input {
   text-align: center;
 }
 
+.BeefTable{  
+  border-bottom: 1px solid black;
+  padding-bottom: 10px;
+  margin-bottom: 30px;
+}
+
 .BeefTitle td {  
   background-color: cornsilk;
   border-color: #E0DCBF;
