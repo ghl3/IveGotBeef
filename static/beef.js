@@ -140,7 +140,9 @@ $(document).ready(function() {
     $('#CreateUser').live('click', function() {
 	
 	console.log("CreateUser - Begin");
-	
+
+	$("#Result").html("").hide();
+
 	// Get the html form by id,
 	// serialize it, 
 	// and send it to python
@@ -150,24 +152,46 @@ $(document).ready(function() {
 	var UserName = $('#CreateUserTable #UserName').val();
 	var UserPass = $('#CreateUserTable #UserPass').val();
 
+	var NewUserForm = $('#NewUserForm');
+	var UserArray = NewUserForm.serializeArray();
+	var UserJSON = {};
+	for (i in UserArray) {
+	    UserJSON[UserArray[i].name] = UserArray[i].value
+	}
+	//UserJSON=JSON.stringify(UserJSON);
+	console.log(UserJSON);
+
+	if( UserJSON["password"]=="" || UserJSON["password2"]=="" ){
+	    console.log("Error: You must enter your password, and again for confirmation");
+	    $("#Result").html("Error: You must enter your password, and again for confirmation").show();
+	    return false;
+	} 
+	if( UserJSON["password"] != UserJSON["password2"] ){
+	    console.log("Error: Passwords don't match");
+	    $("#Result").html("Error: Your passwords don't match").show();
+	    return false;
+	} 
+
+	return false;
+
 	function successfulCallback(data) {
 
 	    if( data["flag"]!=0 ) {
 		console.log("Error: failed to add User");
-		return;
+		return false;
 	    }
 
 	    if( data["UserAdded"]!=0) {
 		console.log("Error: Failed to add user");
 		console.log(data["Message"]);
-		return;
+		return false;
 	    }
 
 	    console.log("Successfully Added User");
 	    console.log("Logging in user:");
 	    LoginUser(UserName, UserPass);
 
-	    return;
+	    return false;
 	}
 
 	$.post("/api/add_user", {username: UserName, password: UserPass}, successfulCallback );
@@ -198,6 +222,8 @@ function LoginUser(UserName, UserPass) {
 	console.log("Successfully Logged In User");
 	$("#Login").hide();
 	$("#LoginResult").html("Successfully logged in.  Welcome, " + UserName + ".").show();
+	//window.location.reload()
+	window.location.href = "/";
 	// window.location.href = '/';
 	return;
     }
