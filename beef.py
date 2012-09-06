@@ -21,14 +21,6 @@ from common import *
 # display the beef.
 #
 
-
-def _get_dict_subset(dict, items):
-    if items==None: return dict
-    beef_dict = OrderedDict()
-    for item in items:
-        beef_dict[item] = dict[item]
-    return beef_dict
-
 title_dict = {}
 title_dict["CreatedByName"] = "Created By"
 title_dict["CreatedById"] = "Created By (id)"
@@ -43,6 +35,16 @@ title_dict["comment"] = "Beef Description"
 #title_dict["ArgumentRight"] = "Defence's Argument"
 title_dict["CommentList"] = "Comments"
 
+
+
+def _get_dict_subset(dict, items):
+    if items==None: return dict
+    beef_dict = OrderedDict()
+    for item in items:
+        beef_dict[item] = dict[item]
+    return beef_dict
+
+
 def _title_map(name):
     """ A mapping of database column titles to html (pretty) titles
 
@@ -52,6 +54,7 @@ def _title_map(name):
         return title_dict[name]
 
     return name
+
      
 def _format_dict(beef_dict, items):
     """ Format the titles of a return dict
@@ -117,8 +120,10 @@ def create_beef(request):
     beef_dict["ArgumentLeft"]  = ""
     beef_dict["ArgumentRight"] = ""
     beef_dict["CommentList"] = []
-    beef_dict["VotesFor"] = []
-    beef_dict["VotesAgainst"] = []
+    beef_dict["VotesFor"] = 0
+    beef_dict["VotersFor"] = []
+    beef_dict["VotesAgainst"] = 0
+    beef_dict["VotersAgainst"] = []
 
     # Add it to the database
     try:
@@ -129,7 +134,6 @@ def create_beef(request):
 
     # Add this beef to the list
     # of the current user's beef
-    
     current_user_id = bson.objectid.ObjectId(current_user.id)
 
     users_collection = getCollection("users")
@@ -170,8 +174,8 @@ def get_beef(_id, items=None):
     return (beef, kw_args)
     """
 
-    # Be sure to fetch the arguments
-    items = items + ["ArgumentLeft", "ArgumentRight"]
+    # Be sure to fetch these parameters:
+    items = items + ["ArgumentLeft", "ArgumentRight", "VotesFor", "VotesAgainst"]
 
     beef_collection = getCollection("beef")
     beef_entry = beef_collection.find_one({"_id" : bson.objectid.ObjectId(_id)})
@@ -188,6 +192,8 @@ def get_beef(_id, items=None):
     kwargs = {}
     kwargs['argument_left'] = beef_dict.pop("ArgumentLeft")
     kwargs['argument_right'] = beef_dict.pop("ArgumentRight")
+    kwargs['VotesFor'] = beef_dict.pop("VotesFor")
+    kwargs['VotesAgainst'] = beef_dict.pop("VotesAgainst")
     
     beef_owner_id = get_beef_owner(_id)
     if current_user.get_id() == beef_owner_id:
@@ -199,6 +205,7 @@ def get_beef(_id, items=None):
     print kwargs
     return (beef_dict, kwargs)
 
+
 def get_beef_owner(_id):
     """ Return the id of the creater of this beef
 
@@ -206,6 +213,7 @@ def get_beef_owner(_id):
     beef_collection = getCollection("beef")
     beef_entry = beef_collection.find_one({"_id" : bson.objectid.ObjectId(_id)})
     return beef_entry["CreatedById"].__str__()
+
 
 def get_beef_list(user_id, items=None):
     """ Get the list of beef created by the user with user_id
