@@ -13,8 +13,8 @@ $(document).ready(function() {
     $('#VoteRight').live('click', vote_against );
 });
 
-function vote_for() { vote("for");}
-function vote_against() { vote("for");}
+function vote_for() { vote("for"); }
+function vote_against() { vote("against"); }
 
 function vote(vote_for) {
     // Idea: At template rendering stage,
@@ -43,31 +43,37 @@ function vote(vote_for) {
 	    return false;
 	}
 
+	var VotesFor     = parseFloat( $("#VotesTotalLeft").html() );
+	var VotesAgainst = parseFloat( $("#VotesTotalRight").html() );
+
+	console.log("Initial votes for: " + VotesFor);
+	console.log("Initial votes against: " + VotesAgainst);
+
 	if( data["action"]=="nothing" ) {
 	    console.log("Result: Do nothing.");
 	    return false;
 	}
 	else if( data["action"]=="increment_for" ) {
 	    console.log("Incrementing the vote 'for'.");
-	    $("#VotesFor").val() += 1;
+	    $("#VotesTotalLeft").html(VotesFor + 1);
 	    return false;
 	}
 	else if( data["action"]=="increment_against" ) {
 	    console.log("Incrementing the vote 'against'.");
-	    $("#VotesAgainst").val() += 1;
+	    $("#VotesTotalRight").html(VotesAgainst + 1);
 	    return false;
 	}
 	else if( data["action"]=="swap_to_for" ) {
 	    console.log("Swapping vote to 'for'.");
-	    $("#VotesFor").val() += 1;
-	    $("#VotesAgainst").val() -= 1;
-	    return false;
+	    $("#VotesTotalLeft").html(VotesFor + 1);
+	    $("#VotesTotalRight").html(VotesAgainst - 1);
+	    return;
 	}
 	else if( data["action"]=="swap_to_against" ) {
 	    console.log("Swapping vote to 'against'.");
-	    $("#VotesAgainst").val() += 1;
-	    $("#VotesFor").val() -= 1;
-	    return false;
+	    $("#VotesTotalRight").html(VotesAgainst + 1);
+	    $("#VotesTotalLeft").html(VotesFor - 1);
+	    return;
 	}
 	else {
 	    console.log("Error: An unknown control flow occured");

@@ -249,6 +249,7 @@ def vote(beef_id, user_id, vote_for):
     """
     
     if vote_for != "for" and vote_for != "against":
+        print "Invalid Vote: neither 'for' nor against"
         raise InvalidVote("Must be 'for' or 'against'")
 
 
@@ -303,6 +304,7 @@ def vote(beef_id, user_id, vote_for):
     
     # If we don't need to do anything, return right away
     if action=="nothing":
+        print "vote_for:", vote_for
         print "Completing Action: ", action
         return jsonify(flag=0, action=action)
 
@@ -322,8 +324,6 @@ def vote(beef_id, user_id, vote_for):
         beef_entry["VotesAgainst"] += 1
         beef_entry["VotersAgainst"].append(user_id)
         user_entry["votes"][beef_id] = "against"
-        print "Action Completed: ", action
-        return jsonify(flag=0, action=action)
 
     elif action=="swap_to_for":
         beef_entry["VotesAgainst"] -= 1
@@ -331,8 +331,6 @@ def vote(beef_id, user_id, vote_for):
         beef_entry["VotersAgainst"] = [voter for voter in beef_entry["VotersAgainst"] if voter != user_id ]
         beef_entry["VotersFor"].append(user_id)
         user_entry["votes"][beef_id] = "for"
-        print "Action Completed: ", action
-        return jsonify(flag=0, action=action)
 
     elif action=="swap_to_against":
         beef_entry["VotesFor"] -= 1
@@ -340,14 +338,11 @@ def vote(beef_id, user_id, vote_for):
         beef_entry["VotersFor"] = [voter for voter in beef_entry["VotersFor"] if voter!=user_id ]
         beef_entry["VotersAgainst"].append(user_id)
         user_entry["votes"][beef_id] = "against"
-        print "Action Completed: ", action
-        return jsonify(flag=0, action=action)
 
     else:
         print "Undefined behavior"
         raise Exception("Undefined behavior in voting")
 
-    
     # Save into the database:
     beef_collection.save(beef_entry)
     user_collection.save(user_entry)
