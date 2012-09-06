@@ -7,13 +7,16 @@ import bson.objectid
 # Common database tools for the app
 #
 
-class BeefNotFound(Exception):
-    pass
+#class BeefNotFound(Exception):
+#    pass
 
 class CollectionNotFound(Exception):
     pass
 
 class InvalidUser(Exception):
+    pass
+
+class InvalidEntry(Exception):
     pass
 
 

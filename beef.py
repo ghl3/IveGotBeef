@@ -178,7 +178,7 @@ def get_beef(_id, items=None):
     
     if beef_entry==None:
         print "get_beef(): Failed to find entry with _id %s:" % _id
-        raise InvalidUser("Id Not Found")
+        raise InvalidEntry("Beef with Id Not Found")
     else:
         print "Successfully found entry: %s" % _id
 
