@@ -163,7 +163,15 @@ def latest(num_entries=10, items=None):
 def get_beef(_id, items=None):
     """ Get the sigle beef entry with the supplied id
 
+    Return the beef as as dict, and return also a 
+    dict representing the keyword arguments for the
+    template generation:
+
+    return (beef, kw_args)
     """
+
+    # Be sure to fetch the arguments
+    items = items + ["ArgumentLeft", "ArgumentRight"]
 
     beef_collection = getCollection("beef")
     beef_entry = beef_collection.find_one({"_id" : bson.objectid.ObjectId(_id)})
@@ -175,7 +183,21 @@ def get_beef(_id, items=None):
         print "Successfully found entry: %s" % _id
 
     beef_dict = _format_dict(beef_entry, items)
-    return beef_dict
+
+    # Now, get the parameters for the template generation
+    kwargs = {}
+    kwargs['argument_left'] = beef_dict.pop("ArgumentLeft")
+    kwargs['argument_right'] = beef_dict.pop("ArgumentRight")
+    
+    beef_owner_id = get_beef_owner(_id)
+    if current_user.get_id() == beef_owner_id:
+        kwargs['beef_owner']=True
+    else:
+        kwargs['beef_owner']=False
+
+    print beef_dict
+    print kwargs
+    return (beef_dict, kwargs)
 
 def get_beef_owner(_id):
     """ Return the id of the creater of this beef
@@ -203,7 +225,8 @@ def get_beef_list(user_id, items=None):
     beef_list = []
     for object_id in beef_id_list:
         beef_entry = beef_collection.find_one({"_id" : object_id})
-        beef_list.append(_format_dict(beef_entry, items))
+        beef_entry = _format_dict(beef_entry, items)
+        beef_list.append(beef_entry)
 
     print "Beef List: ", beef_list
     return beef_list

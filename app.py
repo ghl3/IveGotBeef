@@ -36,7 +36,6 @@ login_manager = LoginManager()
 login_manager.login_view = "/login"
 login_manager.setup_app(app)
 
-
 items = ["BeefTitle", "BeefOpponent", "BeefDescription", "_id"]
 
 # Public Pages:
@@ -97,7 +96,8 @@ def get_beef():
     """
     try:
         _id = request.args.get('_id', '')
-        beef_dict = beef.get_beef(_id, items=items+["ArgumentLeft","ArgumentRight"])
+        (beef_dict, kwargs) = beef.get_beef(_id, items=items)
+        '''
         argument_left = beef_dict.pop("ArgumentLeft")
         argument_right = beef_dict.pop("ArgumentRight")
         beef_owner_id = beef.get_beef_owner(_id)
@@ -106,17 +106,12 @@ def get_beef():
         else:
             beef_owner=False
         print current_user.id, _id, beef_owner
+        '''
     except:
         print traceback.format_exc()
-        return render_template('my_beef.html',beef_dict=[], 
-                               argument_left="",
-                               argument_right="",
-                               beef_owner=False)
+        return render_template('my_beef.html', beef_dict=[])
 
-    return render_template('get_beef.html', beef_dict=beef_dict,
-                           argument_left=argument_left,
-                           argument_right=argument_right,
-                           beef_owner=beef_owner)
+    return render_template('get_beef.html', beef_dict=beef_dict, **kwargs)
 
 
 @app.route("/login", methods=["GET", "POST"])
