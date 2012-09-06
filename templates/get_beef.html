@@ -3,6 +3,12 @@
 <!-- Inherit from the main template -->
 {% extends "main_template.html" %}
 
+<!-- Additional head loads -->
+{% block head %}
+<script type="text/javascript" src="{{url_for('static', filename='get_beef.js')}}"></script>
+{% endblock %}
+
+
 <!-- Fill in the Middle template -->
 {% block document %}
 
@@ -22,10 +28,10 @@
 <div style="clear:both;"></div>
 
 <div id="VoteWrapper" style="margin-bottom: -50px;">
-  <button class="Vote VoteLeft">Vote For Me</button>  
+  <button id="VoteLeft" class="Vote VoteLeft">Vote For Me</button>  
   <div id="VotesTotalLeft">{{ VotesFor }}</div>
   <div id="VotesTotalRight">{{ VotesAgainst }}</div>
-  <button class="Vote VoteRight">Vote For Me</button> 
+  <button id="VoteRight" class="Vote VoteRight">Vote For Me</button> 
   <div style="clear:both;"></div>
 </div>
 

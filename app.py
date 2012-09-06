@@ -255,6 +255,24 @@ def api_login():
 
     return result
 
+
+@app.route("/api/vote_for", methods=["GET", "POST"])
+def api_vote_for():
+    """ Send a user's vote to the database, updating all necessary entries
+
+    """
+    try:
+        beef_id = request.form["beef_id"]
+        vote_for = request.form["vote_for"]
+        user_id = current_user.get_id()
+        result = beef.vote(beef_id=beef_id, user_id=user_id, vote_for=vote_for)
+    except:
+        print traceback.format_exc()
+        return jsonify(flag=1)
+
+    return result
+
+
 #
 # Errors
 #

@@ -238,3 +238,120 @@ def get_beef_list(user_id, items=None):
 
     print "Beef List: ", beef_list
     return beef_list
+
+
+def vote(beef_id, user_id, vote_for):
+    """ Have a user vote on a particular beef
+
+    vote_for: a 'boolean' parameter to determine
+    if we are voting for or against this beef
+
+    """
+    
+    if vote_for != "for" and vote_for != "against":
+        raise InvalidVote("Must be 'for' or 'against'")
+
+
+    beef_id_obj = bson.objectid.ObjectId(beef_id)
+    user_id_obj = bson.objectid.ObjectId(user_id)
+
+    # This will flag what action to take
+    # Options are: 
+    #  - increment vote for
+    #  - increment vote against
+    #  - swap vote
+    #  - nothing
+    #
+    action=None
+    
+    # First, check that the user hasn't already 
+    # voted for this
+    user_collection = getCollection("users")
+    user_entry = user_collection.find_one({"_id": user_id_obj})
+    
+    if user_entry==None:
+        print "Error: User not found: ", user_id
+        return jsonify(flag=1)
+
+    if beef_id in user_entry["votes"]:
+        
+        previous_vote = user_entry["votes"][beef_id]
+        if previous_vote != "for" and previous_vote != "against":
+            raise InvalidVote
+        elif previous_vote=="for" and vote_for=="for":
+            action="nothing"
+        elif previous_vote=="against" and vote_for=="against":
+            action="nothing"
+        elif previous_vote=="for" and vote_for=="against":
+            action="swap_to_against"
+        elif previous_vote=="against" and vote_for=="for":
+            action="swap_to_for"
+        else:
+            print "Current Vote: ", vote_for, " Previous Vote: ", previous_vote
+            raise InvalidVote
+
+    else:
+        if vote_for=="for":
+            action="increment_for"
+        elif vote_for=="aginst":
+            action="increment_against"
+        else:
+            print "Current Vote: ", vote_for
+            raise InvalidVote
+        pass
+
+    
+    # If we don't need to do anything, return right away
+    if action=="nothing":
+        print "Completing Action: ", action
+        return jsonify(flag=0, action=action)
+
+    beef_collection = getCollection("beef")
+    beef_entry = beef_collection.find_one({"_id" : beef_id_obj})
+
+    if beef_entry==None:
+        print "Error: Beef not found: ", beef_id
+        return jsonify(flag=1)
+
+    elif action=="increment_for":
+        beef_entry["VotesFor"] += 1
+        beef_entry["VotersFor"].append(user_id)
+        user_entry["votes"][beef_id] = "for"
+  
+    elif action=="increment_against":
+        beef_entry["VotesAgainst"] += 1
+        beef_entry["VotersAgainst"].append(user_id)
+        user_entry["votes"][beef_id] = "against"
+        print "Action Completed: ", action
+        return jsonify(flag=0, action=action)
+
+    elif action=="swap_to_for":
+        beef_entry["VotesAgainst"] -= 1
+        beef_entry["VotesFor"] += 1
+        beef_entry["VotersAgainst"] = [voter for voter in beef_entry["VotersAgainst"] if voter != user_id ]
+        beef_entry["VotersFor"].append(user_id)
+        user_entry["votes"][beef_id] = "for"
+        print "Action Completed: ", action
+        return jsonify(flag=0, action=action)
+
+    elif action=="swap_to_against":
+        beef_entry["VotesFor"] -= 1
+        beef_entry["VotesAgainst"] += 1
+        beef_entry["VotersFor"] = [voter for voter in beef_entry["VotersFor"] if voter!=user_id ]
+        beef_entry["VotersAgainst"].append(user_id)
+        user_entry["votes"][beef_id] = "against"
+        print "Action Completed: ", action
+        return jsonify(flag=0, action=action)
+
+    else:
+        print "Undefined behavior"
+        raise Exception("Undefined behavior in voting")
+
+    
+    # Save into the database:
+    beef_collection.save(beef_entry)
+    user_collection.save(user_entry)
+
+    print "Action Completed: ", action
+    return jsonify(flag=0, action=action)
+

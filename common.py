@@ -19,6 +19,8 @@ class InvalidUser(Exception):
 class InvalidEntry(Exception):
     pass
 
+class InvalidVote(Exception):
+    pass
 
 def connectToDatabase():
     """ Get a handle on the mongo db object
