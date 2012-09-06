@@ -135,12 +135,12 @@ $(document).ready(function() {
 */
 
 
-/*
+
 $(document).ready(function() {
     var NewUserForm = $('#NewUserForm');
     NewUserForm.validate();
 });
-*/
+
 
 $(document).ready(function() {
     $('#CreateUser').live('click', function() {

@@ -204,3 +204,31 @@ def _get_user(username):
     User = UserClass(db_result['username'], result_id, active=True)
 
     return User
+
+
+
+# WTF Form
+
+from wtforms import Form, BooleanField, TextField, PasswordField, validators
+
+class RegistrationForm(Form):
+    FirstName = TextField('First Name', [validators.Required(), validators.Length(min=1, max=25)])
+    LastName  = TextField('Last Name',   [validators.Required(), validators.Length(min=1, max=25)])
+    username  = TextField('username', [validators.Required(), validators.Length(min=4, max=20)])
+    email     = TextField('Email Address', [validators.Required(), validators.Length(min=6, max=35), validators.Email()])
+    password  = PasswordField('Password', [
+            validators.Required(),
+            validators.EqualTo('confirm', message='Passwords must match')
+            ])
+    confirm = PasswordField('Confirm Password', [validators.Required()])
+    
+
+'''
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    form = RegistrationForm(request.form)
+    if request.method == 'POST' and form.validate():
+        result = login_tools.add_user(form)
+        return result
+    return jsonify(flag=1)
+'''

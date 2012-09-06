@@ -1,18 +1,75 @@
 
-<!-- Additional head loads -->
+{# <!-- Additional head loads --> #}
 {% block head %}
 <script src="http://code.jquery.com/jquery-latest.js"></script>
 <script type="text/javascript" src="http://jzaefferer.github.com/jquery-validation/jquery.validate.js"></script>
 {% endblock %}
 
-<!-- Inherit from the main template -->
+{# <!-- Inherit from the main template --> #}
 {% extends "main_template.html" %}
 
-<!-- Fill in the Middle template -->
+{# <!-- Fill in the Middle template --> #}
 {% block document %}
 
 {% if not current_user.is_authenticated() %}
 
+{# <!-- Create a macro to render the form --> #}
+{% macro render_field(field) %}
+<td>{{ field.label }} </td>
+<td>{{ field(**kwargs)|safe }}</td>
+{% if field.errors %}
+<ul class=errors>
+  {% for error in field.errors %}
+  <li>{{ error }}</li>
+  {% endfor %}
+</ul>
+{% endif %}
+{% endmacro %}
+
+
+<div id="register_wrapper" style="text-align: center;">
+  Please enter a username and password
+  <form id="NewUserForm" accept-charset="UTF-8" method="POST" action="/api/new_user"
+	style="width: 400px; text-align: left; margin-left: auto; margin-right: auto;">
+    
+    <fieldset style="width: 400px;">
+      <legend>Register</legend>
+      
+      <style>
+	tr {border: 0px solid black;}
+	td {border: 0px solid black; width: 100px;}
+      </style>
+      
+      <table border="1" id="CreateUserTable" style="border: 0px solid black; text-align: left; margin-left: auto; margin-right: auto; " >
+	
+	<tr>
+	  {{ render_field(form.FirstName, class="required") }}
+	  {{ render_field(form.LastName, class="required") }}
+	</tr>
+	<tr>
+	  {{ render_field(form.username, class="required") }}
+	  {{ render_field(form.email, class="required email") }}
+	</tr>
+	<tr>
+	  {{ render_field(form.password,class="required password") }}
+	</tr>
+	<tr>
+	  {{ render_field(form.confirm, class="required password", equalTo="#password") }}
+	</tr>
+	</table>
+	  <!--<button id="CreateUser">Create</button>-->
+	  <!--<input type="submit" name="Submit" value="Submit" />-->
+    </fieldset>
+
+    <p><input type="submit" value="Register">
+  </form>
+</div>
+
+<div id="Result" style="display: none; text-align: center; margin-top: 20px;" >
+</div>
+
+
+<!--
 <div id="register_wrapper" style="text-align: center;">
   Please enter a username and password
   <form id="NewUserForm" accept-charset="UTF-8" style="width: 600px; text-align: left; margin-left: auto; margin-right: auto;">
@@ -77,14 +134,14 @@
       </table>
 
       <button id="CreateUser">Create</button>
-      <!--<input type="submit" name="Submit" value="Submit" />-->
+
     </fieldset>
   </form>
 </div>
 
 <div id="Result" style="display: none; text-align: center; margin-top: 20px;" >
 </div>
-
+-->
 <!--
 <table border="1" id="CreateUserTable" >
 <tr> <td>First Name: </td>        <td> <input type="text" id="FirstName"></input> </td> </tr> 

@@ -126,7 +126,8 @@ def login():
 
 @app.route("/NewUser", methods=["GET", "POST"])
 def new_user():
-    return render_template("new_user.html")
+    registration_form = login_tools.RegistrationForm()
+    return render_template("new_user.html", form=registration_form)
 
 
 #
