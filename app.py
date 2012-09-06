@@ -96,7 +96,7 @@ def get_beef():
         argument_left = beef_dict.pop("ArgumentLeft")
         argument_right = beef_dict.pop("ArgumentRight")
         beef_owner_id = beef.get_beef_owner(_id)
-        if current_user.id == beef_owner_id:
+        if current_user.get_id() == beef_owner_id:
             beef_owner=True
         else:
             beef_owner=False
@@ -237,18 +237,22 @@ def load_user(id):
 
 @app.route("/api/logout")
 @login_required
-def logout():
+def api_logout():
     """ Logout the current user, forward to current page if possible
 
     """
     try:
         logout_user()
-        response = redirect(request.args.get("next") or url_for("/"))
     except:
+        print "Logout Failed!!"
         print traceback.format_exc()
-        return jsonify(flag=1)
+    else:
+        print "Successfully Logged out"
 
-    return response
+    #print "Target Url: ", url_for("/")
+    #return redirect(request.args.get("next") or url_for("/"))
+    #print request.args.get("next")
+    return redirect("/")
 
 
 @app.route("/api/login", methods=["GET", "POST"])
