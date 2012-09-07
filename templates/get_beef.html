@@ -68,9 +68,11 @@
 <div class="CommentWrapper">
   <h2> Comments </h2>
   <div id="Comment_List">
+    {% for comment in comment_list %}
     <textarea  readonly="true" class="Comment">
-      THIS IS AN EXAMPLE COMMENT
+      {{ comment["comment"] }}
     </textarea>
+    {% endfor %}
   </div>  
   <button id="AddComment">Add a Comment</button>
 
