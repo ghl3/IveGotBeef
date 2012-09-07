@@ -455,7 +455,8 @@ button.Vote.VoteRight {
   background-color: #E5EDF9;
 }
 
-.Argument textarea, .Comment_List textarea { 
+/*.Argument textarea, .Comment_List textarea { */
+.Argument textarea { 
   width: 300px;
   min-height: 400px;
   text-align: left;
@@ -474,19 +475,15 @@ button.Vote.VoteRight {
   word-wrap: break-word;
 }
 
-
-
 .BeefTable {  
   margin-left: auto;
   margin-right: auto;
 }
 
-
 .CommentWrapper{  
   width: 100%;
   text-align: center;
 }
-
 
 /*
 #Comment_List textarea{  
@@ -505,21 +502,28 @@ button.Vote.VoteRight {
   margin-bottom: 20px;
 }
 
-#Comment_List textarea.Comment { 
-  border: 0px solid black;
-  resize: none;
-  padding: 0px;
-}
-
+/* Both the comment and the text area */
 #Comment_List .Comment, #Comment_List textarea.Comment {  
   margin-left: auto;
   margin-right: auto;
   background-color: #EEE;
   width: 600px;
-  min-height: 200px;
+
 }
 
-/*#Comment_List textarea.Comment, textarea.Content { */
+/* Text area only */
+#Comment_List textarea.Comment { 
+  border: 0px solid black;
+  resize: none;
+  padding: 0px;
+  min-height: 150px; 
+}
+
+/* Comment only */
+#Comment_List .Comment { 
+}
+
+/* Comment and Argument Content */
 #Comment_List .Comment, .Content { 
   color: #333;
   font-weight: normal;
