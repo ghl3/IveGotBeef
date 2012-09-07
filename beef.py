@@ -355,7 +355,7 @@ def add_comment(user_id, beef_id, comment):
 
     """
 
-    user_name = urrent_user.name 
+    user_name = current_user.name 
     current_datetime = datetime.datetime.utcnow()
     time_string = current_datetime.strftime("%a, %B %d, %Y")
 

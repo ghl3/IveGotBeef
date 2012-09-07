@@ -154,14 +154,22 @@ function SaveComment() {
 	    return false;
 	}
 
+
+	// Get the comment div
+	var comment_div = data["comment_div"];
+	console.log("Comment Div:");
+	console.log(comment_div);
+
+	/*
 	// Get the additional metadata
 	var user = data["user"];
 	var time = data["time"];
-
+*/
 	// Clear the editable comment
 	$("#NewComment").val('');
-	$("#Comment_List").append(comment);
+	$("#Comment_List").append(comment_div);
 
+/*
 	var comment = document.createElement("div");
 	comment.setAttribute("class", "Comment");
 	var comment_text = document.createElement("textarea");
@@ -175,6 +183,7 @@ function SaveComment() {
 	// user_div.setAttribute("class", "User");
 
 	$("#Comment_List").append(comment);
+*/
 	$('html').animate( {scrollTop: $("#Comment_List")}, 'slow');
 	$('#NewCommentWrapper').hide();
 	$('#AddComment').show();
