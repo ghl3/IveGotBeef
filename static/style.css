@@ -32,7 +32,6 @@ body {
 }
 
 
-
 /* Document: Contains the header, the main, the sidebar, and the footer */
 div.document {
     width: 940px;
@@ -321,6 +320,16 @@ div.sphinxsidebar input {
   width: 80px;
 }
 
+td.BeefDescription {  
+  border: 1px solid #CACACA;
+  border-radius: 3px;
+  line-height: 1.2em;
+  font: 12px Monaco,"Courier New","DejaVu Sans Mono","Bitstream Vera Sans Mono",monospace;
+  background-color: #FAFAFB;
+  color: #393939;
+
+
+}
 
 
 /*  Argument Page */
