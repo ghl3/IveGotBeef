@@ -87,7 +87,7 @@ def get_beef():
     """
     try:
         _id = request.args.get('_id', '')
-        (beef_dict, kwargs) = beef.get_beef(_id)
+        (beef_dict, comment_list, kwargs) = beef.get_beef(_id)
     except InvalidEntry:
         print traceback.format_exc()
         return render_template('404.html')
@@ -95,7 +95,8 @@ def get_beef():
         print traceback.format_exc()
         return render_template('500.html')
 
-    return render_template('get_beef.html', beef_dict=beef_dict, **kwargs)
+    return render_template('get_beef.html', beef_dict=beef_dict,
+                           comment_list=comment_list, **kwargs)
 
 
 @app.route("/login", methods=["GET", "POST"])
