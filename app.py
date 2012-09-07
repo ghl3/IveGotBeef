@@ -283,10 +283,11 @@ def api_add_comment():
 
     """
     try:
+        raise Exception("CHARLES NO!!!!!!!")
         comment = request.form["comment"]
         beef_id = request.form["beef_id"]
         user_id = current_user.get_id()
-        result = beeef.add_comment(user_id=user_id, beef_id=beef_id, comment=comment)
+        result = beef.add_comment(user_id=user_id, beef_id=beef_id, comment=comment)
     except:
         print traceback.format_exc()
         return jsonify(flag=1)

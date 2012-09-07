@@ -103,6 +103,7 @@ $(document).ready(function() {
     $('#NewCommentWrapper').hide();
     $('#AddComment').live('click', AddComment );
     $('#SaveComment').live('click', SaveComment );
+    $('#CancelComment').live('click', CancelComment );
 });
 
 
@@ -115,6 +116,8 @@ function AddComment() {
 
     $('#NewCommentWrapper').show();
     $('#AddComment').hide();
+    $('#NoCommentsYet').hide();
+    
 
     //$("#NewCommentWrapper").scrollTop($("#NewCommentWrapper")[0].scrollHeight);
     //$('#NewCommentWrapper').animate({scrollTop: $("#NewCommentWrapper").offset().top}, 'slow');
@@ -123,6 +126,20 @@ function AddComment() {
 			    'fast',"linear");
 }
 
+function CancelComment() {
+
+    // Cancel the comment, and restore
+    // things as they were before
+
+    $('#NewCommentWrapper').hide();
+    $('#AddComment').show();
+    $('#NoCommentsYet').show();
+    
+
+
+}
+
+
 function SaveComment() {
 
     // Take the content in the 'AddComment' field, 
@@ -130,7 +147,12 @@ function SaveComment() {
     // is successful, show the comment in html
 
     // Create our callbacks (both good and evil)
-    function successfulCallback() {
+    function successfulCallback(data) {
+
+	if( data["flag"]!=0 ) {
+	    console.log("Error: Failed to add comment :(");
+	    return false;
+	}
 
 	// Clear the editable comment
 	$("#NewComment").val('');
@@ -145,10 +167,10 @@ function SaveComment() {
 	$('html').animate( {scrollTop: $("#Comment_List")}, 'slow');
 	$('#NewCommentWrapper').hide();
 	$('#AddComment').show();
-
+	$('#NoCommentsYet').remove();
     }
 
-    function errorCallback() {
+    function errorCallback(data) {
 
 	console.log("There was a server error.  Comment not added");
 
