@@ -4,6 +4,7 @@ import datetime
 from collections import OrderedDict
 
 from flask import jsonify
+from flask import render_template
 
 import pymongo
 import bson.objectid
@@ -31,7 +32,7 @@ def _get_dict_subset(dict, items):
     return beef_dict
 
 
-def _format_dict(beef_dict, items):
+def _format_dict(beef_dict, items=None):
     """ Format the titles of a return dict
 
     Reduce the elements in a dict to only the
@@ -388,4 +389,5 @@ def add_comment(user_id, beef_id, comment):
     users_collection.save(user_item)
     
     # Okay, we're done.  Boom Sauce
-    return jsonify(flag=0, user=user_name, time=time_string )
+    comment_div = render_template("comment.html", comment=_format_dict(comment_dict))
+    return jsonify(flag=0, comment_div=comment_div )
