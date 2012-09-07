@@ -370,16 +370,16 @@ def add_comment(user_id, beef_id, comment):
         print "Error: Cannot find beef in collection with id: ", beef_id
         raise InvalidBeef
     current_beef["CommentList"].append(comment_id)
-    beef_collection.update(current_beef)
+    beef_collection.save(current_beef)
 
     # And finally, add it to the user
     users_collection = getCollection("users")    
-    current_user = user_collection.find_one({"_id" : bson.objectid.ObjectId(user_id)})
+    current_user = users_collection.find_one({"_id" : bson.objectid.ObjectId(user_id)})
     if current_user == None:
         print "Error: Cannot find user in collection with id: ", user_id
         raise InvalidUser
     current_user["comments"].append(comment_id)
-    users_collection.update(current_user)
+    users_collection.save(current_user)
     
     # Okay, we're done.  Boom Sauce
     return jsonify(flag=0)

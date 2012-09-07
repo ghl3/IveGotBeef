@@ -283,7 +283,6 @@ def api_add_comment():
 
     """
     try:
-        raise Exception("CHARLES NO!!!!!!!")
         comment = request.form["comment"]
         beef_id = request.form["beef_id"]
         user_id = current_user.get_id()
