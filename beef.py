@@ -146,7 +146,7 @@ def get_beef(_id):
     """
 
     # Be sure to fetch these parameters:
-    to_fetch = items + ["ArgumentLeft", "ArgumentRight", "VotesFor", "VotesAgainst"]
+    to_fetch = items + ["ArgumentLeft", "ArgumentRight", "VotesFor", "VotesAgainst", "CommentList"]
 
     beef_collection = getCollection("beef")
     beef_entry = beef_collection.find_one({"_id" : bson.objectid.ObjectId(_id)})
@@ -166,16 +166,25 @@ def get_beef(_id):
     kwargs['VotesFor'] = beef_dict.pop("VotesFor")
     kwargs['VotesAgainst'] = beef_dict.pop("VotesAgainst")
 
-
     beef_owner_id = get_beef_owner(_id)
     if current_user.get_id() == beef_owner_id:
         kwargs['beef_owner']=True
     else:
         kwargs['beef_owner']=False
 
+    # Now, fetch the comments
+    # Comments are stored as ObjectId's
+    comments_collection = getCollection("comments")
+    comments = beef_dict.pop("Comments")
+    comment_list = []
+    for comment_id in comments:
+        comment = comments_collection.find_one({"_id" : comment_id})
+        comment_list.append(comment)
+
     print beef_dict
+    print comment_list
     print kwargs
-    return (beef_dict, kwargs)
+    return (beef_dict, comment_list, kwargs)
 
 
 def get_beef_owner(_id):
