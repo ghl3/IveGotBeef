@@ -178,9 +178,6 @@ div.footer {
   width: 940px;
 /*
   margin: 20px auto 30px auto;
-  font-size: 14px;
-  color: #888;
-  text-align: right;
   height: 10px;   
   margin-bottom: 10px;
 */
@@ -188,16 +185,19 @@ div.footer {
   position: absolute;
   bottom: 0;
 */
+  font-size: 14px;
+  color: #888;
+  text-align: right;
 
 
   position: relative;
   clear: both; 
-  width: 100%; 
+  width: 80%; 
   height: 30px; 
   bottom: 0; 
   border: none; 
   padding: 13px 0 0 0; 
-  text-align: center; 
+  right: 20px;
 
 
 }
