@@ -21,6 +21,9 @@ from common import *
 # display the beef.
 #
 
+items = ["BeefTitle", "BeefOpponent", "BeefDescription", "TimeCreated", "_id"]
+
+'''
 title_dict = {}
 title_dict["CreatedByName"] = "Created By"
 title_dict["CreatedById"] = "Created By (id)"
@@ -34,8 +37,7 @@ title_dict["comment"] = "Beef Description"
 #title_dict["ArgumentLeft"] = "Beef's Argument"
 #title_dict["ArgumentRight"] = "Defence's Argument"
 title_dict["CommentList"] = "Comments"
-
-
+'''
 
 def _get_dict_subset(dict, items):
     if items==None: return dict
@@ -50,8 +52,8 @@ def _title_map(name):
 
     """
 
-    if name in title_dict:
-        return title_dict[name]
+    #if name in title_dict:
+    #    return title_dict[name]
 
     return name
 
@@ -62,14 +64,15 @@ def _format_dict(beef_dict, items):
     """
 
     beef_dict = _get_dict_subset(beef_dict, items)
-
+    beef_dict['TimeCreated'] = beef_dict["TimeCreated"].strftime("%A %d. %B %Y")
+    '''
     for key in beef_dict:
         if key in title_dict:
             new_key = _title_map(key)
             beef_dict[new_key] = beef_dict.pop(key)
         else:
             pass
-
+    '''        
     return beef_dict
 
 
@@ -149,7 +152,7 @@ def create_beef(request):
     return jsonify(flag=0, beef_id=beef_id.__str__())
 
 
-def latest(num_entries=10, items=None):
+def latest(num_entries=10):
     """ Return a list of 10 entries
 
     """
@@ -164,7 +167,7 @@ def latest(num_entries=10, items=None):
     return return_list
 
 
-def get_beef(_id, items=None):
+def get_beef(_id):
     """ Get the sigle beef entry with the supplied id
 
     Return the beef as as dict, and return also a 
@@ -175,7 +178,7 @@ def get_beef(_id, items=None):
     """
 
     # Be sure to fetch these parameters:
-    items = items + ["ArgumentLeft", "ArgumentRight", "VotesFor", "VotesAgainst"]
+    to_fetch = items + ["ArgumentLeft", "ArgumentRight", "VotesFor", "VotesAgainst"]
 
     beef_collection = getCollection("beef")
     beef_entry = beef_collection.find_one({"_id" : bson.objectid.ObjectId(_id)})
@@ -186,7 +189,7 @@ def get_beef(_id, items=None):
     else:
         print "Successfully found entry: %s" % _id
 
-    beef_dict = _format_dict(beef_entry, items)
+    beef_dict = _format_dict(beef_entry, to_fetch)
 
     # Now, get the parameters for the template generation
     kwargs = {}
@@ -194,7 +197,8 @@ def get_beef(_id, items=None):
     kwargs['argument_right'] = beef_dict.pop("ArgumentRight")
     kwargs['VotesFor'] = beef_dict.pop("VotesFor")
     kwargs['VotesAgainst'] = beef_dict.pop("VotesAgainst")
-    
+
+
     beef_owner_id = get_beef_owner(_id)
     if current_user.get_id() == beef_owner_id:
         kwargs['beef_owner']=True
@@ -215,7 +219,7 @@ def get_beef_owner(_id):
     return beef_entry["CreatedById"].__str__()
 
 
-def get_beef_list(user_id, items=None):
+def get_beef_list(user_id):
     """ Get the list of beef created by the user with user_id
 
     """
@@ -246,6 +250,17 @@ def vote(beef_id, user_id, vote_for):
     vote_for: a 'boolean' parameter to determine
     if we are voting for or against this beef
 
+    This will return a JSON response with two keys: 
+       - flag
+       - action
+     
+     The possible results for the "action" response are :
+       - increment_for
+       - increment_against
+       - swap_to_for
+       - swap_to_against
+       - nothing
+     
     """
     
     if vote_for != "for" and vote_for != "against":
@@ -256,13 +271,7 @@ def vote(beef_id, user_id, vote_for):
     beef_id_obj = bson.objectid.ObjectId(beef_id)
     user_id_obj = bson.objectid.ObjectId(user_id)
 
-    # This will flag what action to take
-    # Options are: 
-    #  - increment vote for
-    #  - increment vote against
-    #  - swap vote
-    #  - nothing
-    #
+    # Create the return key
     action=None
     
     # First, check that the user hasn't already 

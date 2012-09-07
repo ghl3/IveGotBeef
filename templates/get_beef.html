@@ -3,6 +3,8 @@
 <!-- Inherit from the main template -->
 {% extends "main_template.html" %}
 
+{% import "macros.html" as macros %}
+
 <!-- Additional head loads -->
 {% block head %}
 <script type="text/javascript" src="{{url_for('static', filename='get_beef.js')}}"></script>
@@ -12,18 +14,21 @@
 <!-- Fill in the Middle template -->
 {% block document %}
 
+{{ macros.BeefTable(beef_dict) }}
+
+<!--
 <table class="BeefTable" border="1">
-<tr class="BeefTitle">
-{% for (name, val) in beef_dict.iteritems() if name != '_id' %}
-    <td>{{ name }}</td>
-{% endfor %}
-</tr> 
-<tr>
-{% for (name, val) in beef_dict.iteritems() if name != '_id' %}
-    <td>{{ val }}</td>
-{% endfor %}
-</tr> 
+  <tr class="BeefTitle">
+    <td>Title</td>  <td>Beef is Against</td> <td>Date Created</td>
+  </tr>
+  <tr>
+    <td>{{ BeefTitle }}</td> <td>{{ BeefOpponent }}</td> <td>{{ TimeCreated }}</td>
+  </tr> 
+  <tr>
+    {{ BeefDescription }}
+  </tr>
 </table>
+-->
 
 <div style="clear:both;"></div>
 

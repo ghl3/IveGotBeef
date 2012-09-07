@@ -36,7 +36,7 @@ login_manager = LoginManager()
 login_manager.login_view = "/login"
 login_manager.setup_app(app)
 
-items = ["BeefTitle", "BeefOpponent", "BeefDescription", "_id"]
+
 
 # Public Pages:
 
@@ -44,7 +44,7 @@ items = ["BeefTitle", "BeefOpponent", "BeefDescription", "_id"]
 def index():
     
     try:
-        beef_list = beef.latest(10, items=items)
+        beef_list = beef.latest(10)
     except:
         print traceback.format_exc()
         return render_template('500.html')
@@ -62,7 +62,7 @@ def my_beef():
     #    return render_template('login.html')
 
     try:
-        beef_list = beef.get_beef_list(current_user.id, items) 
+        beef_list = beef.get_beef_list(current_user.id) 
     except:
         print traceback.format_exc()
         return render_template('500.html')
@@ -86,7 +86,7 @@ def get_beef():
     """
     try:
         _id = request.args.get('_id', '')
-        (beef_dict, kwargs) = beef.get_beef(_id, items=items)
+        (beef_dict, kwargs) = beef.get_beef(_id)
     except InvalidEntry:
         print traceback.format_exc()
         return render_template('404.html')
