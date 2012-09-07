@@ -354,12 +354,16 @@ def add_comment(user_id, beef_id, comment):
 
     """
 
+    user_name = urrent_user.name 
+    current_datetime = datetime.datetime.utcnow()
+    time_string = current_datetime.strftime("%a, %B %d, %Y")
+
     comment_dict = {}
     comment_dict["user_id"] = bson.objectid.ObjectId(user_id)
-    comment_dict["username"] = current_user.name #bson.objectid.ObjectId(user_id)
+    comment_dict["username"] = user_name #current_user.name #bson.objectid.ObjectId(user_id)
     comment_dict["beef_id"] = bson.objectid.ObjectId(beef_id)
     comment_dict["comment"] = comment
-    comment_dict["TimeCreated"] = datetime.datetime.utcnow()
+    comment_dict["TimeCreated"] = current_datetime #datetime.datetime.utcnow()
 
     # First, add the comment to the comment collection
     comments_collection = getCollection("comments")
@@ -384,4 +388,4 @@ def add_comment(user_id, beef_id, comment):
     users_collection.save(user_item)
     
     # Okay, we're done.  Boom Sauce
-    return jsonify(flag=0)
+    return jsonify(flag=0, user=user_name, time=time_string )

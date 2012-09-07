@@ -154,14 +154,25 @@ function SaveComment() {
 	    return false;
 	}
 
+	// Get the additional metadata
+	var user = data["user"];
+	var time = data["time"];
+
 	// Clear the editable comment
 	$("#NewComment").val('');
 	$("#Comment_List").append(comment);
 
-	var comment = document.createElement("textarea");
+	var comment = document.createElement("div");
 	comment.setAttribute("class", "Comment");
-	comment.setAttribute("readonly", "true");
-	comment.value = comment_text;
+	var comment_text = document.createElement("textarea");
+	comment_text.setAttribute("class", "Comment");
+	comment_text.setAttribute("readonly", "true");
+	comment_text.value = comment_text;
+	comment.appendChild(comment_text);
+
+	// Add the metadata
+	// var user_div = document.createElement("div");
+	// user_div.setAttribute("class", "User");
 
 	$("#Comment_List").append(comment);
 	$('html').animate( {scrollTop: $("#Comment_List")}, 'slow');
