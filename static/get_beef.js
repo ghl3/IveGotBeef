@@ -1,11 +1,7 @@
 
-
-
 // Handle the various functions necessary
 // for displaying and editing beef voting, 
 // editing, commenting, etc, etc and so forth
-
-
 
 // Increment the votes
 $(document).ready(function() {
@@ -107,7 +103,6 @@ $(document).ready(function() {
 });
 
 
-
 function AddComment() {
 
     // Create the text field for adding a
@@ -118,7 +113,6 @@ function AddComment() {
     $('#AddComment').hide();
     $('#NoCommentsYet').hide();
     
-
     //$("#NewCommentWrapper").scrollTop($("#NewCommentWrapper")[0].scrollHeight);
     //$('#NewCommentWrapper').animate({scrollTop: $("#NewCommentWrapper").offset().top}, 'slow');
 
@@ -135,8 +129,6 @@ function CancelComment() {
     $('#AddComment').show();
     $('#NoCommentsYet').show();
     
-
-
 }
 
 
@@ -154,36 +146,15 @@ function SaveComment() {
 	    return false;
 	}
 
-
 	// Get the comment div
 	var comment_div = data["comment_div"];
 	console.log("Comment Div:");
 	console.log(comment_div);
 
-	/*
-	// Get the additional metadata
-	var user = data["user"];
-	var time = data["time"];
-*/
-	// Clear the editable comment
+	// Clear the editable comment and add
+	// the new comment that we just got 
 	$("#NewComment").val('');
 	$("#Comment_List").append(comment_div);
-
-/*
-	var comment = document.createElement("div");
-	comment.setAttribute("class", "Comment");
-	var comment_text = document.createElement("textarea");
-	comment_text.setAttribute("class", "Comment");
-	comment_text.setAttribute("readonly", "true");
-	comment_text.value = comment_text;
-	comment.appendChild(comment_text);
-
-	// Add the metadata
-	// var user_div = document.createElement("div");
-	// user_div.setAttribute("class", "User");
-
-	$("#Comment_List").append(comment);
-*/
 	$('html').animate( {scrollTop: $("#Comment_List")}, 'slow');
 	$('#NewCommentWrapper').hide();
 	$('#AddComment').show();
@@ -191,9 +162,7 @@ function SaveComment() {
     }
 
     function errorCallback(data) {
-
 	console.log("There was a server error.  Comment not added");
-
     }
 
     // Get the information we need and send it to the
