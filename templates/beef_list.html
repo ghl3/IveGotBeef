@@ -11,28 +11,19 @@ No Beef Yet (Database is empty.  This is probably an error.)
 {% else %}
 
 <table class="BeefTable" >
-{% for beef in beef_list %}
+  <tr class="BeefTitle">
+    <td>Title</td>  <td>Beef is Against</td> <td>Date Created</td> <td class="TableEmpty"> </td>
+  </tr>
 
-<!-- Make the title -->
-{% if loop.first %}
-<tr class="BeefTitle">
-{% for (name, val) in beef_list[0].iteritems() if name != '_id' %}
-    <td>{{ name }}</td>
-{% endfor %}
-<td class="TableEmpty"> </td>
-</tr> 
-{% endif %}
+  {% for beef_dict in beef_list %}
+  <tr>  
+    <td>{{ beef_dict["BeefTitle"] }}</td> 
+    <td>{{ beef_dict["BeefOpponent"] }}</td> 
+    <td>{{ beef_dict["TimeCreated"] }}</td>
+    <td> <a class="button" href="/Beef?_id={{ beef_dict['_id'] }}">View Beef</a> </td>
+  </tr> 
 
-<!-- Do the rest of the list entries -->
-<tr>
-{% for (name, val) in beef.iteritems() if name != '_id' %}
-    <td>{{ val }}</td>
-{% endfor %}
-<!--<td> <button class="GetBeefButton" id="beef_{{ beef['_id'] }}">View Beef</button> </td>-->
-<td> <a class="button" href="/Beef?_id={{ beef['_id'] }}">View Beef</a> </td>
-</tr> 
-
-{% endfor %}
+  {% endfor %}
 </table>
 
 {% endif %}
