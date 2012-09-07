@@ -3,18 +3,35 @@
 <!-- Inherit from the main template -->
 {% extends "main_template.html" %}
 
-{% import "macros.html" as macros %}
-
 <!-- Additional head loads -->
 {% block head %}
 <script type="text/javascript" src="{{url_for('static', filename='get_beef.js')}}"></script>
 {% endblock %}
 
 
+{% macro BeefTable(beef_dict) -%}
+<!-- Macro to make beef table -->
+<table class="BeefTable" border="1">
+  <tr class="BeefTitle">
+    <td>Title</td>  <td>Beef is Against</td> <td>Date Created</td>
+  </tr>
+  <tr>
+    <td>{{ beef_dict["BeefTitle"] }}</td> <td>{{ beef_dict["BeefOpponent"] }}</td> <td>{{ beef_dict["TimeCreated"] }}</td>
+  </tr> 
+  <tr>
+    <td colspan = "3" class="BeefDescription">
+      {{ beef_dict["BeefDescription"] }}
+    </td>
+  </tr>
+</table>
+{%- endmacro %}
+
+{# <!--{% import "macros.html" as macros %}--> #}
+
 <!-- Fill in the Middle template -->
 {% block document %}
 
-{{ macros.BeefTable(beef_dict) }}
+{{ BeefTable(beef_dict) }}
 
 <!--
 <table class="BeefTable" border="1">
