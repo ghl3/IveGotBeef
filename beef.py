@@ -1,5 +1,4 @@
 
-
 import json
 import datetime
 from collections import OrderedDict
@@ -64,7 +63,7 @@ def _format_dict(beef_dict, items):
     """
 
     beef_dict = _get_dict_subset(beef_dict, items)
-    beef_dict['TimeCreated'] = beef_dict["TimeCreated"].strftime("%A %d. %B %Y")
+    beef_dict['TimeCreated'] = beef_dict["TimeCreated"].strftime("%a, %B %d, %Y")
     '''
     for key in beef_dict:
         if key in title_dict:

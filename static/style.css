@@ -291,9 +291,10 @@ div.sphinxsidebar input {
 {
   border: 0px solid black;
   text-align: center;
+  width: auto;
 }
 
-.BeefTable{  
+.BeefTable {  
   border-bottom: 1px solid black;
   padding-bottom: 10px;
   margin-bottom: 30px;
