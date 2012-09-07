@@ -153,7 +153,7 @@ def get_beef(_id):
     
     if beef_entry==None:
         print "get_beef(): Failed to find entry with _id %s:" % _id
-        raise InvalidEntry("Beef with Id Not Found")
+        raise InvalidBeef("Beef with Id Not Found")
     else:
         print "Successfully found entry: %s" % _id
 
@@ -359,7 +359,7 @@ def add_comment(user_id, beef_id, comment):
     current_beef = beef_collection.find_one({"_id" : bson.objectid.ObjectId(beef_id)})
     if current_beef == None:
         print "Error: Cannot find beef in collection with id: ", beef_id
-        raise InvalidEntry
+        raise InvalidBeef
     current_beef["CommentList"].append(comment_id)
     beef_collection.update(current_beef)
 
@@ -368,7 +368,7 @@ def add_comment(user_id, beef_id, comment):
     current_user = user_collection.find_one({"_id" : bson.objectid.ObjectId(user_id)})
     if current_user == None:
         print "Error: Cannot find user in collection with id: ", user_id
-        raise InvalidEntry
+        raise InvalidUser
     current_user["CommentList"].append(comment_id)
     users_collection.update(current_user)
     

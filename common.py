@@ -16,11 +16,15 @@ class CollectionNotFound(Exception):
 class InvalidUser(Exception):
     pass
 
-class InvalidEntry(Exception):
+class InvalidBeef(Exception):
     pass
 
 class InvalidVote(Exception):
     pass
+
+class InvalidComment(Exception):
+    pass
+
 
 def connectToDatabase():
     """ Get a handle on the mongo db object
