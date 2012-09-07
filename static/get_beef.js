@@ -93,3 +93,48 @@ function vote(vote_for) {
 	.error(errorCallback);
 }
 
+//
+// Comments
+//
+
+
+// Increment the votes
+$(document).ready(function() {
+    $('#NewCommentWrapper').hide();
+    $('#AddComment').live('click', AddComment );
+    $('#SaveComment').live('click', SaveComment );
+});
+
+
+
+function AddComment() {
+
+    // Create the text field for adding a
+    // new comment.  This does not yet save
+    // the comment.
+
+    $('#NewCommentWrapper').show();
+    $('#AddComment').hide();
+
+    //$("#NewCommentWrapper").scrollTop($("#NewCommentWrapper")[0].scrollHeight);
+    //$('#NewCommentWrapper').animate({scrollTop: $("#NewCommentWrapper").offset().top}, 'slow');
+
+    $('html, body').animate({
+	scrollTop: $(document).height()-$(window).height()},
+			    'fast',
+			    "linear"
+			   );
+
+
+
+}
+
+function SaveComment() {
+
+    // Create the text field for adding a
+    // new comment.  This does not yet save
+    // the comment.
+
+    $('#NewCommentWrapper').hide();
+    $('#AddComment').show();
+}

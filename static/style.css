@@ -474,7 +474,6 @@ button.Vote.VoteRight {
   word-wrap: break-word;
 }
 
-
 .BeefTable {  
   margin-left: auto;
   margin-right: auto;
@@ -492,6 +491,15 @@ button.Vote.VoteRight {
   background-color: #EEE;
   width: 600px;
   min-height: 200px;
+}
+
+
+
+#NewComment{  
+
+  width: 600px;
+  min-height: 200px;
+
 }
 
 

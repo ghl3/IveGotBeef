@@ -26,31 +26,14 @@
 </table>
 {%- endmacro %}
 
-{# <!--{% import "macros.html" as macros %}--> #}
-
-<!-- Fill in the Middle template -->
 {% block document %}
 
 {{ BeefTable(beef_dict) }}
 
-<!--
-<table class="BeefTable" border="1">
-  <tr class="BeefTitle">
-    <td>Title</td>  <td>Beef is Against</td> <td>Date Created</td>
-  </tr>
-  <tr>
-    <td>{{ BeefTitle }}</td> <td>{{ BeefOpponent }}</td> <td>{{ TimeCreated }}</td>
-  </tr> 
-  <tr>
-    {{ BeefDescription }}
-  </tr>
-</table>
--->
-
 <div style="clear:both;"></div>
 
 <div id="VoteWrapper" style="margin-bottom: -50px;">
-  <button id="VoteLeft" class="Vote VoteLeft">Vote For Me</button>  
+      <button id="VoteLeft" class="Vote VoteLeft" >Vote For Me</button>  
   <div id="VotesTotalLeft">{{ VotesFor }}</div>
   <div id="VotesTotalRight">{{ VotesAgainst }}</div>
   <button id="VoteRight" class="Vote VoteRight">Vote For Me</button> 
@@ -61,6 +44,7 @@
   <div id="Argument_Wrapper">
     
     <div class="Argument Left">
+
       <h2 class="ArgumentTitle" >Argument:</h2>
       <textarea class="Content" {% if beef_owner %} redonly="false" {% else %} readonly="true" {% endif %} >
 	{{ argument_left }}
@@ -79,14 +63,20 @@
 
 <div style="clear:both;"></div>
 
-
 <div class="CommentWrapper">
   <h2> Comments </h2>
   <div class="Comments">
     <textarea readonly="true">
     </textarea>
   </div>  
+  <button id="AddComment">Add a Comment</button>
 
+</div>
+<div style="clear:both;"></div>
+<div id="NewCommentWrapper" class="CommentWrapper">
+  <textarea id="NewComment">
+  </textarea> <br>
+  <button id="SaveComment">Save Comment</button>
 </div>
 
 {% endblock %}
