@@ -154,11 +154,17 @@ div.body div.math p {
 /* Footer: Self explanatory */
 
 div.footer {
-    width: 940px;
-    margin: 20px auto 30px auto;
-    font-size: 14px;
-    color: #888;
-    text-align: right;
+  width: 940px;
+  margin: 20px auto 30px auto;
+  font-size: 14px;
+  color: #888;
+  text-align: right;
+  position: absolute;
+  bottom: 0;
+  height: 10px;   /* Height of the footer */
+}
+
+
 }
 
 div.footer a {
