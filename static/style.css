@@ -521,6 +521,7 @@ button.Vote.VoteRight {
 
 /* Comment only */
 #Comment_List .Comment { 
+  margin-bottom: 20px;
 }
 
 /* Comment and Argument Content */

@@ -179,6 +179,7 @@ def get_beef(_id):
     comment_list = []
     for comment_id in comments:
         comment = comments_collection.find_one({"_id" : comment_id})
+        comment = _format_dict(comment, ["username", "user_id",  "TimeCreated", "comment"])
         comment_list.append(comment)
 
     print beef_dict
@@ -355,6 +356,7 @@ def add_comment(user_id, beef_id, comment):
 
     comment_dict = {}
     comment_dict["user_id"] = bson.objectid.ObjectId(user_id)
+    comment_dict["username"] = current_user.name #bson.objectid.ObjectId(user_id)
     comment_dict["beef_id"] = bson.objectid.ObjectId(beef_id)
     comment_dict["comment"] = comment
     comment_dict["TimeCreated"] = datetime.datetime.utcnow()
@@ -374,12 +376,12 @@ def add_comment(user_id, beef_id, comment):
 
     # And finally, add it to the user
     users_collection = getCollection("users")    
-    current_user = users_collection.find_one({"_id" : bson.objectid.ObjectId(user_id)})
-    if current_user == None:
+    user_item = users_collection.find_one({"_id" : bson.objectid.ObjectId(user_id)})
+    if user_item == None:
         print "Error: Cannot find user in collection with id: ", user_id
         raise InvalidUser
-    current_user["comments"].append(comment_id)
-    users_collection.save(current_user)
+    user_item["comments"].append(comment_id)
+    users_collection.save(user_item)
     
     # Okay, we're done.  Boom Sauce
     return jsonify(flag=0)

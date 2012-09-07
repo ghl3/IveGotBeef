@@ -76,7 +76,7 @@
       <textarea  readonly="true" class="Comment">
 	{{ comment["comment"] }}
       </textarea>
-      {{ comment["user_id"] }} {{ comment["CreationTime"] }}
+      <a href="/user?_id={{ comment['user_id'] }}" class="User">{{ comment["username"] }}</a> <div id="Time">{{ comment["TimeCreated"] }}</div>
     </div>
     {% endfor %}
     {% endif %}
