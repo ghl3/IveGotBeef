@@ -93,7 +93,7 @@ def addToBeefDatabase(beef_dict, collection_name):
     return saved_id
 
 
-def _clean_database(username):
+def _clean_user_database(username):
     """ Find all invalid beefs for this user and remove their references.
     
     This is to be done from the command-line only
@@ -123,5 +123,36 @@ def _clean_database(username):
 
     user["beef"] = updated_list
     user_coll.save(user)
+
+
+def _clean_dead_comments(beef_id):
+    """ Find all invalid commentss for this beef and remove their references.
+    
+    This is to be done from the command-line only
+
+    """
+
+    # Get the beef item
+    beef_coll = getCollection("beef")
+    beef_entry = beef_coll.find_one({"_id" : bson.objectid.ObjectId(beef_id)})
+    comment_list = beef_entry["CommentList"]
+    
+    comments_coll = getCollection("comments")
+
+    updated_list = []
+
+    for comment_id in comment_list:
+        
+        comment_entry = comments_coll.find_one({"_id": comment_id})
+        if comment_entry != None:
+            updated_list.append(comment_id)
+        else:
+            print "WARNING: Found an invalid comment id: ", comment_id
+            print "Removing from comment list"
+        pass
+
+    beef_entry["CommentList"] = updated_list
+    beef_coll.save(beef_entry)
+
 
     
