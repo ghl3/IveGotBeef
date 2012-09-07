@@ -72,6 +72,7 @@ def my_beef():
 
 
 @app.route('/CreateBeef')
+@login_required
 def create_beef():
     """ Create a new beef
 
@@ -257,6 +258,7 @@ def api_login():
 
 
 @app.route("/api/vote_for", methods=["GET", "POST"])
+@login_required
 def api_vote_for():
     """ Send a user's vote to the database, updating all necessary entries
 
