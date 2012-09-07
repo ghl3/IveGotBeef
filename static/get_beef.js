@@ -119,39 +119,50 @@ function AddComment() {
     //$("#NewCommentWrapper").scrollTop($("#NewCommentWrapper")[0].scrollHeight);
     //$('#NewCommentWrapper').animate({scrollTop: $("#NewCommentWrapper").offset().top}, 'slow');
 
-    $('html, body').animate({
-	scrollTop: $(document).height()-$(window).height()},
-			    'fast',
-			    "linear"
-			   );
+    $('html, body').animate({scrollTop: $(document).height()-$(window).height()},
+			    'fast',"linear");
 }
 
 function SaveComment() {
 
-    // Create the text field for adding a
-    // new comment.  This does not yet save
-    // the comment.
+    // Take the content in the 'AddComment' field, 
+    // send it to the db to be save, and if this
+    // is successful, show the comment in html
 
-    // Get the current text
+    // Create our callbacks (both good and evil)
+    function successfulCallback() {
+
+	// Clear the editable comment
+	$("#NewComment").val('');
+	$("#Comment_List").append(comment);
+
+	var comment = document.createElement("textarea");
+	comment.setAttribute("class", "Comment");
+	comment.setAttribute("readonly", "true");
+	comment.value = comment_text;
+
+	$("#Comment_List").append(comment);
+	$('html').animate( {scrollTop: $("#Comment_List")}, 'slow');
+	$('#NewCommentWrapper').hide();
+	$('#AddComment').show();
+
+    }
+
+    function errorCallback() {
+
+	console.log("There was a server error.  Comment not added");
+
+    }
+
+    // Get the information we need and send it to the
+    // db via async ajax
     var comment_text = $("#NewComment").val();
-    $("#NewComment").val('');
-    console.log(comment_text);
+    var beef_id = getURLParameter("_id");
+    console.log("Comment for beef: " + beef_id + ": " + comment_text);
 
-    var comment = document.createElement("textarea");
-    comment.setAttribute("class", "Comment");
-    comment.setAttribute("readonly", "true");
-    comment.value = comment_text;
-    //comment.setAttribute("value", comment_text);
+    $.post("/api/add_comment", {"beef_id" : beef_id, "comment" : comment_text}, successfulCallback)
+	.error(errorCallback);
 
-    $("#Comment_List").append(comment);
-
-    //$('#Comment_List').animate({scrollTop: $("#Comment_List").offset().top}, 'slow');
-    //$('#Comment_List').animate( {scrollTop: $("#Comment_List")}, 'slow');
-    $('html').animate( {scrollTop: $("#Comment_List")}, 'slow');
-
-    $('#NewCommentWrapper').hide();
-    $('#AddComment').show();
-
-
+    console.log("Request to add comment made.  Waiting...");
 
 }

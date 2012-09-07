@@ -22,21 +22,6 @@ from common import *
 
 items = ["BeefTitle", "BeefOpponent", "BeefDescription", "TimeCreated", "_id"]
 
-'''
-title_dict = {}
-title_dict["CreatedByName"] = "Created By"
-title_dict["CreatedById"] = "Created By (id)"
-title_dict["TimeCreated"] = "Creation Time"
-title_dict["BeefTitle"] = "Title"
-title_dict["beef_title"] = "Title" #deprecated
-title_dict["BeefOpponent"] = "Beef Against"
-title_dict["beef_opponent"] = "Against" #deprecated
-title_dict["BeefDescription"] = "Beef Description"
-title_dict["comment"] = "Beef Description"
-#title_dict["ArgumentLeft"] = "Beef's Argument"
-#title_dict["ArgumentRight"] = "Defence's Argument"
-title_dict["CommentList"] = "Comments"
-'''
 
 def _get_dict_subset(dict, items):
     if items==None: return dict
@@ -46,32 +31,16 @@ def _get_dict_subset(dict, items):
     return beef_dict
 
 
-def _title_map(name):
-    """ A mapping of database column titles to html (pretty) titles
-
-    """
-
-    #if name in title_dict:
-    #    return title_dict[name]
-
-    return name
-
-     
 def _format_dict(beef_dict, items):
     """ Format the titles of a return dict
+
+    Reduce the elements in a dict to only the
+    items we need, and format them for output
 
     """
 
     beef_dict = _get_dict_subset(beef_dict, items)
     beef_dict['TimeCreated'] = beef_dict["TimeCreated"].strftime("%a, %B %d, %Y")
-    '''
-    for key in beef_dict:
-        if key in title_dict:
-            new_key = _title_map(key)
-            beef_dict[new_key] = beef_dict.pop(key)
-        else:
-            pass
-    '''        
     return beef_dict
 
 
@@ -116,7 +85,7 @@ def create_beef(request):
     beef_dict["BeefOpponent"] = form_dict["BeefOpponent"]
     beef_dict["BeefDescription"] = form_dict["BeefDescription"]
 
-    beef_dict["CreatedByName"] =  current_user.name
+    beef_dict["CreatedByName"] = current_user.name
     beef_dict["CreatedById"] = bson.objectid.ObjectId(current_user.id)
     beef_dict["TimeCreated"] = datetime.datetime.utcnow()
     beef_dict["ArgumentLeft"]  = ""
@@ -358,3 +327,50 @@ def vote(beef_id, user_id, vote_for):
     print "Action Completed: ", action
     return jsonify(flag=0, action=action)
 
+
+
+def add_comment(user_id, beef_id, comment):
+    """ Add a comment to the db and return a response
+
+    The comment is added with the user_id of the
+    person who wrote it, the beef_id that it was
+    written on, and the string of the comment itself
+    
+    We of course have to add this comment's id to the
+    list of comments in the beef
+
+    We also need to add this comment's id to a 
+    user's list of comments
+
+    """
+
+    comment_dict = {}
+    comment_dict["user_id"] = bson.objectid.ObjectId(user_id)
+    comment_dict["beef_id"] = bson.objectid.ObjectId(beef_id)
+    comment_dict["comment"] = comment
+    comment_dict["TimeCreated"] = datetime.datetime.utcnow()
+
+    # First, add the comment to the comment collection
+    comments_collection = getCollection("comments")
+    comment_id = comments_collection.save(comment_dict)
+
+    # Then, add it to the beef
+    beef_collection = getCollection("beef")    
+    current_beef = beef_collection.find_one({"_id" : bson.objectid.ObjectId(beef_id)})
+    if current_beef == None:
+        print "Error: Cannot find beef in collection with id: ", beef_id
+        raise InvalidEntry
+    current_beef["CommentList"].append(comment_id)
+    beef_collection.update(current_beef)
+
+    # And finally, add it to the user
+    users_collection = getCollection("users")    
+    current_user = user_collection.find_one({"_id" : bson.objectid.ObjectId(user_id)})
+    if current_user == None:
+        print "Error: Cannot find user in collection with id: ", user_id
+        raise InvalidEntry
+    current_user["CommentList"].append(comment_id)
+    users_collection.update(current_user)
+    
+    # Okay, we're done.  Boom Sauce
+    return jsonify(flag=0)
