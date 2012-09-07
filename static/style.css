@@ -488,6 +488,7 @@ button.Vote.VoteRight {
 }
 
 
+/*
 #Comment_List textarea{  
   margin-left: auto;
   margin-right: auto;
@@ -495,8 +496,31 @@ button.Vote.VoteRight {
   width: 600px;
   min-height: 200px;
 }
+*/
 
-#Comment_List textarea.Comment, textarea.Content { 
+#Comment_List {  
+  margin-left: auto;
+  margin-right: auto;
+  width: 600px;
+  margin-bottom: 20px;
+}
+
+#Comment_List textarea.Comment { 
+  border: 0px solid black;
+  resize: none;
+  padding: 0px;
+}
+
+#Comment_List .Comment, #Comment_List textarea.Comment {  
+  margin-left: auto;
+  margin-right: auto;
+  background-color: #EEE;
+  width: 600px;
+  min-height: 200px;
+}
+
+/*#Comment_List textarea.Comment, textarea.Content { */
+#Comment_List .Comment, .Content { 
   color: #333;
   font-weight: normal;
   line-height: 140%;

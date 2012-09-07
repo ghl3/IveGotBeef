@@ -72,9 +72,12 @@
     <h3 id="NoCommentsYet">No comments added (but you can be the first)</h3>
     {% else %}
     {% for comment in comment_list %}
-    <textarea  readonly="true" class="Comment">
-      {{ comment["comment"] }}
-    </textarea>
+    <div class="Comment">
+      <textarea  readonly="true" class="Comment">
+	{{ comment["comment"] }}
+      </textarea>
+      {{ comment["user_id"] }} {{ comment["CreationTime"] }}
+    </div>
     {% endfor %}
     {% endif %}
   </div>  
