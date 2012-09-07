@@ -275,6 +275,24 @@ def api_vote_for():
     return result
 
 
+@app.route("/api/add_comment", methods=["GET", "POST"])
+@login_required
+def api_add_comment():
+    """ Send a user's vote to the database, updating all necessary entries
+
+    """
+    try:
+        comment = request.form["comment"]
+        beef_id = request.form["beef_id"]
+        user_id = current_user.get_id()
+        result = beeef.add_comment(user_id=user_id, beef_id=beef_id, comment=comment)
+    except:
+        print traceback.format_exc()
+        return jsonify(flag=1)
+
+    return result
+
+
 #
 # Errors
 #
