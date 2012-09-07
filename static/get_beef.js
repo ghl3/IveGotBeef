@@ -124,9 +124,6 @@ function AddComment() {
 			    'fast',
 			    "linear"
 			   );
-
-
-
 }
 
 function SaveComment() {
@@ -135,6 +132,26 @@ function SaveComment() {
     // new comment.  This does not yet save
     // the comment.
 
+    // Get the current text
+    var comment_text = $("#NewComment").val();
+    $("#NewComment").val('');
+    console.log(comment_text);
+
+    var comment = document.createElement("textarea");
+    comment.setAttribute("class", "Comment");
+    comment.setAttribute("readonly", "true");
+    comment.value = comment_text;
+    //comment.setAttribute("value", comment_text);
+
+    $("#Comment_List").append(comment);
+
+    //$('#Comment_List').animate({scrollTop: $("#Comment_List").offset().top}, 'slow');
+    //$('#Comment_List').animate( {scrollTop: $("#Comment_List")}, 'slow');
+    $('html').animate( {scrollTop: $("#Comment_List")}, 'slow');
+
     $('#NewCommentWrapper').hide();
     $('#AddComment').show();
+
+
+
 }

@@ -455,7 +455,7 @@ button.Vote.VoteRight {
   background-color: #E5EDF9;
 }
 
-.Argument textarea, .Comments textarea { 
+.Argument textarea, .Comment_List textarea { 
   width: 300px;
   min-height: 400px;
   text-align: left;
@@ -474,6 +474,8 @@ button.Vote.VoteRight {
   word-wrap: break-word;
 }
 
+
+
 .BeefTable {  
   margin-left: auto;
   margin-right: auto;
@@ -485,7 +487,8 @@ button.Vote.VoteRight {
   text-align: center;
 }
 
-.Comments textarea{  
+
+#Comment_List textarea{  
   margin-left: auto;
   margin-right: auto;
   background-color: #EEE;
@@ -493,7 +496,14 @@ button.Vote.VoteRight {
   min-height: 200px;
 }
 
-
+#Comment_List textarea.Comment, textarea.Content { 
+  color: #333;
+  font-weight: normal;
+  line-height: 140%;
+  font-size: 100%;
+  font-family: calibri,tahoma,arial,sans-serif;
+  font-size: 16px;
+}
 
 #NewComment{  
 

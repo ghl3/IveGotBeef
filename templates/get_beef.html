@@ -47,6 +47,7 @@
 
       <h2 class="ArgumentTitle" >Argument:</h2>
       <textarea class="Content" {% if beef_owner %} redonly="false" {% else %} readonly="true" {% endif %} >
+	My Argument Example Left
 	{{ argument_left }}
       </textarea>
     </div>
@@ -54,6 +55,7 @@
     <div class="Argument Right">
       <h2 class="ArgumentTitle">Defense:</h2>
       <textarea class="Content" {% if beef_owner %} redonly="false" {% else %} readonly="true" {% endif %} >
+	My Argument Example Right
 	{{ argument_right }}
       </textarea>
     </div>
@@ -65,8 +67,9 @@
 
 <div class="CommentWrapper">
   <h2> Comments </h2>
-  <div class="Comments">
-    <textarea readonly="true">
+  <div id="Comment_List">
+    <textarea  readonly="true" class="Comment">
+      THIS IS AN EXAMPLE COMMENT
     </textarea>
   </div>  
   <button id="AddComment">Add a Comment</button>
@@ -74,6 +77,7 @@
 </div>
 <div style="clear:both;"></div>
 <div id="NewCommentWrapper" class="CommentWrapper">
+  <h2> Please add a comment </h2>
   <textarea id="NewComment">
   </textarea> <br>
   <button id="SaveComment">Save Comment</button>
