@@ -175,7 +175,7 @@ def get_beef(_id):
     # Now, fetch the comments
     # Comments are stored as ObjectId's
     comments_collection = getCollection("comments")
-    comments = beef_dict.pop("Comments")
+    comments = beef_dict.pop("CommentList")
     comment_list = []
     for comment_id in comments:
         comment = comments_collection.find_one({"_id" : comment_id})
@@ -378,7 +378,7 @@ def add_comment(user_id, beef_id, comment):
     if current_user == None:
         print "Error: Cannot find user in collection with id: ", user_id
         raise InvalidUser
-    current_user["CommentList"].append(comment_id)
+    current_user["comments"].append(comment_id)
     users_collection.update(current_user)
     
     # Okay, we're done.  Boom Sauce

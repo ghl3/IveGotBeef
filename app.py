@@ -88,7 +88,7 @@ def get_beef():
     try:
         _id = request.args.get('_id', '')
         (beef_dict, comment_list, kwargs) = beef.get_beef(_id)
-    except InvalidEntry:
+    except InvalidUser, InvalidBeef:
         print traceback.format_exc()
         return render_template('404.html')
     except:
