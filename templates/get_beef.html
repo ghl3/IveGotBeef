@@ -45,7 +45,7 @@
     
     <div class="Argument Left">
       <h2 class="ArgumentTitle" >Argument:</h2>
-      <textarea class="Content" {% if beef_owner %} redonly="false" {% else %} readonly="true" {% endif %} >
+      <textarea id="ArgumentLeftText" class="Content" {% if beef_owner %} redonly="false" {% else %} readonly="true" {% endif %} >
 	{{ argument_left }}
       </textarea>
       {% if beef_owner %} <button id="SaveLeft">Save Changes </button>{% else %}{% endif %}
@@ -53,7 +53,7 @@
     
     <div class="Argument Right">
       <h2 class="ArgumentTitle">Defense:</h2>
-      <textarea class="Content" {% if beef_against %} redonly="false" {% else %} readonly="true" {% endif %} >
+      <textarea id="ArgumentRightText" class="Content" {% if beef_against %} redonly="false" {% else %} readonly="true" {% endif %} >
 	My Argument Example Right
 	{{ argument_right }}
       </textarea>

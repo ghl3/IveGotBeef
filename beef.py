@@ -24,6 +24,16 @@ from common import *
 #items = ["BeefTitle", "BeefOpponent", "BeefDescription", "TimeCreated", "_id"]
 
 
+# WTF Form
+from wtforms import Form, BooleanField, TextField, TextAreaField, PasswordField, validators
+
+class BeefForm(Form):
+    Title = TextField('Title', [validators.Required(), validators.Length(min=3, max=25)])
+    Opponent = TextField('Against', [validators.Required(), validators.Length(min=3, max=25)])
+    Description = TextAreaField('Desription', [validators.Required(), validators.Length(min=5, max=1000)])
+    Argument = TextAreaField('Argument', [validators.Required(), validators.Length(min=5, max=5000)])
+
+
 def _get_dict_subset(dict, items):
     if items==None: return dict
     beef_dict = OrderedDict()
@@ -409,15 +419,39 @@ def add_comment(user_id, beef_id, comment):
     return jsonify(flag=0, comment_div=comment_div )
 
 
+def update_argument(beef_id, argument, position):
+    """ Update a beef's argument in the database
 
+    """
 
-# WTF Form
+    print "Updating Beef argument"
 
-from wtforms import Form, BooleanField, TextField, TextAreaField, PasswordField, validators
-
-class BeefForm(Form):
-    Title = TextField('Title', [validators.Required(), validators.Length(min=3, max=25)])
-    Opponent = TextField('Against', [validators.Required(), validators.Length(min=3, max=25)])
-    Description = TextAreaField('Desription', [validators.Required(), validators.Length(min=5, max=1000)])
-    Argument = TextAreaField('Argument', [validators.Required(), validators.Length(min=5, max=5000)])
+    # Get the user who is attempting to do the update
+    user_id = current_user.get_id()
     
+    beef_collection = getCollection("beef")
+    beef_entry = beef_collection.find_one({"_id", bson.objectid.ObjectId(beef_id)});
+    
+    # Check that the right user is trying to do the update
+    if not (position == "Left" or position == "Right"):
+        print "Invalid 'position' supplied: ", position
+        print "Must be 'Left' or 'Right'"
+        return jsonify(flag=1)
+    elif position=="Left" and user_id != beef_entry["_id"].__str__():
+        print "Error: Only the Beef Creator can update the left argument"
+        return jasonify(flag=1)
+    elif position=="Left" and user_id != beef_entry["BeefAgainst"].__str__():
+        print "Error: Only the Beef Against-ee can update the right argument"
+        return jasonify(flag=1)
+    else:
+        print "Unexpected control flow"
+        return jsonify(flag=1)
+
+    if position=="Left":
+        beef_entry["ArgumentLeft"] = argument
+
+    if position=="Right":
+        beef_entry["ArgumentRight"] = argument
+
+    beef_collection.save(beef_entry)
+    return jsonify(flag=0)

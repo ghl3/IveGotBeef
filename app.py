@@ -37,11 +37,13 @@ login_manager.login_view = "/login"
 login_manager.setup_app(app)
 
 
-
 # Public Pages:
 
 @app.route('/')
 def index():
+    """ The base of the site
+
+    """
     
     try:
         beef_list = beef.latest(10)
@@ -153,7 +155,7 @@ def api_create_beef( ):
 
     return response
 
-
+'''
 @app.route('/api/get_beef', methods=['GET', 'POST'])
 def api_get_beef():
     """ Get a specific beef topic
@@ -166,23 +168,29 @@ def api_get_beef():
         return jsonify(flag=1)
 
     return response
+'''
 
-
-@app.route('/api/update_beef', methods=['GET', 'POST'])
+@app.route('/api/update_argument', methods=['GET', 'POST'])
 @login_required
-def api_update_beef( ):
+def api_update_argument():
     """ Update an activity in the db
 
     """
+
+    print "Updating beef argument"
     try:
-        response = beef.update()
+        print request.form
+        beef_id = request.form["beef_id"]
+        argument = request.form["argument"]
+        position = request.form["position"]
+        response = beef.update_argument(beef_id=beef_id, argument=argument, position=position)
     except:
         print traceback.format_exc()
         return jsonify(flag=1)
 
     return response
 
-
+'''
 @app.route('/api/delete_beef', methods=['GET', 'POST'])
 @login_required
 def api_delete_beef( ):
@@ -196,7 +204,7 @@ def api_delete_beef( ):
         return jsonify(flag=1)
         
     return response
-
+'''
 
 @app.route('/api/new_user', methods=['GET', 'POST'])
 def api_new_user( ):
