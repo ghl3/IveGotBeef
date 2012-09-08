@@ -56,7 +56,7 @@ def get_userId(username):
     else:
         return user_entry["_id"]
 
-def create_beef(request):
+def create_beef(beef_form):
     """ Add an activity to the database
 
     Each Beef in the database has the following entries:
@@ -74,41 +74,29 @@ def create_beef(request):
 
     print "add_beef - Begin()"
 
-    if request.method != 'POST':
-        print "add_beef - ERROR: Expected POST http request"
-        return jsonify(flag=1)
-
     # Get the serialized activity JSON object
     # from the request
-    if 'beef' not in request.form:
-        print "add_beef() - ERROR: 'beef' table not in request"
-        return jsonify(flag=1)
-        
-    form_dict = json.loads( request.form['beef'] )
-    if form_dict == None:
-        print "add_beef() - ERROR: Input beef_dict is 'None'"
-        return jsonify(flag=1)
+    form_dict = beef_form.data
     print form_dict
-    
 
     # Make sure that the beef is against a valid opponent
-    beef_opponent_id = get_userId(form_dict["BeefOpponent"])
+    beef_opponent_id = get_userId(form_dict["Opponent"])
     if beef_opponent_id==None:
-        print "Error: Cannot create beef, invalid opponent name: ", form_dict["BeefOpponent"]
+        print "Error: Cannot create beef, invalid opponent name: ", form_dict["Opponent"]
         return jasonify(flag=1, message="Invalid Opponent")
 
     # Create the dictionary to be added
     # to the database
     beef_dict = {}
-    beef_dict["BeefTitle"] = form_dict["BeefTitle"]
-    beef_dict["BeefOpponent"] = form_dict["BeefOpponent"]
-    beef_dict["BeefDescription"] = form_dict["BeefDescription"]
+    beef_dict["BeefTitle"] = form_dict["Title"]
+    beef_dict["BeefOpponent"] = form_dict["Opponent"]
+    beef_dict["BeefDescription"] = form_dict["Description"]
     beef_dict["BeefOpponentId"] = beef_opponent_id
 
     beef_dict["CreatedByName"] = current_user.name
     beef_dict["CreatedById"] = bson.objectid.ObjectId(current_user.id)
     beef_dict["TimeCreated"] = datetime.datetime.utcnow()
-    beef_dict["ArgumentLeft"]  = ""
+    beef_dict["ArgumentLeft"]  = form_dict["Argument"]
     beef_dict["ArgumentRight"] = ""
     beef_dict["CommentList"] = []
     beef_dict["VotesFor"] = 0
@@ -429,7 +417,7 @@ from wtforms import Form, BooleanField, TextField, TextAreaField, PasswordField,
 
 class BeefForm(Form):
     Title = TextField('Title', [validators.Required(), validators.Length(min=3, max=25)])
-    Against = TextField('Against', [validators.Required(), validators.Length(min=3, max=25)])
+    Opponent = TextField('Against', [validators.Required(), validators.Length(min=3, max=25)])
     Description = TextAreaField('Desription', [validators.Required(), validators.Length(min=5, max=1000)])
     Argument = TextAreaField('Argument', [validators.Required(), validators.Length(min=5, max=5000)])
     

@@ -130,12 +130,23 @@ def api_latest_beef():
 
 @app.route('/api/create_beef', methods=['GET', 'POST'])
 @login_required
-def api_submit_beef( ):
+def api_create_beef( ):
     """ Create a new beef activity to the db
 
     """
+    print "Creating Beef"
+    if request.method != 'POST':
+        print "Error: Requires POST requiest"
+        return jsonify(flag=1)
+
     try:
-        response = beef.create_beef(request)
+        form = beef.BeefForm(request.form)
+        if form.validate():
+            response = beef.create_beef(form)
+        else:
+            print "Cannot create Beef, Form is Invalid"
+            print form.errors
+            return jsonify(flag=1, message="Form Is Invalid")
     except:
         print traceback.format_exc()
         return jsonify(flag=1)
@@ -202,6 +213,8 @@ def api_add_user( ):
         if form.validate():
             response = login_tools.add_user(form)
         else:
+            print "Cannot add user, Form is invalid"
+            print form.errors
             return jsonify(flag=1, message="Form Is Invalid")
     except:
         print traceback.format_exc()

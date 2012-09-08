@@ -21,6 +21,7 @@ $(document).ready(function() {
 	    return false;
 	}
 
+	/*
 	// Create a javascript dict object out
 	// of that encoded dict
 	var BeefJSON = {};
@@ -31,7 +32,7 @@ $(document).ready(function() {
 	console.log("Create new Beef and submit to DB");
 	console.log( JSON.stringify(BeefJSON) );
 	BeefJSON = JSON.stringify( BeefJSON );
-
+*/
 	// Create a call-back function
 	// for debugging and logging
 	function successCallback(data) {
@@ -49,7 +50,7 @@ $(document).ready(function() {
 	}
 	
 	// Submit the AJAX query
-	$.post( "/api/create_beef", {beef : BeefJSON}, successCallback );
+	$.post( "/api/create_beef", CreateBeefForm.serialize(), successCallback );
 	console.log("CreateBeefFromForm() - Submittted Activity AJAX request");
 	console.log("CreateBeef() - End");
 	return false;
