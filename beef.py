@@ -425,11 +425,11 @@ def add_comment(user_id, beef_id, comment):
 
 # WTF Form
 
-from wtforms import Form, BooleanField, TextField, PasswordField, validators
+from wtforms import Form, BooleanField, TextField, TextAreaField, PasswordField, validators
 
 class BeefForm(Form):
     Title = TextField('Title', [validators.Required(), validators.Length(min=3, max=25)])
     Against = TextField('Against', [validators.Required(), validators.Length(min=3, max=25)])
-    Description = TextField('Desription', [validators.Required(), validators.Length(min=5, max=1000)])
-    Argument = TextField('Argument', [validators.Required(), validators.Length(min=5, max=5000)])
+    Description = TextAreaField('Desription', [validators.Required(), validators.Length(min=5, max=1000)])
+    Argument = TextAreaField('Argument', [validators.Required(), validators.Length(min=5, max=5000)])
     

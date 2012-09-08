@@ -77,7 +77,8 @@ def create_beef():
     """ Create a new beef
 
     """
-    return render_template('create_beef.html')
+    beef_form = beef.BeefForm()
+    return render_template('create_beef.html', form=beef_form)
 
 
 @app.route('/Beef', methods=['GET'])
