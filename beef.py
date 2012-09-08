@@ -428,24 +428,24 @@ def update_argument(beef_id, argument, position):
 
     # Get the user who is attempting to do the update
     user_id = current_user.get_id()
-    
+
     beef_collection = getCollection("beef")
-    beef_entry = beef_collection.find_one({"_id", bson.objectid.ObjectId(beef_id)});
+    beef_entry = beef_collection.find_one({"_id": bson.objectid.ObjectId(beef_id)});
     
     # Check that the right user is trying to do the update
     if not (position == "Left" or position == "Right"):
         print "Invalid 'position' supplied: ", position
         print "Must be 'Left' or 'Right'"
         return jsonify(flag=1)
-    elif position=="Left" and user_id != beef_entry["_id"].__str__():
+    elif position=="Left" and user_id != beef_entry["CreatedById"].__str__():
         print "Error: Only the Beef Creator can update the left argument"
-        return jasonify(flag=1)
-    elif position=="Left" and user_id != beef_entry["BeefAgainst"].__str__():
-        print "Error: Only the Beef Against-ee can update the right argument"
-        return jasonify(flag=1)
-    else:
-        print "Unexpected control flow"
+        print "Current User: ", user_id, " Beef Creator: ", beef_entry
         return jsonify(flag=1)
+    elif position=="Right" and user_id != beef_entry["BeefOpponentId"].__str__():
+        print "Error: Only the Beef Against-ee can update the right argument"
+        return jsonify(flag=1)
+    else:
+        pass
 
     if position=="Left":
         beef_entry["ArgumentLeft"] = argument
