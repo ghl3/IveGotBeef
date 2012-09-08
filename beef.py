@@ -419,3 +419,17 @@ def add_comment(user_id, beef_id, comment):
     # Okay, we're done.  Boom Sauce
     comment_div = render_template("comment.html", comment=_format_dict(comment_dict))
     return jsonify(flag=0, comment_div=comment_div )
+
+
+
+
+# WTF Form
+
+from wtforms import Form, BooleanField, TextField, PasswordField, validators
+
+class BeefForm(Form):
+    Title = TextField('Title', [validators.Required(), validators.Length(min=3, max=25)])
+    Against = TextField('Against', [validators.Required(), validators.Length(min=3, max=25)])
+    Description = TextField('Desription', [validators.Required(), validators.Length(min=5, max=1000)])
+    Argument = TextField('Argument', [validators.Required(), validators.Length(min=5, max=5000)])
+    
