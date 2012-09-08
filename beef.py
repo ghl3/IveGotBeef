@@ -145,8 +145,10 @@ def latest(num_entries=10):
 
     items = ["BeefTitle", "BeefOpponent", "BeefDescription", "TimeCreated", "_id"]
     beef_collection = getCollection("beef")
-    beef_list = beef_collection.find(limit=num_entries)
+    beef_list = beef_collection.find(limit=num_entries, sort=[("_id", -1)])
     
+    #return_list = beef_collection.find().sort({"_id":1}).limit(num_entries);
+
     return_list = []
     for entry in beef_list:
         return_list.append(_format_dict(entry, items))
