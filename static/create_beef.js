@@ -1,3 +1,6 @@
+
+
+
 $(document).ready(function() {
     $('#CreateBeef').live('click', function() {
 	
@@ -7,8 +10,16 @@ $(document).ready(function() {
 	// serialize it, 
 	// and send it to python
 	// using jquery/ajax
-	var NewBeefForm = $('#NewBeefForm');
-	var BeefArray = NewBeefForm.serializeArray();
+	var CreateBeefForm = $('#CreateBeefForm');
+	var BeefArray = CreateBeefForm.serializeArray();
+
+	// Run jquery validation
+	CreateBeefForm.validate();
+	if( ! CreateBeefForm.valid() ) {
+	    console.log("Error: Form is invalid.");
+	    $("#Result").html("Error: Form is invalid.").show();
+	    return false;
+	}
 
 	// Create a javascript dict object out
 	// of that encoded dict
