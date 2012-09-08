@@ -198,12 +198,12 @@ def api_delete_beef( ):
     return response
 
 
-@app.route('/api/add_user', methods=['GET', 'POST'])
-def api_add_user( ):
+@app.route('/api/new_user', methods=['GET', 'POST'])
+def api_new_user( ):
     """ Add a user to the database
 
     """
-    print "Adding User"
+    print "Adding New User"
     if request.method != 'POST':
         print "Error: Requires POST requiest"
         return jsonify(flag=1)
@@ -211,9 +211,9 @@ def api_add_user( ):
     try:
         form = login_tools.RegistrationForm(request.form)
         if form.validate():
-            response = login_tools.add_user(form)
+            response = login_tools.new_user(form)
         else:
-            print "Cannot add user, Form is invalid"
+            print "Cannot create new user, Form is invalid"
             print form.errors
             return jsonify(flag=1, message="Form Is Invalid")
     except:

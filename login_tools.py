@@ -37,12 +37,12 @@ class UserClass(UserMixin):
         #    return check_password_hash(self.pw_hash, password)
 
 
-def add_user(user_form):
-    """ Add a user and pw_hash to the database
+def new_user(user_form):
+    """ Add a new user and pw_hash to the database
 
     """
 
-    print "Adding user from form"
+    print "Adding new user from form"
 
     # Get the dictionary (Immutable, to be specific)
     # From the WTForm object

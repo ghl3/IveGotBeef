@@ -59,17 +59,17 @@ $(document).ready(function() {
 	function successfulCallback(data) {
 
 	    if( data["flag"]!=0 ) {
-		console.log("Error: failed to add User");
+		console.log("Error: failed to add new User");
 		return false;
 	    }
 
 	    if( data["UserAdded"]!=0) {
-		console.log("Error: Failed to add user");
+		console.log("Error: Failed to add new user");
 		console.log(data["Message"]);
 		return false;
 	    }
 
-	    console.log("Successfully Added User");
+	    console.log("Successfully Added New User");
 	    console.log("Logging in user:");
 	    LoginUser(UserName, UserPass, next);
 
@@ -77,7 +77,7 @@ $(document).ready(function() {
 	}
 
 	//$.post("/api/add_user", {user: JSON.stringify(UserJSON)}, successfulCallback );
-	$.post("/api/add_user", NewUserForm.serialize(), successfulCallback );
+	$.post("/api/new_user", NewUserForm.serialize(), successfulCallback );
 
 	console.log("CreateUser() - End");
 	return false;
