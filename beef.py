@@ -21,7 +21,7 @@ from common import *
 # display the beef.
 #
 
-items = ["BeefTitle", "BeefOpponent", "BeefDescription", "TimeCreated", "_id"]
+#items = ["BeefTitle", "BeefOpponent", "BeefDescription", "TimeCreated", "_id"]
 
 
 def _get_dict_subset(dict, items):
@@ -44,6 +44,17 @@ def _format_dict(beef_dict, items=None):
     beef_dict['TimeCreated'] = beef_dict["TimeCreated"].strftime("%a, %B %d, %Y")
     return beef_dict
 
+
+def get_userId(username):
+    """ Given a username, get the user id
+
+    """
+    users_collection = getCollection("users")
+    user_entry = users_collection.find_one({"username" : username })
+    if user_entry==None:
+        return None
+    else:
+        return user_entry["_id"]
 
 def create_beef(request):
     """ Add an activity to the database
@@ -79,12 +90,20 @@ def create_beef(request):
         return jsonify(flag=1)
     print form_dict
     
+
+    # Make sure that the beef is against a valid opponent
+    beef_opponent_id = get_userId(form_dict["BeefOpponent"])
+    if beef_opponent_id==None:
+        print "Error: Cannot create beef, invalid opponent name: ", form_dict["BeefOpponent"]
+        return jasonify(flag=1, message="Invalid Opponent")
+
     # Create the dictionary to be added
     # to the database
     beef_dict = {}
     beef_dict["BeefTitle"] = form_dict["BeefTitle"]
     beef_dict["BeefOpponent"] = form_dict["BeefOpponent"]
     beef_dict["BeefDescription"] = form_dict["BeefDescription"]
+    beef_dict["BeefOpponentId"] = beef_opponent_id
 
     beef_dict["CreatedByName"] = current_user.name
     beef_dict["CreatedById"] = bson.objectid.ObjectId(current_user.id)
@@ -126,6 +145,7 @@ def latest(num_entries=10):
 
     """
 
+    items = ["BeefTitle", "BeefOpponent", "BeefDescription", "TimeCreated", "_id"]
     beef_collection = getCollection("beef")
     beef_list = beef_collection.find(limit=num_entries)
     
@@ -147,7 +167,9 @@ def get_beef(_id):
     """
 
     # Be sure to fetch these parameters:
-    to_fetch = items + ["ArgumentLeft", "ArgumentRight", "VotesFor", "VotesAgainst", "CommentList"]
+    to_fetch = ["_id", "BeefTitle", "CreatedById", "BeefOpponent", "BeefDescription", 
+                "TimeCreated", "ArgumentLeft", "ArgumentRight", 
+                "VotesFor", "VotesAgainst", "CommentList"]
 
     beef_collection = getCollection("beef")
     beef_entry = beef_collection.find_one({"_id" : bson.objectid.ObjectId(_id)})
@@ -167,11 +189,17 @@ def get_beef(_id):
     kwargs['VotesFor'] = beef_dict.pop("VotesFor")
     kwargs['VotesAgainst'] = beef_dict.pop("VotesAgainst")
 
-    beef_owner_id = get_beef_owner(_id)
-    if current_user.get_id() == beef_owner_id:
+    # Determie who started the beef
+    if current_user.get_id() == beef_dict["CreatedById"].__str__():
         kwargs['beef_owner']=True
     else:
         kwargs['beef_owner']=False
+
+    # Determie who the beef is against
+    if current_user.get_id() == beef_dict["BeefOpponent"].__str__():
+        kwargs['beef_against']=True
+    else:
+        kwargs['beef_against']=False
 
     # Now, fetch the comments
     # Comments are stored as ObjectId's

@@ -90,6 +90,34 @@ function vote(vote_for) {
 }
 
 //
+// Edit the arugments
+//
+$(document).ready(function() {
+    $('#SaveLeft').hide();
+    $(".Left textarea").keydown(function() {
+	$('#SaveLeft').show(); 
+    });
+    
+    $('#SaveRight').hide();
+    $(".Right textarea").keydown(function() { 
+	$('#SaveRight').show(); 
+    });
+
+    $("#SaveLeft").click(function() {
+	$('#SaveLeft').hide();
+    });
+
+    $("#SaveRight").click(function() {
+	$('#SaveRight').hide();
+    });
+
+});
+
+
+
+
+
+//
 // Comments
 //
 

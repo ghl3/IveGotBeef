@@ -36,6 +36,8 @@ html, body {
 }
 
 
+
+
 /* Document: Contains the header, the main, the sidebar, and the footer */
 div.document {
   width: 940px;
@@ -88,24 +90,19 @@ div.documentwrapper {
 }
 
 
-#navebar_padding{  
-  width: 220px;
-  float: left;
+/* Logo  */ 
+
+.Logo { 
+
+  
 }
 
 #navebar_wrapper {  
-  /*width: 400px; */
-  /*width: auto;*/
   width: 500px;
-  /*
-  margin-left: auto; 
-  margin-right: auto;
-     */
-float: left;
+  float: left;
 }
 
 #navebar { 
-  /*width: 500px;*/
   margin-left: auto; 
   margin-right: auto;
 }
@@ -124,6 +121,11 @@ nav a {
 
 #navebar a:hover {
     color: black; /*#7FD600;*/
+}
+
+#navebar_padding{  
+  width: 220px;
+  float: left;
 }
 
 #User {  
