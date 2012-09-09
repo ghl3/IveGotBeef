@@ -13,19 +13,8 @@ from flask.ext.login import current_user
 
 from common import *
 
-# import flask_login
-
-#
-# The tools used by the app
-# to connect to, update, and
-# display the beef.
-#
-
-#items = ["BeefTitle", "BeefOpponent", "BeefDescription", "TimeCreated", "_id"]
-
-
-# WTF Form
 from wtforms import Form, BooleanField, TextField, TextAreaField, PasswordField, validators
+
 
 class BeefForm(Form):
     Title = TextField('Title', [validators.Required(), validators.Length(min=3, max=25)])
@@ -65,6 +54,7 @@ def get_userId(username):
         return None
     else:
         return user_entry["_id"]
+
 
 def create_beef(beef_form):
     """ Add an activity to the database
@@ -147,8 +137,6 @@ def latest(num_entries=10):
     beef_collection = getCollection("beef")
     beef_list = beef_collection.find(limit=num_entries, sort=[("_id", -1)])
     
-    #return_list = beef_collection.find().sort({"_id":1}).limit(num_entries);
-
     return_list = []
     for entry in beef_list:
         return_list.append(_format_dict(entry, items))
@@ -170,7 +158,7 @@ def get_beef(_id):
     to_fetch = ["_id", "BeefTitle", "CreatedById", "BeefOpponent", "BeefDescription", 
                 "TimeCreated", "ArgumentLeft", "ArgumentRight", 
                 "VotesFor", "VotesAgainst", "CommentList"]
-
+    
     beef_collection = getCollection("beef")
     beef_entry = beef_collection.find_one({"_id" : bson.objectid.ObjectId(_id)})
     
@@ -316,7 +304,6 @@ def vote(beef_id, user_id, vote_for):
             raise InvalidVote
         pass
 
-    
     # If we don't need to do anything, return right away
     if action=="nothing":
         print "vote_for:", vote_for
@@ -364,7 +351,6 @@ def vote(beef_id, user_id, vote_for):
 
     print "Action Completed: ", action
     return jsonify(flag=0, action=action)
-
 
 
 def add_comment(user_id, beef_id, comment):
