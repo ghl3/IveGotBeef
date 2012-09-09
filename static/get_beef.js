@@ -107,15 +107,27 @@ $(document).ready(function() {
 //	$('#SaveLeft').hide();
 //    });
 
-    $("#SaveLeft").click(SaveArgumentLeft);
+//    $("#SaveRight").click(function() {
+//	$('#SaveRight').hide();
+//    });
 
-    $("#SaveRight").click(function() {
-	$('#SaveRight').hide();
-    });
+    $("#SaveLeft").click(SaveArgumentLeft);
+    $("#SaveRight").click(SaveArgumentRight);
 
 });
 
+
+//
+// A bit of doubly written code below
+// consider refactoring or rewriting a bit... :)
+//
+
+
 function SaveArgumentLeft() {
+    //
+    // Save the text entered in the left
+    // argument 'textarea' into the database
+    //
 
     function successfulCallback(data) {
 
@@ -141,6 +153,40 @@ function SaveArgumentLeft() {
 	.error(errorCallback);
     
     console.log("Request to update ArgumentLeft.  Waiting...");
+    
+}
+
+
+function SaveArgumentRight() {
+    //
+    // Save the text entered in the right
+    // argument 'textarea' into the database
+    //
+
+    function successfulCallback(data) {
+
+	if( data["flag"]!=0 ) {
+	    console.log("Error: Failed to save updated argument :(");
+	    return false;
+	}
+	
+	$('#SaveRight').hide();
+    }
+    
+    function errorCallback(data) {
+	console.log("There was a server error.  Argument not saved");
+    }
+    
+    // Get the information we need and send it to the
+    // db via async ajax
+    var argument_text = $("#ArgumentRightText").val();
+    var beef_id = getURLParameter("_id");
+    console.log("Comment for beef: " + beef_id + ": " + argument_text);
+    
+    $.post("/api/update_argument", {"beef_id" : beef_id, "position": "Right", "argument" : argument_text}, successfulCallback)
+	.error(errorCallback);
+    
+    console.log("Request to update ArgumentRight.  Waiting...");
     
 }
 
