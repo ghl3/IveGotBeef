@@ -195,13 +195,17 @@ def _clean_beef_entries():
                 if opp_id != user_id:
                     print "Error: mismatch between user id and beef id"
                     print opp_id, user_id
+                    print "Going to set the user_id"
                 pass
+
+            # Set the new values
+            beef["BeefOpponent"] = beef_opp
+            beef["BeefOpponentId"] = user_id
 
         else:
             print "Error: Beef has no opponent: ", beef
 
-        pass
-        #beef_coll.save(beef)
+        beef_coll.save(beef)
 
 
     
