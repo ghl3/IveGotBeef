@@ -35,9 +35,6 @@ html, body {
 
 }
 
-
-
-
 /* Document: Contains the header, the main, the sidebar, and the footer */
 div.document {
   width: 940px;
@@ -66,7 +63,6 @@ div.documentwrapper {
   width: 100%;
 }
 
-
 .PlainText {  
   text-align: left;
 }
@@ -89,12 +85,8 @@ div.documentwrapper {
   margin-bottom: 20px;
 }
 
-
 /* Logo  */ 
-
 .Logo { 
-
-  
 }
 
 #navebar_wrapper {  
@@ -421,36 +413,41 @@ button.Vote.VoteRight {
 }
 
 .ArgumentTitle {  
-  margin-bottom: 5px;
-  margin-top: 0px;
   float: left;
-  margin-left: 10px;
-  margin-right: 10px;
+
   width: 200px;
+  margin-left: 5px;
+  margin-right: 5px;
+
+  height: 30px;
+  margin-bottom: 5px;
+  margin-top: 15px;
+
+  text-align: center;
+}
+
+/* Total Width: 30 */
+.VotesTotal {  
+  width: 21px;
+  border: 2px solid black;
+
+  height: 30px;
+  margin-bottom: 5px;
+  margin-top: 15px;
+  float: left;
+
   text-align: center;
 }
 
 #VotesTotalLeft {  
 /* 170 */
-  width: 20px;
-  margin-right: 5px;
-  margin-left: 5px;
-  float: left;
-  text-align: left;
+  margin-right: 15px;
+  margin-left: 0px;
 }
 #VotesTotalRight {  
 /* 170 */
-  width: 20px;
-  margin-right: 5px;
-  margin-left: 5px;
-  float: left ;
-  text-align: right;
-}
-
-#Filler {  
-  width: 8px;
-  float: left;
-
+  margin-right: 0px;
+  margin-left: 15px;
 }
 
 /* The next step down 
@@ -495,11 +492,10 @@ button.Vote.VoteRight {
 
 /*.Argument textarea, .Comment_List textarea { */
 .Argument textarea { 
-  width: 298px;
+  width: 300px;
   min-height: 400px;
   text-align: left;
   
-
   webkit-appearance: textarea;
   background-color: white;
   border: 1px solid;
