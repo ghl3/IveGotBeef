@@ -228,6 +228,8 @@ def get_beef_list(user_id):
 
     beef_collection = getCollection("beef")
 
+    items = ["BeefTitle", "BeefOpponent", "BeefDescription", "TimeCreated", "_id"]
+
     beef_list = []
     for object_id in beef_id_list:
         beef_entry = beef_collection.find_one({"_id" : object_id})
