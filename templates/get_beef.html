@@ -32,25 +32,30 @@
 
 <div style="clear:both;"></div>
 
-<div id="VoteWrapper" style="margin-bottom: -50px;">
-      <button id="VoteLeft" class="Vote VoteLeft" >Vote For Me</button>  
+<div id="VoteWrapper" style="margin-bottom: 0px;">
+  
+  <button id="VoteLeft" class="Vote VoteLeft" >Vote For Me</button>  
+  <h2 class="ArgumentTitle" >Argument:</h2>
   <div id="VotesTotalLeft">{{ VotesFor }}</div>
+  
+  <div id="Filler"></div>
+
   <div id="VotesTotalRight">{{ VotesAgainst }}</div>
+  <h2 class="ArgumentTitle">Defense:</h2>
   <button id="VoteRight" class="Vote VoteRight">Vote For Me</button> 
-  <div style="clear:both;"></div>
+  
 </div>
+
+<div style="clear:both;"></div>
 
 <div id="Argument_Container">
   <div id="Argument_Wrapper">
-    
     <div class="Argument Left">
-      <h2 class="ArgumentTitle" >Argument:</h2>
       <textarea id="ArgumentLeftText" class="Content" {% if beef_owner %} redonly="false" {% else %} readonly="true" {% endif %} >{{ argument_left }}</textarea>
       {% if beef_owner %} <button id="SaveLeft">Save Changes </button>{% else %}{% endif %}
     </div>
     
     <div class="Argument Right">
-      <h2 class="ArgumentTitle">Defense:</h2>
       <textarea id="ArgumentRightText" class="Content" {% if beef_against %} redonly="false" {% else %} readonly="true" {% endif %} >My Argument Example Right{{ argument_right }}</textarea>
       {% if beef_against %} <button id="SaveRight">Save Changes </button>{% else %}{% endif %}
     </div>

@@ -380,8 +380,22 @@ td.BeefDescription {
 
 /*  Argument Page */
 /*  Recall, width = 940 */
+/*  The header is broken down in 
+    the following way:
 
-#VoteWrapper{  
+   - Vote Margin Left: 150px
+   - Vote Width: 50px
+   - Vote Margin Right: 20px
+   - Title Margin Left: 10px;
+   - Title Width: 200px;
+   - Title Margin Right: 10px;
+   - VotesTotal Width: 20px;
+   - VotesTotal Margin Right: 10px;
+
+   - Total: 470px
+*/
+
+#VoteWrapper {  
   width: 940px;
   min-height: 50px;
   margin-left: auto;
@@ -393,32 +407,55 @@ button.Vote {
   height: 50px;
   float: left;
 }
-
 button.Vote.VoteLeft {  
   background-color: blue;  
   margin-left: 150px;
-  margin-right: 100px; /* 270 */
+  margin-right: 20px; /* 270 */
   float: left;
 }
+button.Vote.VoteRight {  
+  background-color: red;  
+  margin-left: 20px;
+  margin-right: 150px;
+  float: left;
+}
+
+.ArgumentTitle {  
+  margin-bottom: 5px;
+  margin-top: 0px;
+  float: left;
+  margin-left: 10px;
+  margin-right: 10px;
+  width: 200px;
+  text-align: center;
+}
+
 #VotesTotalLeft {  
 /* 170 */
   width: 20px;
-  margin-right: 150px;
+  margin-right: 5px;
+  margin-left: 5px;
   float: left;
+  text-align: left;
 }
 #VotesTotalRight {  
 /* 170 */
   width: 20px;
-  margin-left: 150px;
+  margin-right: 5px;
+  margin-left: 5px;
   float: left ;
-}
-button.Vote.VoteRight {  
-  background-color: red;  
-  margin-left: 100px;
-  margin-right: 150px;
-  float: left;
+  text-align: right;
 }
 
+#Filler {  
+  width: 8px;
+  float: left;
+
+}
+
+/* The next step down 
+   is the arguments themselves
+*/
 
 #Argument_Container{  
   min-height: 400px;
@@ -436,32 +473,32 @@ button.Vote.VoteRight {
   text-align: center;
 }
 
-.ArgumentTitle{  
-  margin-bottom: 5px;
-  margin-top: 0px;
-}
-
 .Argument.Left {  
   margin-left: 150px;
   margin-right: 20px;
+  text-align: left;
 }
 .Argument.Left textarea.Content { 
   background-color: #DDF8CC;
+  float: left;
 }
 
 .Argument.Right{  
   margin-left: 20px;
   margin-right: 150px;
+  text-align: right;
 }
 .Argument.Right textarea.Content {  
   background-color: #E5EDF9;
+  float: right;
 }
 
 /*.Argument textarea, .Comment_List textarea { */
 .Argument textarea { 
-  width: 300px;
+  width: 298px;
   min-height: 400px;
   text-align: left;
+  
 
   webkit-appearance: textarea;
   background-color: white;
@@ -470,9 +507,9 @@ button.Vote.VoteRight {
   webkit-rtl-ordering: logical;
   webkit-user-select: text;
   webkit-box-orient: vertical;
-  resize: auto;
+  /*resize: auto;*/
   cursor: auto;
-  padding: 2px;
+  /*padding: 2px;*/
   white-space: pre-wrap;
   word-wrap: break-word;
 }
