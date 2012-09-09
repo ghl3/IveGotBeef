@@ -46,7 +46,7 @@ Create Beef:
 	td {border: 0px solid black; width: 100px;}
       </style>
 
-      {{ render_field(form.Title,   style="width: 120px;",  class="required") }}
+      {{ render_field(form.Title,    style="width: 120px;",  class="required") }}
       {{ render_field(form.Opponent, style="width: 120px;",  class="required") }} 
       <br>
       <div style="margin-bottom: 10px;"></div>
@@ -55,21 +55,6 @@ Create Beef:
       <div style="margin-bottom: 10px;"></div>
       {{ render_field(form.Argument,  style="width: 400px;", class="required", rows="8") }}
 
-      
-      {# <!--
-      <table border="1" id="CreateBeefTable" style="border: 0px solid black; text-align: left; margin-left: auto; margin-right: auto; " >
-	<tr>
-	  {{ render_field(form.Title, class="required") }}
-	  {{ render_field(form.Against, class="required") }}
-	</tr>
-	<tr>
-	  {{ render_field(form.Description, class="required") }}
-	</tr>
-	<tr>
-	  {{ render_field(form.Argument, class="required") }}
-	</tr>
-      </table>
-      --> #}
     </fieldset>
 
     <p><input type="submit" id="CreateBeef" value="Create Beef" >
@@ -79,30 +64,6 @@ Create Beef:
 <div id="Result" style="display: none; text-align: center; margin-top: 20px;" >
 </div>
 
-
-
-{#
-<!--
-    <form id="NewBeefForm" >
-      <fieldset>
-	<legend>New Beef:</legend>
-
-	<label class="required" accesskey="f">Beef Title: </label>
-	<input type="text" id="BeefTitle" name="BeefTitle" tabindex="1" value="" ><br>
-
-	<label accesskey="e">Opponent: </label>
-	<input type="text" id="BeefOpponent" name="BeefOpponent" tabindex="3" ><br>
-
-	<label accesskey="e">Description: </label>
-	<textarea  id="BeefDescription" name="BeefDescription" rows="5" 
-		   style="text-align: left" maxlength="1000" cols="30"> </textarea> 
-
-      </fieldset>
-    </form>
-
-    <button id="CreateBeef">Create Beef</button>
--->
-#}
 
 {% endblock %}
 
