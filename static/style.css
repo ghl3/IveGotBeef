@@ -401,12 +401,14 @@ button.Vote {
 }
 button.Vote.VoteLeft {  
   background-color: blue;  
+  background-color: #DDF8CC;
   margin-left: 150px;
   margin-right: 20px; /* 270 */
   float: left;
 }
 button.Vote.VoteRight {  
   background-color: red;  
+  background-color: #E5EDF9;
   margin-left: 20px;
   margin-right: 150px;
   float: left;
