@@ -204,23 +204,12 @@ def get_beef(_id):
     # Now, fetch the comments
     # Comments are stored as ObjectId's
     comments_collection = getCollection("comments")
-    comments = beef_dict.pop("CommentList")
+    comment_id_list = beef_dict.pop("CommentList")
 
-    # use
-    #comment_list = comments_collection.find(limit
-    # {'url': {'$in': urls }})
-    comment_list = list(comments_collection.find({"_id" : {'$in':comments} }))    
-    print "Comment List:"
-    print comment_list
+    # Fetch all comments using a single query (sweet)
+    comment_list = list(comments_collection.find({"_id" : {'$in':comment_id_list} }))    
     map(lambda x: _format_dict(x, ["username", "user_id",  "TimeCreated", "comment"]), comment_list)
 
-    '''
-    comment_list = []
-    for comment_id in comments:
-        comment = comments_collection.find_one({"_id" : comment_id})
-        comment = _format_dict(comment, ["username", "user_id",  "TimeCreated", "comment"])
-        comment_list.append(comment)
-    '''
     print beef_dict
     print comment_list
     print kwargs
