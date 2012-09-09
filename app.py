@@ -24,10 +24,10 @@ from flask.ext.login import logout_user
 
 import pymongo
 
-from common import *
+from python.common import *
 
-import beef
-import login_tools
+import python.beef as beef
+import python.login_tools as login_tools
 
 app = Flask(__name__)
 app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
