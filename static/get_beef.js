@@ -122,6 +122,17 @@ $(document).ready(function() {
 // consider refactoring or rewriting a bit... :)
 //
 
+function SaveDescription() {
+
+    //
+    // Save the updated description for beef
+    // 
+
+    // Not yet implemented
+    return;
+
+}
+
 
 function SaveArgumentLeft() {
     //
