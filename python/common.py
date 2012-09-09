@@ -69,30 +69,6 @@ def getCollection(collection_name):
     return beef_collection
 
 
-def addToBeefDatabase(beef_dict, collection_name):
-    """ Add (or update) a beef to the database
-    
-    The argument is a dictionary of the beef information
-
-    """
-
-    beef_collection = getCollection(collection_name)
-    
-    try:
-        if "_id" in beef_dict:
-            print "Saving object with id: %s" % beef_dict["_id"]
-            beef_dict["_id"] = bson.objectid.ObjectId(beef_dict["_id"])
-
-        # Create or update the collection
-        saved_id = beef_collection.save(beef_dict)
-        print "Saved beef with id %s" % saved_id
-    except:
-        print "_addToBeefDatabase() - Error: Failed to add beef to database"
-        raise
-
-    return saved_id
-
-
 def _clean_user_database(username):
     """ Find all invalid beefs for this user and remove their references.
     

@@ -29,17 +29,13 @@
 <!-- Fill in the Middle template -->
 {% block document %}
 
-<div>
-Create Beef:
-</div>
-
 <div id="new_beef_wrapper" style="text-align: center;">
 
   <form id="CreateBeefForm" accept-charset="UTF-8" 
 	style="width: 500px; text-align: left; margin-left: auto; margin-right: auto;">
     
     <fieldset style="width: 500px;">
-      <legend>New Beef</legend>
+      <legend>Create Beef</legend>
       
       <style>
 	tr {border: 0px solid black;}
@@ -60,10 +56,9 @@ Create Beef:
     <p><input type="submit" id="CreateBeef" value="Create Beef" >
   </form>
 
+  <div id="Result" style="display: none; text-align: center; margin-top: 20px;" ></div>
 
-<div id="Result" style="display: none; text-align: center; margin-top: 20px;" >
 </div>
-
 
 {% endblock %}
 

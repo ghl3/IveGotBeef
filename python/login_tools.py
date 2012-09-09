@@ -23,6 +23,7 @@ from common import *
 
 from wtforms import Form, BooleanField, TextField, PasswordField, validators
 
+
 class UserClass(UserMixin):
     def __init__(self, name, id, active=True):
         self.name = name
