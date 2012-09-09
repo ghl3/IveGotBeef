@@ -57,103 +57,16 @@
 	<tr>
 	  {{ render_field(form.confirm, class="required password", equalTo="#password") }}
 	</tr>
-	</table>
-	  <!--<button id="CreateUser">Create</button>-->
-	  <!--<input type="submit" name="Submit" value="Submit" />-->
+      </table>
+
     </fieldset>
 
     <p><input type="submit" id="CreateUser" value="Create">
   </form>
 </div>
 
-<div id="Result" style="display: none; text-align: center; margin-top: 20px;" >
-</div>
+<div id="Result" style="display: none; text-align: center; margin-top: 20px;" > </div>
 
-
-<!--
-<div id="register_wrapper" style="text-align: center;">
-  Please enter a username and password
-  <form id="NewUserForm" accept-charset="UTF-8" style="width: 600px; text-align: left; margin-left: auto; margin-right: auto;">
-
-    <fieldset >
-      <legend>Register</legend>
-
-      <style>
-	tr {border: 0px solid black;}
-	td {border: 0px solid black; width: 200px;}
-      </style>
-
-      <table border="1" id="CreateUserTable" style="border: 0px solid black; text-align: left; margin-left: auto; margin-right: auto; " >
-
-	<tr> 
-	  <td> 
-	    <label for="FirstName" >First Name: </label>
-	  </td>
-	  <td> 
-	    <input type="text" name="FirstName" id="FirstName" class="required" maxlength="30" />  
-	  </td>
-	  <td> 
-	    <label for="LastName" >Last Name: </label>
-	  </td>
-	  <td> 
-	    <input type="text" name="LastName" id="LastName" class="required" maxlength="50" />
-	  </td>
-	</tr>
-
-	<tr> 
-	  <td> 
-	    <label for="UserName" >UserName:</label>
-	  </td>
-	  <td> 
-	    <input type="text" name="username" id="username" class="required" maxlength="15" />
-	  </td>
-	  <td> 
-	    <label for="email" >Email Address:</label>
-	  </td>
-	  <td> 
-	    <input type="email" name="email" id="email" class="required email" maxlength="50" />
-	  </td>
-	</tr> 
-
-	<tr> 
-	  <td> 
-	    <label for="password" >Password:</label>
-	  </td>
-	  <td> 
-	    <input type="password" name="password" id="password" class="required password" maxlength="50" />
-	  </td>
-	</tr> 
-	<tr> 
-	  <td> 
-	    <label for="password" >Password:</label>
-	  </td>
-	  <td> 
-	    <input type="password" name="password2" id="password2" class="required password" equalTo="#password" maxlength="50" />
-	  </td>
-	</tr> 
-
-      </table>
-
-      <button id="CreateUser">Create</button>
-
-    </fieldset>
-  </form>
-</div>
-
-<div id="Result" style="display: none; text-align: center; margin-top: 20px;" >
-</div>
--->
-<!--
-<table border="1" id="CreateUserTable" >
-<tr> <td>First Name: </td>        <td> <input type="text" id="FirstName"></input> </td> </tr> 
-<tr> <td>Last Name: </td>         <td> <input type="text" id="LastName"></input> </td> </tr> 
-<tr> <td>UserName: </td>          <td> <input type="text" id="UserName"></input> </td> </tr> 
-<tr> <td>email: </td>             <td> <input type="text" id="email"></input> </td> </tr> 
-<tr> <td>Password: </td>          <td> <input type="password" id="UserPass"></input> </td> </tr> 
-<tr> <td>Confirm Password: </td>  <td> <input type="password" id="UserPass2"></input> </td> </tr> 
-</table>
-<button id="CreateUser">Create</button>
--->
 
 {% else %}
 

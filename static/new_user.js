@@ -59,13 +59,16 @@ $(document).ready(function() {
 	function successfulCallback(data) {
 
 	    if( data["flag"]!=0 ) {
-		console.log("Error: failed to add new User");
+		var message = data["Message"];
+		console.log( "Message: " + message );
+		$("#Result").html(message).show();
 		return false;
 	    }
 
 	    if( data["UserAdded"]!=0) {
-		console.log("Error: Failed to add new user");
-		console.log(data["Message"]);
+		var message = data["Message"];
+		console.log( "Message: " + message );
+		$("#Result").html(message).show();
 		return false;
 	    }
 
