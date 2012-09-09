@@ -110,7 +110,7 @@ def login_user_request(request):
         else:
             print "Failed to login user: %s" % username
             return jsonify(flag=0, UserLoggedIn=1, Message="Failed to log in user")
-            flash("Invalid username.")
+            #flash("Invalid username.")
     else:
         #flash(u"Invalid login.")
         return render_template("login.html")

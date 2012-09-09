@@ -23,63 +23,6 @@ class BeefForm(Form):
     Argument = TextAreaField('Argument', [validators.Required(), validators.Length(min=5, max=5000)])
 
 
-def _get_dict_subset(dict, items):
-    if items==None: return dict
-    beef_dict = OrderedDict()
-    for item in items:
-        beef_dict[item] = dict[item]
-    return beef_dict
-
-
-def _format_dict(beef_dict, items=None):
-    """ Format the titles of a return dict
-
-    Reduce the elements in a dict to only the
-    items we need, and format them for output
-
-    """
-
-    beef_dict = _get_dict_subset(beef_dict, items)
-    beef_dict['TimeCreated'] = beef_dict["TimeCreated"].strftime("%a, %B %d, %Y")
-    return beef_dict
-
-
-def get_userId(username):
-    """ Given a username, get the user id
-
-    """
-    users_collection = getCollection("users")
-    user_entry = users_collection.find_one({"username" : username })
-    if user_entry==None:
-        return None
-    else:
-        return user_entry["_id"]
-
-
-def addToBeefDatabase(beef_dict, collection_name):
-    """ Add (or update) a beef to the database
-    
-    The argument is a dictionary of the beef information
-
-    """
-
-    beef_collection = getCollection(collection_name)
-    
-    try:
-        if "_id" in beef_dict:
-            print "Saving object with id: %s" % beef_dict["_id"]
-            beef_dict["_id"] = bson.objectid.ObjectId(beef_dict["_id"])
-
-        # Create or update the collection
-        saved_id = beef_collection.save(beef_dict)
-        print "Saved beef with id %s" % saved_id
-    except:
-        print "_addToBeefDatabase() - Error: Failed to add beef to database"
-        raise
-
-    return saved_id
-
-
 def create_beef(beef_form):
     """ Add an activity to the database
 
@@ -152,12 +95,69 @@ def create_beef(beef_form):
     return jsonify(flag=0, beef_id=beef_id.__str__())
 
 
+def _get_dict_subset(dict, items):
+    if items==None: return dict
+    beef_dict = OrderedDict()
+    for item in items:
+        beef_dict[item] = dict[item]
+    return beef_dict
+
+
+def _format_dict(beef_dict, items=None):
+    """ Format the titles of a return dict
+
+    Reduce the elements in a dict to only the
+    items we need, and format them for output
+
+    """
+
+    beef_dict = _get_dict_subset(beef_dict, items)
+    beef_dict['TimeCreated'] = beef_dict["TimeCreated"].strftime("%a, %B %d, %Y")
+    return beef_dict
+
+
+def get_userId(username):
+    """ Given a username, get the user id
+
+    """
+    users_collection = getCollection("users")
+    user_entry = users_collection.find_one({"username" : username })
+    if user_entry==None:
+        return None
+    else:
+        return user_entry["_id"]
+
+
+def addToBeefDatabase(beef_dict, collection_name):
+    """ Add (or update) a beef to the database
+    
+    The argument is a dictionary of the beef information
+
+    """
+
+    beef_collection = getCollection(collection_name)
+    
+    try:
+        if "_id" in beef_dict:
+            print "Saving object with id: %s" % beef_dict["_id"]
+            beef_dict["_id"] = bson.objectid.ObjectId(beef_dict["_id"])
+
+        # Create or update the collection
+        saved_id = beef_collection.save(beef_dict)
+        print "Saved beef with id %s" % saved_id
+    except:
+        print "_addToBeefDatabase() - Error: Failed to add beef to database"
+        raise
+
+    return saved_id
+
+
 def latest(num_entries=10):
     """ Return a list of 10 entries
 
     """
 
-    items = ["BeefTitle", "BeefOpponent", "BeefDescription", "TimeCreated", "_id"]
+    items = ["BeefTitle", "CreatedByName", "BeefOpponent", "BeefDescription", "TimeCreated", "_id"]
     beef_collection = getCollection("beef")
     beef_list = beef_collection.find(limit=num_entries, sort=[("_id", -1)])
     
@@ -252,7 +252,7 @@ def get_beef_list(user_id):
 
     beef_collection = getCollection("beef")
 
-    items = ["BeefTitle", "BeefOpponent", "BeefDescription", "TimeCreated", "_id"]
+    items = ["BeefTitle", "CreatedByName", "BeefOpponent", "BeefDescription", "TimeCreated", "_id"]
 
     beef_list = []
     for object_id in beef_id_list:

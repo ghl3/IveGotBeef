@@ -131,4 +131,66 @@ def _clean_dead_comments(beef_id):
     beef_coll.save(beef_entry)
 
 
+def _clean_beef_entries():
+    """ Loop over all beefs and ensure
+    that their opponents are valid.
+
+    If the opponent is a username, add
+    his id to the db
+
+    Check that the number of votes is
+    actually a number
+
+    """
+
+    beef_coll = getCollection("beef")
+    users_coll = getCollection("users")
+
+    # Get an iterator over the beef records
+    beef_records = beef_coll.find()
+
+    for beef in beef_records:
+        
+        # Fix the vote numbers
+        votes_for = beef.get("VotesFor")
+        if votes_for==None or votes_for==[]:
+            print "Fixing Votes For: ", votes_for
+            beef["VotesFor"] = 0
+            
+            
+        votes_against = beef.get("VotesAgainst")
+        if votes_against==None or votes_against==[]:
+            print "Fixing Votes Against: ", votes_against
+            beef["VotesAgainst"] = 0
+
+        # Check who the beef is against
+        beef_opp = beef.get("BeefOpponent")
+        if beef_opp != None:
+
+            # Get the opponent's user entry
+            user_opp = users_coll.find_one({"username":beef_opp})
+            if user_opp == None:
+                print "Beef Opponent: %s is not an actual user" % beef_opp
+                continue
+
+            user_id = user_opp.get("_id")
+
+            opp_id = beef.get("BeefOpponentId")
+            if opp_id == None:
+                print "Setting Opponent Id for: ", beef_opp
+                beef["BeefOpponentId"] = user_id 
+            else:
+                print "Found opponent id:", opp_id
+                if opp_id != user_id:
+                    print "Error: mismatch between user id and beef id"
+                    print opp_id, user_id
+                pass
+
+        else:
+            print "Error: Beef has no opponent: ", beef
+
+        pass
+        #beef_coll.save(beef)
+
+
     

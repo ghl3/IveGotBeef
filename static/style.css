@@ -581,6 +581,9 @@ button.Vote.VoteRight {
 
 /* -- body styles ----------------------------------------------------------- */
 
+textarea {   
+  resize: none;
+}
 
 input[type="button"], button, a.button { 
 
