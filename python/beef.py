@@ -179,7 +179,8 @@ def get_beef(_id):
     """
 
     # Be sure to fetch these parameters:
-    to_fetch = ["_id", "BeefTitle", "CreatedById", "BeefOpponent", "BeefDescription", 
+    to_fetch = ["_id", "BeefTitle", "BeefDescription", 
+                "CreatedById", "BeefOpponent", "BeefOpponentId", 
                 "TimeCreated", "ArgumentLeft", "ArgumentRight", 
                 "VotesFor", "VotesAgainst", "CommentList"]
     
@@ -208,7 +209,7 @@ def get_beef(_id):
         kwargs['beef_owner']=False
 
     # Determie who the beef is against
-    if current_user.get_id() == beef_dict["BeefOpponent"].__str__():
+    if current_user.get_id() == beef_dict["BeefOpponentId"].__str__():
         kwargs['beef_against']=True
     else:
         kwargs['beef_against']=False
@@ -323,7 +324,7 @@ def vote(beef_id, user_id, vote_for):
     else:
         if vote_for=="for":
             action="increment_for"
-        elif vote_for=="aginst":
+        elif vote_for=="against":
             action="increment_against"
         else:
             print "Current Vote: ", vote_for

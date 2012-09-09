@@ -69,7 +69,7 @@ def getCollection(collection_name):
     return beef_collection
 
 
-def _clean_user_database(username):
+def _clean_user_database():
     """ Find all invalid beefs for this user and remove their references.
     
     This is to be done from the command-line only
@@ -78,27 +78,38 @@ def _clean_user_database(username):
 
     # Get the user item
     user_coll = getCollection("users")
-    user = user_coll.find_one({"username" : username})
-
-    beef_list = user["beef"]
-    
     beef_coll = getCollection("beef")
+    #user = user_coll.find_one({"username" : username})
+    user_records = user_coll.find()
 
-    updated_list = []
+    for user in user_records:
 
-    for entry_id in beef_list:
+        beef_list = user["beef"]
+        updated_list = []
+
+        for entry_id in beef_list:
         
-        beef_entry = beef_coll.find_one({"_id": entry_id})
-        if beef_entry != None:
-            updated_list.append(entry_id)
-        else:
-            print "WARNING: Found an invalid beef id: ", entry_id
-            print "Removing from user's list"
+            beef_entry = beef_coll.find_one({"_id": entry_id})
+            if beef_entry != None:
+                updated_list.append(entry_id)
+            else:
+                print "WARNING: Found an invalid beef id: ", entry_id
+                print "Removing from user's list"
 
-        pass
+            pass
 
-    user["beef"] = updated_list
-    user_coll.save(user)
+        user["beef"] = updated_list
+    
+        if user["comments"] == [ [ ] ]:
+            user["comments"] = []
+
+            if user["votes"] == []:
+                user["votes"] = {}
+    
+        user_coll.save(user)
+
+    return
+    
 
 
 def _clean_dead_comments(beef_id):

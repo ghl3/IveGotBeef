@@ -54,7 +54,7 @@
     </div>
     
     <div class="Argument Right">
-      <textarea id="ArgumentRightText" class="Content" {% if beef_against %} redonly="false" {% else %} readonly="true" {% endif %} >My Argument Example Right{{ argument_right }}</textarea>
+      <textarea id="ArgumentRightText" class="Content" {% if beef_against %} redonly="false" {% else %} readonly="true" {% endif %} >{{ argument_right }}</textarea>
       {% if beef_against %} <button id="SaveRight">Save Changes </button>{% else %}{% endif %}
     </div>
   
