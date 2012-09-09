@@ -21,18 +21,6 @@ $(document).ready(function() {
 	    return false;
 	}
 
-	/*
-	// Create a javascript dict object out
-	// of that encoded dict
-	var BeefJSON = {};
-	for (i in BeefArray) {
-	    BeefJSON[BeefArray[i].name] = BeefArray[i].value
-	}
-
-	console.log("Create new Beef and submit to DB");
-	console.log( JSON.stringify(BeefJSON) );
-	BeefJSON = JSON.stringify( BeefJSON );
-*/
 	// Create a call-back function
 	// for debugging and logging
 	function successCallback(data) {
@@ -46,6 +34,9 @@ $(document).ready(function() {
 	    }
 	    else {
 		console.log("ERROR: Failed to create beef");
+		var message = data["message"];
+		console.log( "Message: " + message );
+		$("#Result").html(message).show();
 	    }
 	}
 	

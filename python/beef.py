@@ -49,8 +49,10 @@ def create_beef(beef_form):
     # Make sure that the beef is against a valid opponent
     beef_opponent_id = get_userId(form_dict["Opponent"])
     if beef_opponent_id==None:
-        print "Error: Cannot create beef, invalid opponent name: ", form_dict["Opponent"]
-        return jasonify(flag=1, message="Invalid Opponent")
+        message =  "Unable to create beef, invalid opponent name: '%s'.  " % form_dict["Opponent"]
+        message += "Opponent must have a valid account"
+        print "Error: ", message
+        return jsonify(flag=1, message=message)
 
     # Create the dictionary to be added
     # to the database
