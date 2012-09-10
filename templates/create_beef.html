@@ -12,7 +12,7 @@
 {# <!-- Create a macro to render the form --> #}
 {% macro render_field(field) %}
 <div style="float: left; margin-right: 10px;" > 
-  {{ field.label(style="float: left;") }} 
+  {{ field.label(style="float: left;") | safe }} 
   <div style="float: left; margin-right: 5px;">: </div> 
   <div class="FormInput" style="float: left;" > {{ field(**kwargs)|safe }} </div> 
 </div>

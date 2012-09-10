@@ -125,7 +125,8 @@ def latest(num_entries=10):
 
     """
 
-    items = ["BeefTitle", "CreatedByName", "BeefOpponent", "BeefDescription", "TimeCreated", "_id"]
+    items = ["BeefTitle", "CreatedByName", "CreatedById", "BeefOpponent", "BeefOpponentId", 
+             "BeefDescription", "TimeCreated", "_id"]
     beef_collection = getCollection("beef")
     beef_list = beef_collection.find(limit=num_entries, sort=[("_id", -1)])
     
@@ -221,7 +222,8 @@ def get_beef_list(user_id):
 
     beef_collection = getCollection("beef")
 
-    items = ["BeefTitle", "CreatedByName", "BeefOpponent", "BeefDescription", "TimeCreated", "_id"]
+    items = ["BeefTitle", "CreatedByName", "CreatedById", "BeefOpponent", "BeefOpponentId", 
+             "BeefDescription", "TimeCreated", "_id"]
 
     beef_list = []
     for object_id in beef_id_list:
