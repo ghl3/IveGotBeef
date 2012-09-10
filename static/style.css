@@ -335,7 +335,7 @@ table.BeefTable {
   margin: 0px auto;
   /* Aign by hand because css sucks */
   width: 500px;
-  margin-left: -50px;
+  /*margin-left: -50px;*/
   border-bottom: 1px solid black;
   padding-bottom: 10px;
   margin-bottom: 30px;
