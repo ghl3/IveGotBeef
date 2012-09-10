@@ -17,9 +17,9 @@ No Beef Yet (Database is empty.  This is probably an error.)
 
   {% for beef_dict in beef_list %}
   <tr>  
-    <td><a href="/Beef?_id={{ beef_dict['_id'] }}">{{ beef_dict["BeefTitle"] }}</a></td> 
-    <td>{{ beef_dict["CreatedByName"] }}</td> 
-    <td>{{ beef_dict["BeefOpponent"] }}</td> 
+    <td><a href="/Beef?_id={{ beef_dict['_id'] }}">{{ beef_dict["BeefTitle"] | e }}</a></td> 
+    <td>{{ beef_dict["CreatedByName"] | e }}</td> 
+    <td>{{ beef_dict["BeefOpponent"] | e }}</td> 
     <td>{{ beef_dict["TimeCreated"] }}</td>
     <!--<td> <a class="button" href="/Beef?_id={{ beef_dict['_id'] }}">View Beef</a> </td>-->
   </tr> 

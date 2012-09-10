@@ -553,7 +553,7 @@ button.Vote.VoteRight {
   border: 0px solid black;
   resize: none;
   padding: 0px;
-  min-height: 150px; 
+  min-height: 80px; 
 }
 
 /* Comment only */
@@ -569,6 +569,16 @@ button.Vote.VoteRight {
   font-size: 100%;
   font-family: calibri,tahoma,arial,sans-serif;
   font-size: 16px;
+}
+
+.CommentBy {  
+/*
+  text-align: right; 
+  float: left;
+  margin-left: 20px;
+  line-height: 1.1em;
+*/
+  height: 50px;
 }
 
 #NewComment{  

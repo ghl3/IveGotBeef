@@ -16,11 +16,11 @@
     <td>Title</td>  <td>Created by</td> <td>Beef is Against</td> <td>Date Created</td>
   </tr>
   <tr>
-    <td>{{ beef_dict["BeefTitle"] }}</td> <td>{{ beef_dict["CreatedByName"] }}</td> <td>{{ beef_dict["BeefOpponent"] }}</td> <td>{{ beef_dict["TimeCreated"] }}</td>
+    <td>{{ beef_dict["BeefTitle"] | e }}</td> <td>{{ beef_dict["CreatedByName"] | e }}</td> <td>{{ beef_dict["BeefOpponent"] | e }}</td> <td>{{ beef_dict["TimeCreated"] | e }}</td>
   </tr> 
   <tr>
     <td colspan = "4" class="BeefDescription">
-      {{ beef_dict["BeefDescription"] }}
+      {{ beef_dict["BeefDescription"] | e }}
     </td>
   </tr>
 </table>
@@ -36,9 +36,9 @@
   
   <button id="VoteLeft" class="Vote VoteLeft" >Vote For Me</button>  
   <h2 class="ArgumentTitle" >Argument:</h2>
-  <h2 class="VotesTotal" id="VotesTotalLeft">{{ VotesFor }}</h2>
+  <h2 class="VotesTotal" id="VotesTotalLeft">{{ VotesFor | e }}</h2>
   
-  <h2 class="VotesTotal" id="VotesTotalRight">{{ VotesAgainst }}</h2>
+  <h2 class="VotesTotal" id="VotesTotalRight">{{ VotesAgainst | e }}</h2>
   <h2 class="ArgumentTitle">Defense:</h2>
   <button id="VoteRight" class="Vote VoteRight">Vote For Me</button> 
   
@@ -49,12 +49,12 @@
 <div id="Argument_Container">
   <div id="Argument_Wrapper">
     <div class="Argument Left">
-      <textarea id="ArgumentLeftText" class="Content" {% if beef_owner %} redonly="false" {% else %} readonly="true" {% endif %} >{{ argument_left }}</textarea>
+      <textarea id="ArgumentLeftText" class="Content" {% if beef_owner %} redonly="false" {% else %} readonly="true" {% endif %} >{{ argument_left | e }}</textarea>
       {% if beef_owner %} <button id="SaveLeft">Save Changes </button>{% else %}{% endif %}
     </div>
     
     <div class="Argument Right">
-      <textarea id="ArgumentRightText" class="Content" {% if beef_against %} redonly="false" {% else %} readonly="true" {% endif %} >{{ argument_right }}</textarea>
+      <textarea id="ArgumentRightText" class="Content" {% if beef_against %} redonly="false" {% else %} readonly="true" {% endif %} >{{ argument_right | e }}</textarea>
       {% if beef_against %} <button id="SaveRight">Save Changes </button>{% else %}{% endif %}
     </div>
   
@@ -69,18 +69,11 @@
     {% if comment_list|length==0 %}
     <h3 id="NoCommentsYet">No comments added (but you can be the first)</h3>
     {% else %}
-    {% for comment in comment_list %}
 
+    {% for comment in comment_list %}
     {% include "comment.html" %}
-    {# <!--
-    <div class="Comment">
-      <textarea readonly="true" class="Comment">
-	{{ comment["comment"] }}
-      </textarea>
-      <a href="/user?_id={{ comment['user_id'] }}" class="User">{{ comment["username"] }}</a> <div id="Time">{{ comment["TimeCreated"] }}</div>
-    </div>
-    --> #}
     {% endfor %}
+
     {% endif %}
   </div>  
   <button id="AddComment">Add a Comment</button>

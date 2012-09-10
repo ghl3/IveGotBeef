@@ -4,7 +4,10 @@
 {#<!-- and 'comment'  -->#}
 <div class="Comment">
   <textarea readonly="true" class="Comment">
-    {{ comment["comment"] }}
+    {{ comment["comment"] | e }}
   </textarea>
-  <a href="/user?_id={{ comment['user_id'] }}" class="User">{{ comment["username"] }}</a> <div id="Time">{{ comment["TimeCreated"] }}</div>
+  <div class="CommentBy">
+    <a href="/user?_id={{ comment['user_id'] }}" >{{ comment["username"] }}</a> 
+    <div id="Time">{{ comment["TimeCreated"] }}</div>
+  </div>
 </div>
