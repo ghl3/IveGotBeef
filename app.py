@@ -101,6 +101,12 @@ def get_beef():
     return render_template('get_beef.html', beef_dict=beef_dict,
                            comment_list=comment_list, **kwargs)
 
+@app.route('/User', methods=['GET'])
+def user():
+    """ Show a particular user
+
+    """
+    return render_template("user.html")
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
