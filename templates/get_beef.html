@@ -16,7 +16,10 @@
     <td>Title</td>  <td>Created by</td> <td>Beef is Against</td> <td>Date Created</td>
   </tr>
   <tr>
-    <td>{{ beef_dict["BeefTitle"] | e }}</td> <td>{{ beef_dict["CreatedByName"] | e }}</td> <td>{{ beef_dict["BeefOpponent"] | e }}</td> <td>{{ beef_dict["TimeCreated"] | e }}</td>
+    <td>{{ beef_dict["BeefTitle"] | e }}</td> 
+    <td><a href="/User?_id={{ beef_dict['CreatedById'] }}" >{{ beef_dict["CreatedByName"] | e }}</a></td> 
+    <td><a href="/User?_id={{ beef_dict['BeefOpponentId'] }}" >{{ beef_dict["BeefOpponent"] | e }}</a></td> 
+    <td>{{ beef_dict["TimeCreated"] | e }}</td>
   </tr> 
   <tr>
     <td colspan = "4" class="BeefDescription">
