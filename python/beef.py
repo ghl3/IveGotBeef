@@ -182,7 +182,7 @@ def get_beef(_id):
 
     # Be sure to fetch these parameters:
     to_fetch = ["_id", "BeefTitle", "BeefDescription", 
-                "CreatedById", "BeefOpponent", "BeefOpponentId", 
+                "CreatedByName", "CreatedById", "BeefOpponent", "BeefOpponentId", 
                 "TimeCreated", "ArgumentLeft", "ArgumentRight", 
                 "VotesFor", "VotesAgainst", "CommentList"]
     
@@ -223,7 +223,7 @@ def get_beef(_id):
 
     # Fetch all comments using a single query (sweet)
     comment_list = list(comments_collection.find({"_id" : {'$in':comment_id_list} }))    
-    map(lambda x: _format_dict(x, ["username", "user_id",  "TimeCreated", "comment"]), comment_list)
+    comment_list = map(lambda x: _format_dict(x, ["username", "user_id",  "TimeCreated", "comment"]), comment_list)
 
     print beef_dict
     print comment_list

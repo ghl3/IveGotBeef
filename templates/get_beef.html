@@ -13,13 +13,13 @@
 <!-- Macro to make beef table -->
 <table class="BeefTable" border="1">
   <tr class="BeefTitle">
-    <td>Title</td>  <td>Beef is Against</td> <td>Date Created</td>
+    <td>Title</td>  <td>Created by</td> <td>Beef is Against</td> <td>Date Created</td>
   </tr>
   <tr>
-    <td>{{ beef_dict["BeefTitle"] }}</td> <td>{{ beef_dict["BeefOpponent"] }}</td> <td>{{ beef_dict["TimeCreated"] }}</td>
+    <td>{{ beef_dict["BeefTitle"] }}</td> <td>{{ beef_dict["CreatedByName"] }}</td> <td>{{ beef_dict["BeefOpponent"] }}</td> <td>{{ beef_dict["TimeCreated"] }}</td>
   </tr> 
   <tr>
-    <td colspan = "3" class="BeefDescription">
+    <td colspan = "4" class="BeefDescription">
       {{ beef_dict["BeefDescription"] }}
     </td>
   </tr>

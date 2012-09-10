@@ -146,7 +146,7 @@ def api_create_beef( ):
         if form.validate():
             response = beef.create_beef(form)
         else:
-            message = "Form is invalid: " + form.errors
+            message = "Form is invalid: " + str(form.errors)
             print message
             return jsonify(flag=1, message=message)
     except:
@@ -221,7 +221,7 @@ def api_new_user( ):
         if form.validate():
             response = login_tools.new_user(form)
         else:
-            message = "Form is invalid: " + form.errors
+            message = "Form is invalid: " + str(form.errors)
             print message
             return jsonify(flag=1, message=message)
     except:
