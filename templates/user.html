@@ -1,0 +1,21 @@
+
+
+<!-- Inherit from the main template -->
+{% extends "main_template.html" %}
+
+<!-- Fill in the Middle template -->
+{% block body %}
+
+<div>
+Username: {{ user["username"] | e }}
+Email: {{ user["email"] | e }}
+</div>
+
+{# <!-- The list of this user's beef --> #}
+{% if beef_list|length==0 %}
+{{ user["username"] }} hasn't started any beef yet (this is probably a good thing...).
+{% else %}
+{% include "beef_list.html" %}
+{% endif %}
+
+{% endblock %}
