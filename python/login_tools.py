@@ -80,6 +80,17 @@ def new_user(user_form):
     return jsonify(flag=0, UserAdded=0)
     return
 
+def get_user(_id):
+    """ Find a user in the db and return their dict
+
+    """
+    user_collection = getCollection("users")
+    user = user_collection.find_one({"_id" : bson.objectid.ObjectId(_id)})
+    if user==None:
+        print "User with id: %s not found" % _id
+        raise InvalidUser
+    
+    return user, {}
 
 def login_user_request(request):
     """ Take a request object and login a user

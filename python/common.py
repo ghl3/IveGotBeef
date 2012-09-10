@@ -1,14 +1,12 @@
 
-
 import pymongo
 import bson.objectid
+
+from collections import OrderedDict
 
 #
 # Common database tools for the app
 #
-
-#class BeefNotFound(Exception):
-#    pass
 
 class CollectionNotFound(Exception):
     pass
@@ -67,6 +65,44 @@ def getCollection(collection_name):
         raise
 
     return beef_collection
+
+
+def get_dict_subset(dict, items):
+    if items==None: return dict
+    beef_dict = OrderedDict()
+    for item in items:
+        beef_dict[item] = dict[item]
+    return beef_dict
+
+
+def format_dict(beef_dict, items=None):
+    """ Format the titles of a return dict
+
+    Reduce the elements in a dict to only the
+    items we need, and format them for output
+
+    """
+
+    beef_dict = get_dict_subset(beef_dict, items)
+    beef_dict['TimeCreated'] = beef_dict["TimeCreated"].strftime("%a, %B %d, %Y")
+    return beef_dict
+
+
+def get_userId(username):
+    """ Given a username, get the user id
+
+    """
+    users_collection = getCollection("users")
+    user_entry = users_collection.find_one({"username" : username })
+    if user_entry==None:
+        return None
+    else:
+        return user_entry["_id"]
+
+
+#
+# Database cleaning functions
+#
 
 
 def _clean_user_database():

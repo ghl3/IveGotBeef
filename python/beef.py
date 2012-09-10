@@ -1,12 +1,11 @@
 
 import json
 import datetime
-from collections import OrderedDict
 
 from flask import jsonify
 from flask import render_template
 
-import pymongo
+#import pymongo
 import bson.objectid
 
 from flask.ext.login import current_user
@@ -97,39 +96,6 @@ def create_beef(beef_form):
     return jsonify(flag=0, beef_id=beef_id.__str__())
 
 
-def _get_dict_subset(dict, items):
-    if items==None: return dict
-    beef_dict = OrderedDict()
-    for item in items:
-        beef_dict[item] = dict[item]
-    return beef_dict
-
-
-def _format_dict(beef_dict, items=None):
-    """ Format the titles of a return dict
-
-    Reduce the elements in a dict to only the
-    items we need, and format them for output
-
-    """
-
-    beef_dict = _get_dict_subset(beef_dict, items)
-    beef_dict['TimeCreated'] = beef_dict["TimeCreated"].strftime("%a, %B %d, %Y")
-    return beef_dict
-
-
-def get_userId(username):
-    """ Given a username, get the user id
-
-    """
-    users_collection = getCollection("users")
-    user_entry = users_collection.find_one({"username" : username })
-    if user_entry==None:
-        return None
-    else:
-        return user_entry["_id"]
-
-
 def addToBeefDatabase(beef_dict, collection_name):
     """ Add (or update) a beef to the database
     
@@ -165,7 +131,7 @@ def latest(num_entries=10):
     
     return_list = []
     for entry in beef_list:
-        return_list.append(_format_dict(entry, items))
+        return_list.append(format_dict(entry, items))
 
     return return_list
 
@@ -195,7 +161,7 @@ def get_beef(_id):
     else:
         print "Successfully found entry: %s" % _id
 
-    beef_dict = _format_dict(beef_entry, to_fetch)
+    beef_dict = format_dict(beef_entry, to_fetch)
 
     # Now, get the parameters for the template generation
     kwargs = {}
@@ -223,7 +189,7 @@ def get_beef(_id):
 
     # Fetch all comments using a single query (sweet)
     comment_list = list(comments_collection.find({"_id" : {'$in':comment_id_list} }))    
-    comment_list = map(lambda x: _format_dict(x, ["username", "user_id",  "TimeCreated", "comment"]), comment_list)
+    comment_list = map(lambda x: format_dict(x, ["username", "user_id",  "TimeCreated", "comment"]), comment_list)
 
     print beef_dict
     print comment_list
@@ -260,7 +226,7 @@ def get_beef_list(user_id):
     beef_list = []
     for object_id in beef_id_list:
         beef_entry = beef_collection.find_one({"_id" : object_id})
-        beef_entry = _format_dict(beef_entry, items)
+        beef_entry = format_dict(beef_entry, items)
         beef_list.append(beef_entry)
 
     print "Beef List: ", beef_list
@@ -431,7 +397,7 @@ def add_comment(user_id, beef_id, comment):
     users_collection.save(user_item)
     
     # Okay, we're done.  Boom Sauce
-    comment_div = render_template("comment.html", comment=_format_dict(comment_dict))
+    comment_div = render_template("comment.html", comment=format_dict(comment_dict))
     return jsonify(flag=0, comment_div=comment_div )
 
 

@@ -101,12 +101,25 @@ def get_beef():
     return render_template('get_beef.html', beef_dict=beef_dict,
                            comment_list=comment_list, **kwargs)
 
+
 @app.route('/User', methods=['GET'])
 def user():
     """ Show a particular user
 
     """
-    return render_template("user.html")
+    try:
+        _id = request.args.get('_id', '')
+        (user_dict, kwargs) = login_tools.get_user(_id)
+        beef_list = beef.get_beef_list(_id) 
+    except InvalidUser:
+        print traceback.format_exc()
+        return render_template("404.html")
+    except:
+        print traceback.format_exc()
+        return render_template('500.html')
+
+    return render_template("user.html", user=user_dict, beef_list=beef_list, **kwargs)
+
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
