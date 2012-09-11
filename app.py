@@ -57,6 +57,14 @@ def index():
     return render_template('index.html', beef_list=beef_list )
 
 
+@app.route('/About')
+def index():
+    """ The base of the site
+
+    """
+    return render_template('about.html')
+
+
 @app.route('/MyBeef')
 @login_required
 def my_beef():
