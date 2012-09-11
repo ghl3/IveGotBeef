@@ -1,6 +1,10 @@
 
+import os
 import pymongo
 import bson.objectid
+from urlparse import urlsplit
+from pymongo import Connection
+from pymongo.collection import Collection
 
 from collections import OrderedDict
 
@@ -23,25 +27,74 @@ class InvalidVote(Exception):
 class InvalidComment(Exception):
     pass
 
+# Check the local url
+#url = os.getenv('MONGOLAB_URI', None'mongodb://localhost:27017/ive_got_beef')
+url = os.getenv('MONGOLAB_URI', None)
+if url==None:
+    print "Using Local pymongo"
+else:
+    parsed = urlsplit(url)
+    db_name = parsed.path[1:]
+    if '@' in url:
+        user_pass = parsed.netloc.split('@')[0].split(':')
 
 def connectToDatabase():
     """ Get a handle on the mongo db object
 
     """
-    try:
-        connection = pymongo.Connection()
-    except:
-        print "connectToDatabase() - Failed to open connect to MongoDB"
-        raise
 
-    try:
-        db = connection['i_got_beef']
-    except:
-        print "connectToDatabase() - Failed to connect to summer_of_george db"
-        raise
+    if connectToDatabase.LOCAL:
 
-    return db
+        try:
+            connection = pymongo.Connection()
+        except:
+            print "connectToDatabase() - Failed to open connect to MongoDB"
+            raise
 
+        try:
+            db = connection['i_got_beef']
+        except:
+            print "connectToDatabase() - Failed to connect to summer_of_george db"
+            raise
+
+        return db
+
+    else:
+     
+        '''
+        try:
+            url = os.getenv('MONGOLAB_URI', 'mongodb://localhost:27017/testdb')
+            parsed = urlsplit(url)
+            db_name = parsed.path[1:]
+        except:
+            print "MONGOLAB_URI not properly encoded"
+            raise
+        '''
+        try:
+            # Get your DB
+            db = Connection(url)[db_name]
+        except:
+            print "Failed to connect to MONGOLAB database"
+            raise
+
+        try:
+                db.authenticate(user_pass[0], user_pass[1])
+        except:
+            print "Failed to authenticate MONGOLAB"
+            raise
+        
+        return db
+
+# Determine what to do
+if url==None:
+    connectToDatabase.LOCAL=True
+else:
+    connectToDatabase.LOCAL=False
+
+
+
+
+    
 
 def getCollection(collection_name):
     """ Get a collection from the database
