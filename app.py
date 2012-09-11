@@ -32,7 +32,7 @@ import python.beef as beef
 import python.login_tools as login_tools
 
 app = Flask(__name__)
-#sslify = SSLify(app)
+sslify = SSLify(app)
 app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
 
 login_manager = LoginManager()
