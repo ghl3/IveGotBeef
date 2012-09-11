@@ -18,6 +18,8 @@ from flask.ext.login import current_user
 from flask.ext.login import login_user
 from flask.ext.login import logout_user
 
+from flask_sslify import SSLify
+
 #from Flask_Login import *
 #import flask_login
 #from flask.ext.login import UserMixin
@@ -30,6 +32,7 @@ import python.beef as beef
 import python.login_tools as login_tools
 
 app = Flask(__name__)
+sslify = SSLify(app)
 app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
 
 login_manager = LoginManager()
