@@ -72,7 +72,7 @@ def new_user(user_form):
     user_dict["pw_hash"] = pw_hash
     user_dict["time_added"] = datetime.datetime.utcnow()
     user_dict["beef"] = [] 
-    user_dict["comments"] = {} # Dict of beef_id to comment
+    user_dict["comments"] = [] # List of comments made by this user
     user_dict["votes"] = {} # dict of beef_id to vote
     
     users_collection.save(user_dict)

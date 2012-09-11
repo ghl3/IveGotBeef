@@ -189,7 +189,7 @@ def _clean_user_database():
 
         user["beef"] = updated_list
     
-        if user["comments"] == [ [ ] ]:
+        if user["comments"] == [ [ ] ] or user["comments"] == {}:
             user["comments"] = []
 
             if user["votes"] == []:
