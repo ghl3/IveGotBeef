@@ -122,6 +122,7 @@ def user():
         _id = request.args.get('_id', '')
         (user_dict, kwargs) = login_tools.get_user(_id)
         beef_list = beef.get_beef_list(_id) 
+        beef_against_list = beef.get_beef_against_list(_id) 
     except InvalidUser:
         print traceback.format_exc()
         return render_template("404.html")
@@ -129,7 +130,8 @@ def user():
         print traceback.format_exc()
         return render_template('500.html')
 
-    return render_template("user.html", user=user_dict, beef_list=beef_list, **kwargs)
+    return render_template("user.html", user=user_dict, beef_list=beef_list, 
+                           beef_against_list=beef_against_list, **kwargs)
 
 
 @app.route("/login", methods=["GET", "POST"])

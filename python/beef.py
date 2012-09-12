@@ -243,7 +243,7 @@ def get_beef_against_list(user_id):
     print "Getting beef against user: ", user_id
     beef_collection = getCollection("beef")
 
-    beef_list = list(beef_collection.find({"BeefOpponentId": bson.objectid.ObjectId(userid)}))
+    beef_list = list(beef_collection.find({"BeefOpponentId": bson.objectid.ObjectId(user_id)}))
     beef_list = map(lambda x: format_dict(x, items), beef_list)
 
     print "Beef List: ", beef_list
