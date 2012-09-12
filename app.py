@@ -58,7 +58,7 @@ def index():
 
 
 @app.route('/About')
-def index():
+def about():
     """ The base of the site
 
     """
