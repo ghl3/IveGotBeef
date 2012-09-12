@@ -3,6 +3,8 @@
 <!-- Inherit from the main template -->
 {% extends "main_template.html" %}
 
+{% from "beef_list.html" import create_beef_list %}
+
 <!-- Fill in the Middle template -->
 {% block body %}
 
@@ -15,7 +17,14 @@ Email: {{ user["email"] | e }}
 {% if beef_list|length==0 %}
 {{ user["username"] }} hasn't started any beef yet (this is probably a good thing...).
 {% else %}
-{% include "beef_list.html" %}
+{{ create_beef_list(beef_list) }}
+{% endif %}
+
+{# <!-- The list of beef with this user --> #}
+{% if beef_list|length==0 %}
+Nobody has any beef with {{ user["username"] }} (this is probably a good thing...).
+{% else %}
+{{ create_beef_list(beef_list) }}
 {% endif %}
 
 {% endblock %}
