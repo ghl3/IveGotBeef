@@ -6,6 +6,8 @@ from urlparse import urlsplit
 from pymongo import Connection
 from pymongo.collection import Collection
 
+from flask import url_for
+
 #from collections import OrderedDict
 
 #
@@ -46,10 +48,12 @@ def url_js(directory, **kwargs):
 
     """
 
-    if app.debug:
-        return url_for(directory, **kwargs)
-    else:
-        return url_for(directory+'/compiled', **kwargs)
+
+    if url_js.COMPILED and 'filename' in kwargs:
+        kwargs['filename'] = 'compiled/' + kwargs['filename']
+
+    return url_for(directory, **kwargs)
+
 
 
 def connectToDatabase():

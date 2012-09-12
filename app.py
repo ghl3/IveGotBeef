@@ -27,6 +27,7 @@ from flask_sslify import SSLify
 import pymongo
 
 from python.common import *
+#from python.common import url_js
 
 import python.beef as beef
 import python.login_tools as login_tools
@@ -34,6 +35,9 @@ import python.login_tools as login_tools
 app = Flask(__name__)
 sslify = SSLify(app)
 app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
+
+# Use compiled javascript
+app.jinja_env.globals.update(url_js=url_js)
 
 login_manager = LoginManager()
 login_manager.login_view = "/login"
@@ -364,4 +368,5 @@ if __name__ == '__main__':
     # Bind to PORT if defined, otherwise default to 5000.
     port = int(os.environ.get('PORT', 5000))
     app.debug = True
+    url_js.COMPILED=True
     app.run(host='0.0.0.0', port=port)
