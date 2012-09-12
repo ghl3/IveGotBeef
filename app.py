@@ -45,7 +45,7 @@ login_manager.setup_app(app)
 
 @app.route('/')
 def index():
-    """ The base of the site
+    """ The base of the site, ie the index
 
     """
     
@@ -367,5 +367,3 @@ if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
     app.debug = True
     app.run(host='0.0.0.0', port=port)
-    
-
