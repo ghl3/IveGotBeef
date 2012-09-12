@@ -1,11 +1,7 @@
 
-
-
 // Handle the various functions necessary
 // for displaying and editing beef voting, 
 // editing, commenting, etc, etc and so forth
-
-
 
 // Increment the votes
 $(document).ready(function() {
@@ -93,3 +89,205 @@ function vote(vote_for) {
 	.error(errorCallback);
 }
 
+//
+// Edit the arugments
+//
+$(document).ready(function() {
+    $('#SaveLeft').hide();
+    $(".Left textarea").keydown(function() {
+	$('#SaveLeft').show(); 
+    });
+    
+    $('#SaveRight').hide();
+    $(".Right textarea").keydown(function() { 
+	$('#SaveRight').show(); 
+    });
+
+//    $("#SaveLeft").click(function() {
+//	$('#SaveLeft').hide();
+//    });
+
+//    $("#SaveRight").click(function() {
+//	$('#SaveRight').hide();
+//    });
+
+    $("#SaveLeft").click(SaveArgumentLeft);
+    $("#SaveRight").click(SaveArgumentRight);
+
+});
+
+
+//
+// A bit of doubly written code below
+// consider refactoring or rewriting a bit... :)
+//
+
+function SaveDescription() {
+
+    //
+    // Save the updated description for beef
+    // 
+
+    // Not yet implemented
+    return;
+
+}
+
+
+function SaveArgumentLeft() {
+    //
+    // Save the text entered in the left
+    // argument 'textarea' into the database
+    //
+
+    function successfulCallback(data) {
+
+	if( data["flag"]!=0 ) {
+	    console.log("Error: Failed to save updated argument :(");
+	    return false;
+	}
+	
+	$('#SaveLeft').hide();
+    }
+    
+    function errorCallback(data) {
+	console.log("There was a server error.  Argument not saved");
+    }
+    
+    // Get the information we need and send it to the
+    // db via async ajax
+    var argument_text = $("#ArgumentLeftText").val();
+    var beef_id = getURLParameter("_id");
+    console.log("Comment for beef: " + beef_id + ": " + argument_text);
+    
+    $.post("/api/update_argument", {"beef_id" : beef_id, "position": "Left", "argument" : argument_text}, successfulCallback)
+	.error(errorCallback);
+    
+    console.log("Request to update ArgumentLeft.  Waiting...");
+    
+}
+
+
+function SaveArgumentRight() {
+    //
+    // Save the text entered in the right
+    // argument 'textarea' into the database
+    //
+
+    function successfulCallback(data) {
+
+	if( data["flag"]!=0 ) {
+	    console.log("Error: Failed to save updated argument :(");
+	    return false;
+	}
+	
+	$('#SaveRight').hide();
+    }
+    
+    function errorCallback(data) {
+	console.log("There was a server error.  Argument not saved");
+    }
+    
+    // Get the information we need and send it to the
+    // db via async ajax
+    var argument_text = $("#ArgumentRightText").val();
+    var beef_id = getURLParameter("_id");
+    console.log("Comment for beef: " + beef_id + ": " + argument_text);
+    
+    $.post("/api/update_argument", {"beef_id" : beef_id, "position": "Right", "argument" : argument_text}, successfulCallback)
+	.error(errorCallback);
+    
+    console.log("Request to update ArgumentRight.  Waiting...");
+    
+}
+
+
+
+//
+// Comments
+//
+
+
+// Increment the votes
+$(document).ready(function() {
+    $('#NewCommentWrapper').hide();
+    $('#AddComment').live('click', AddComment );
+    $('#SaveComment').live('click', SaveComment );
+    $('#CancelComment').live('click', CancelComment );
+});
+
+
+function AddComment() {
+
+    // Create the text field for adding a
+    // new comment.  This does not yet save
+    // the comment.
+
+    $('#NewCommentWrapper').show();
+    $('#AddComment').hide();
+    $('#NoCommentsYet').hide();
+    
+    //$("#NewCommentWrapper").scrollTop($("#NewCommentWrapper")[0].scrollHeight);
+    //$('#NewCommentWrapper').animate({scrollTop: $("#NewCommentWrapper").offset().top}, 'slow');
+
+    $('html, body').animate({scrollTop: $(document).height()-$(window).height()},
+			    'fast',"linear");
+}
+
+function CancelComment() {
+
+    // Cancel the comment, and restore
+    // things as they were before
+
+    $('#NewCommentWrapper').hide();
+    $('#AddComment').show();
+    $('#NoCommentsYet').show();
+    
+}
+
+
+function SaveComment() {
+
+    // Take the content in the 'AddComment' field, 
+    // send it to the db to be save, and if this
+    // is successful, show the comment in html
+
+    // Create our callbacks (both good and evil)
+    function successfulCallback(data) {
+
+	if( data["flag"]!=0 ) {
+	    console.log("Error: Failed to add comment :(");
+	    return false;
+	}
+
+	// Get the comment div
+	var comment_div = data["comment_div"];
+	console.log("Comment Div:");
+	console.log(comment_div);
+
+	// Clear the editable comment and add
+	// the new comment that we just got 
+	$("#NewComment").val('');
+	$("#Comment_List").append(comment_div);
+	$('html').animate( {scrollTop: $("#Comment_List")}, 'slow');
+	$('#NewCommentWrapper').hide();
+	$('#AddComment').show();
+	$('#NoCommentsYet').remove();
+    }
+
+    function errorCallback(data) {
+	console.log("There was a server error.  Comment not added");
+    }
+
+    // Get the information we need and send it to the
+    // db via async ajax
+    var comment_text = $("#NewComment").val();
+    var beef_id = getURLParameter("_id");
+    console.log("Comment for beef: " + beef_id + ": " + comment_text);
+
+    $.post("/api/add_comment", {"beef_id" : beef_id, "comment" : comment_text}, successfulCallback)
+	.error(errorCallback);
+
+    console.log("Request to add comment made.  Waiting...");
+
+}

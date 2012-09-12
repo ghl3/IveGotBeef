@@ -3,13 +3,15 @@
 <!-- Inherit from the main template -->
 {% extends "main_template.html" %}
 
+{% from "beef_list.html" import create_beef_list %}
+
 <!-- Fill in the Middle template -->
 {% block body %}
 
 {% if beef_list|length==0 %}
 You haven't started any beef yet (this is probably a good thing...)
 {% else %}
-{% include "beef_list.html" %}
+{{ create_beef_list(beef_list) }}
 {% endif %}
 
 {% endblock %}

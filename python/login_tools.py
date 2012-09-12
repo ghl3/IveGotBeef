@@ -21,6 +21,9 @@ from werkzeug.security import check_password_hash
 
 from common import *
 
+from wtforms import Form, BooleanField, TextField, PasswordField, validators
+
+
 class UserClass(UserMixin):
     def __init__(self, name, id, active=True):
         self.name = name
@@ -30,36 +33,32 @@ class UserClass(UserMixin):
         def is_active(self):
             return self.active
 
-        #def set_password(self, password):
-        #    self.pw_hash = generate_password_hash(password)
 
-        #def check_password(self, password):
-        #    return check_password_hash(self.pw_hash, password)
+class RegistrationForm(Form):
+    FirstName = TextField('First Name', [validators.Required(), validators.Length(min=1, max=25)])
+    LastName  = TextField('Last Name',   [validators.Required(), validators.Length(min=1, max=25)])
+    username  = TextField('UserName', [validators.Required(), validators.Length(min=4, max=20)])
+    email     = TextField('Email Address', [validators.Required(), validators.Length(min=6, max=35), validators.Email()])
+    password  = PasswordField('Password', [
+            validators.Required(),
+            validators.EqualTo('confirm', message='Passwords must match')
+            ])
+    confirm = PasswordField('Confirm Password', [validators.Required()])
 
 
-def add_user(user_form):
-    """ Add a user and pw_hash to the database
+def new_user(user_form):
+    """ Add a new user and pw_hash to the database
 
     """
 
-    print "Adding user from form"
+    print "Adding new user from form"
 
     # Get the dictionary (Immutable, to be specific)
     # From the WTForm object
     user_dict = user_form.data
 
     username = user_dict["username"]
-    
-    #if _user_exists(username):
-    #    print "Warning: User already exists"
-    #    return jsonify(flag=0, UserAdded="UserAlreadyExists")
-
-    try:
-        users_collection = getCollection("users")
-    except:
-        print "add_user(): Failed to get collection 'users'"
-        print traceback.format_exc()
-        return jsonify(flag=1)
+    users_collection = getCollection("users")
 
     if users_collection.find_one({'username' : username}) != None:
         print "Cannot create use: %s, user already exists" % username
@@ -73,7 +72,7 @@ def add_user(user_form):
     user_dict["pw_hash"] = pw_hash
     user_dict["time_added"] = datetime.datetime.utcnow()
     user_dict["beef"] = [] 
-    user_dict["comments"] = {} # Dict of beef_id to comment
+    user_dict["comments"] = [] # List of comments made by this user
     user_dict["votes"] = {} # dict of beef_id to vote
     
     users_collection.save(user_dict)
@@ -81,6 +80,17 @@ def add_user(user_form):
     return jsonify(flag=0, UserAdded=0)
     return
 
+def get_user(_id):
+    """ Find a user in the db and return their dict
+
+    """
+    user_collection = getCollection("users")
+    user = user_collection.find_one({"_id" : bson.objectid.ObjectId(_id)})
+    if user==None:
+        print "User with id: %s not found" % _id
+        raise InvalidUser
+    
+    return user, {}
 
 def login_user_request(request):
     """ Take a request object and login a user
@@ -108,13 +118,12 @@ def login_user_request(request):
             print "Successfully logged in user: %s " % username
             print "Current User: ", current_user, current_user.name, current_user.id
             return jsonify(flag=0, UserLoggedIn=0)
-            #return redirect(request.args.get("next") or url_for("index"))
         else:
             print "Failed to login user: %s" % username
             return jsonify(flag=0, UserLoggedIn=1, Message="Failed to log in user")
-            flash("Invalid username.")
+            #flash("Invalid username.")
     else:
-        flash(u"Invalid login.")
+        #flash(u"Invalid login.")
         return render_template("login.html")
 
 
@@ -123,11 +132,8 @@ def _check_db(_id):
 
     This is a required method for flask_login
     """
-    try:
-        users_collection = getCollection("users")
-    except:
-        print "Failed to get collection in _check_db"
-        raise
+
+    users_collection = getCollection("users")
 
     db_check = users_collection.find_one({ '_id' : bson.objectid.ObjectId(_id) })
     if db_check==None:
@@ -145,12 +151,7 @@ def _authenticate(username, password):
     if not _user_exists(username):
         raise InvalidUser
 
-    try:
-        users_collection = getCollection("users")
-    except:
-        print "Failed to get collection in _add_user"
-        raise
-
+    users_collection = getCollection("users")
     user = users_collection.find_one({'username' : username})
 
     if "pw_hash" not in user:
@@ -170,12 +171,8 @@ def _user_exists(username):
 
     Check only the username and see if it matches an entry
     """
-    try:
-        users_collection = getCollection("users")
-    except:
-        print "Failed to get collection in _user_exists"
-        raise
 
+    users_collection = getCollection("users")
     db_check = users_collection.find_one({'username' : username})
               
     if db_check==None:
@@ -185,13 +182,11 @@ def _user_exists(username):
 
 
 def _get_user(username):
+    """ Find a user in the db and return a Login class for that user
 
-    try:
-        users_collection = getCollection("users")
-    except:
-        print "Failed to get collection in _get_user"
-        raise
+    """
 
+    users_collection = getCollection("users")
     db_result = users_collection.find_one({ 'username' : username })
     result_id = db_result['_id'].__str__()
     
@@ -199,31 +194,3 @@ def _get_user(username):
     User = UserClass(db_result['username'], result_id, active=True)
 
     return User
-
-
-
-# WTF Form
-
-from wtforms import Form, BooleanField, TextField, PasswordField, validators
-
-class RegistrationForm(Form):
-    FirstName = TextField('First Name', [validators.Required(), validators.Length(min=1, max=25)])
-    LastName  = TextField('Last Name',   [validators.Required(), validators.Length(min=1, max=25)])
-    username  = TextField('UserName', [validators.Required(), validators.Length(min=4, max=20)])
-    email     = TextField('Email Address', [validators.Required(), validators.Length(min=6, max=35), validators.Email()])
-    password  = PasswordField('Password', [
-            validators.Required(),
-            validators.EqualTo('confirm', message='Passwords must match')
-            ])
-    confirm = PasswordField('Confirm Password', [validators.Required()])
-    
-
-'''
-@app.route('/register', methods=['GET', 'POST'])
-def register():
-    form = RegistrationForm(request.form)
-    if request.method == 'POST' and form.validate():
-        result = login_tools.add_user(form)
-        return result
-    return jsonify(flag=1)
-'''

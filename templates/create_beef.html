@@ -4,31 +4,63 @@
 
 {% block head %}
 <script type="text/javascript" src="{{url_for('static', filename='create_beef.js')}}"></script>
+<!--<script src="//code.jquery.com/jquery-latest.js"></script>-->
+<!--<script type="text/javascript" src="//jzaefferer.github.com/jquery-validation/jquery.validate.js"></script>-->
+<script type="text/javascript" src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.8/jquery.validate.js"></script>
 {% endblock %}
 
+
+{# <!-- Create a macro to render the form --> #}
+{% macro render_field(field) %}
+<div style="float: left; margin-right: 10px;" > 
+  {{ field.label(style="float: left;") | safe }} 
+  <div style="float: left; margin-right: 5px;">: </div> 
+  <div class="FormInput" style="float: left;" > {{ field(**kwargs)|safe }} </div> 
+</div>
+{% if field.errors %}
+<ul class=errors>
+  {% for error in field.errors %}
+  <li>{{ error }}</li>
+  {% endfor %}
+</ul>
+{% endif %}
+{% endmacro %}
+
+
 <!-- Fill in the Middle template -->
-{% block body %}
+{% block document %}
 
-Create Beef:
+<div id="new_beef_wrapper" style="text-align: center;">
 
-    <form id="NewBeefForm" >
-      <fieldset>
-	<legend>New Beef:</legend>
+  <form id="CreateBeefForm" accept-charset="UTF-8" 
+	style="width: 500px; text-align: left; margin-left: auto; margin-right: auto;">
+    
+    <fieldset style="width: 500px;">
+      <legend>Create Beef</legend>
+      
+      <style>
+	tr {border: 0px solid black;}
+	td {border: 0px solid black; width: 100px;}
+      </style>
 
-	<label class="required" accesskey="f">Beef Title: </label>
-	<input type="text" id="BeefTitle" name="BeefTitle" tabindex="1" value="" ><br>
+      {{ render_field(form.Title,    style="width: 120px;",  class="required") }}
+      {{ render_field(form.Opponent, style="width: 120px;",  class="required") }} 
+      <br>
+      <div style="margin-bottom: 10px;"></div>
+      {{ render_field(form.Description, style="width: 400px;",  class="required", rows="3") }}
+      <br>
+      <div style="margin-bottom: 10px;"></div>
+      {{ render_field(form.Argument,  style="width: 400px;", class="required", rows="8") }}
 
-	<label accesskey="e">Opponent: </label>
-	<input type="text" id="BeefOpponent" name="BeefOpponent" tabindex="3" ><br>
+    </fieldset>
 
-	<label accesskey="e">Description: </label>
-	<textarea  id="BeefDescription" name="BeefDescription" rows="5" 
-		   style="text-align: left" maxlength="1000" cols="30"> </textarea> 
+    <!--<p><input type="submit" id="CreateBeef" value="Create Beef" >-->
+  </form>
+  <button id="CreateBeef" >Create Beef</button>
 
-      </fieldset>
-    </form>
+  <div id="Result" style="display: none; text-align: center; margin-top: 20px;" ></div>
 
-    <button id="CreateBeef">Create Beef</button>
+</div>
 
 {% endblock %}
 

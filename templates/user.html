@@ -1,0 +1,34 @@
+
+
+<!-- Inherit from the main template -->
+{% extends "main_template.html" %}
+
+{% from "beef_list.html" import create_beef_list %}
+
+<!-- Fill in the Middle template -->
+{% block body %}
+
+<div>
+Username: {{ user["username"] | e }}
+Email: {{ user["email"] | e }}
+</div>
+
+{# <!-- The list of this user's beef --> #}
+<h3>Beef Created by {{ user["username"] }}:</h3>
+{% if beef_list|length==0 %}
+{{ user["username"] }} hasn't started any beef yet (this is probably a good thing...).
+{% else %}
+{{ create_beef_list(beef_list) }}
+{% endif %}
+
+<div style="margin-bottom: 20px"></div>
+
+<h3>Beef with {{ user["username"] }}:</h3>
+{# <!-- The list of beef with this user --> #}
+{% if beef_against_list|length==0 %}
+Nobody has any beef with {{ user["username"] }} (this is probably a good thing...).
+{% else %}
+{{ create_beef_list(beef_against_list) }}
+{% endif %}
+
+{% endblock %}

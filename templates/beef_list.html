@@ -1,4 +1,8 @@
 
+{# <!-- Define a macro to take
+        a list of beef entries and
+	display as a table --> #}
+{% macro create_beef_list(beef_list) -%}
 
 {% if beef_list|length==0 %}
 
@@ -9,21 +13,27 @@ No Beef Yet (Database is empty.  This is probably an error.)
 
 <!-- Else, move on -->
 {% else %}
-
-<table class="BeefTable" >
-  <tr class="BeefTitle">
-    <td>Title</td>  <td>Beef is Against</td> <td>Date Created</td> <!--<td class="TableEmpty"> </td>-->
-  </tr>
-
-  {% for beef_dict in beef_list %}
-  <tr>  
-    <td><a href="/Beef?_id={{ beef_dict['_id'] }}">{{ beef_dict["BeefTitle"] }}</a></td> 
-    <td>{{ beef_dict["BeefOpponent"] }}</td> 
-    <td>{{ beef_dict["TimeCreated"] }}</td>
-    <!--<td> <a class="button" href="/Beef?_id={{ beef_dict['_id'] }}">View Beef</a> </td>-->
-  </tr> 
-
-  {% endfor %}
-</table>
+<div class="TableWrapper" style="margin-left: -50px;">
+  <centering>
+    <table class="BeefTable" align="center" >
+      <tr class="BeefTitle">
+	<td>Title</td> <td>Created by</td> <td>Beef is Against</td> <td>Date Created</td> <!--<td class="TableEmpty"> </td>-->
+      </tr>
+      
+      {% for beef_dict in beef_list %}
+      <tr>  
+	<td><a href="/Beef?_id={{ beef_dict['_id'] }}">{{ beef_dict["BeefTitle"] | e }}</a></td> 
+	<td><a href="/User?_id={{ beef_dict['CreatedById'] }}" >{{ beef_dict["CreatedByName"] | e }}</a></td> 
+	<td><a href="/User?_id={{ beef_dict['BeefOpponentId'] }}" >{{ beef_dict["BeefOpponent"] | e }}</a></td> 
+	<td>{{ beef_dict["TimeCreated"] }}</td>
+	<!--<td> <a class="button" href="/Beef?_id={{ beef_dict['_id'] }}">View Beef</a> </td>-->
+      </tr> 
+      
+      {% endfor %}
+    </table>
+  </centering>
+</div>
 
 {% endif %}
+
+{%- endmacro %}

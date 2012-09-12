@@ -21,28 +21,47 @@ border-color: #E0DCBF;
 */
 
 /* Body */
-body {
-    font-family: "abril-text", serif;
-    font-size: 16px;
-    line-height: 1.8em;
-    background-color: white;
-    color: #000;
-    margin: 0;
-    padding: 0;
-}
+html, body {
+  font-family: "abril-text", serif;
+  font-size: 16px;
+  line-height: 1.8em;
+  background-color: white;
+  color: #000;
+  margin: 0;
+  padding: 0;
+  /*min-height: 90%;*/
+ /* min-height: 95%  !important;*/
+  height: 95%;
 
+}
 
 /* Document: Contains the header, the main, the sidebar, and the footer */
 div.document {
-    width: 940px;
-    margin: 30px auto 0 auto;
+  width: 940px;
+  margin: 20px auto 0 auto;
+  height: auto;
+  min-height: 95%;
+/*
+  min-height: 900%;
+  height: 90%;
+*/
+/*
+  min-height: 100%;
+  height: auto !important;
+  height: 100%;
+  margin: 0 auto -10em;
+*/
+/*
+  padding-bottom: 150px;
+  overflow: auto;
+  padding-top: 0px;
+*/
 }
 
 div.documentwrapper {
     /*float: left;*/
   width: 100%;
 }
-
 
 .PlainText {  
   text-align: left;
@@ -66,25 +85,16 @@ div.documentwrapper {
   margin-bottom: 20px;
 }
 
-
-#navebar_padding{  
-  width: 220px;
-  float: left;
+/* Logo  */ 
+.Logo { 
 }
 
 #navebar_wrapper {  
-  /*width: 400px; */
-  /*width: auto;*/
   width: 500px;
-  /*
-  margin-left: auto; 
-  margin-right: auto;
-     */
-float: left;
+  float: left;
 }
 
 #navebar { 
-  /*width: 500px;*/
   margin-left: auto; 
   margin-right: auto;
 }
@@ -103,6 +113,11 @@ nav a {
 
 #navebar a:hover {
     color: black; /*#7FD600;*/
+}
+
+#navebar_padding{  
+  width: 220px;
+  float: left;
 }
 
 #User {  
@@ -155,13 +170,30 @@ div.body div.math p {
 
 div.footer {
   width: 940px;
+/*
   margin: 20px auto 30px auto;
+  height: 10px;   
+  margin-bottom: 10px;
+*/
+/*
+  position: absolute;
+  bottom: 0;
+*/
   font-size: 14px;
   color: #888;
   text-align: right;
-  position: absolute;
-  bottom: 0;
-  height: 10px;   /* Height of the footer */
+
+
+  position: relative;
+  clear: both; 
+  width: 80%; 
+  height: 30px; 
+  bottom: 0; 
+  border: none; 
+  padding: 13px 0 0 0; 
+  right: 20px;
+
+
 }
 
 
@@ -299,7 +331,11 @@ div.sphinxsidebar input {
   width: auto;
 }
 
-.BeefTable {  
+table.BeefTable {  
+  margin: 0px auto;
+  /* Aign by hand because css sucks */
+  width: 500px;
+  /*margin-left: -50px;*/
   border-bottom: 1px solid black;
   padding-bottom: 10px;
   margin-bottom: 30px;
@@ -340,8 +376,22 @@ td.BeefDescription {
 
 /*  Argument Page */
 /*  Recall, width = 940 */
+/*  The header is broken down in 
+    the following way:
 
-#VoteWrapper{  
+   - Vote Margin Left: 150px
+   - Vote Width: 50px
+   - Vote Margin Right: 20px
+   - Title Margin Left: 10px;
+   - Title Width: 200px;
+   - Title Margin Right: 10px;
+   - VotesTotal Width: 20px;
+   - VotesTotal Margin Right: 10px;
+
+   - Total: 470px
+*/
+
+#VoteWrapper {  
   width: 940px;
   min-height: 50px;
   margin-left: auto;
@@ -353,32 +403,62 @@ button.Vote {
   height: 50px;
   float: left;
 }
-
 button.Vote.VoteLeft {  
   background-color: blue;  
+  background-color: #DDF8CC;
   margin-left: 150px;
-  margin-right: 100px; /* 270 */
+  margin-right: 20px; /* 270 */
   float: left;
-}
-#VotesTotalLeft {  
-/* 170 */
-  width: 20px;
-  margin-right: 150px;
-  float: left;
-}
-#VotesTotalRight {  
-/* 170 */
-  width: 20px;
-  margin-left: 150px;
-  float: left ;
 }
 button.Vote.VoteRight {  
   background-color: red;  
-  margin-left: 100px;
+  background-color: #E5EDF9;
+  margin-left: 20px;
   margin-right: 150px;
   float: left;
 }
 
+.ArgumentTitle {  
+  float: left;
+
+  width: 200px;
+  margin-left: 5px;
+  margin-right: 5px;
+
+  height: 30px;
+  margin-bottom: 5px;
+  margin-top: 15px;
+
+  text-align: center;
+}
+
+/* Total Width: 30 */
+.VotesTotal {  
+  width: 21px;
+  border: 2px solid black;
+
+  height: 30px;
+  margin-bottom: 5px;
+  margin-top: 15px;
+  float: left;
+
+  text-align: center;
+}
+
+#VotesTotalLeft {  
+/* 170 */
+  margin-right: 15px;
+  margin-left: 0px;
+}
+#VotesTotalRight {  
+/* 170 */
+  margin-right: 0px;
+  margin-left: 15px;
+}
+
+/* The next step down 
+   is the arguments themselves
+*/
 
 #Argument_Container{  
   min-height: 400px;
@@ -396,32 +476,32 @@ button.Vote.VoteRight {
   text-align: center;
 }
 
-.ArgumentTitle{  
-  margin-bottom: 5px;
-  margin-top: 0px;
-}
-
 .Argument.Left {  
   margin-left: 150px;
   margin-right: 20px;
+  text-align: left;
 }
 .Argument.Left textarea.Content { 
   background-color: #DDF8CC;
+  float: left;
 }
 
 .Argument.Right{  
   margin-left: 20px;
   margin-right: 150px;
+  text-align: right;
 }
 .Argument.Right textarea.Content {  
   background-color: #E5EDF9;
+  float: right;
 }
 
-.Argument textarea, .Comments textarea { 
+/*.Argument textarea, .Comment_List textarea { */
+.Argument textarea { 
   width: 300px;
   min-height: 400px;
   text-align: left;
-
+  
   webkit-appearance: textarea;
   background-color: white;
   border: 1px solid;
@@ -429,36 +509,95 @@ button.Vote.VoteRight {
   webkit-rtl-ordering: logical;
   webkit-user-select: text;
   webkit-box-orient: vertical;
-  resize: auto;
+  /*resize: auto;*/
   cursor: auto;
-  padding: 2px;
+  /*padding: 2px;*/
   white-space: pre-wrap;
   word-wrap: break-word;
 }
-
 
 .BeefTable {  
   margin-left: auto;
   margin-right: auto;
 }
 
-
 .CommentWrapper{  
   width: 100%;
   text-align: center;
 }
 
-.Comments textarea{  
+/*
+#Comment_List textarea{  
   margin-left: auto;
   margin-right: auto;
   background-color: #EEE;
   width: 600px;
   min-height: 200px;
 }
+*/
+
+#Comment_List {  
+  margin-left: auto;
+  margin-right: auto;
+  width: 600px;
+  margin-bottom: 20px;
+}
+
+/* Both the comment and the text area */
+#Comment_List .Comment, #Comment_List textarea.Comment {  
+  margin-left: auto;
+  margin-right: auto;
+  background-color: #EEE;
+  width: 600px;
+
+}
+
+/* Text area only */
+#Comment_List textarea.Comment { 
+  border: 0px solid black;
+  resize: none;
+  padding: 0px;
+  min-height: 80px; 
+}
+
+/* Comment only */
+#Comment_List .Comment { 
+  margin-bottom: 20px;
+}
+
+/* Comment and Argument Content */
+#Comment_List .Comment, .Content { 
+  color: #333;
+  font-weight: normal;
+  line-height: 140%;
+  font-size: 100%;
+  font-family: calibri,tahoma,arial,sans-serif;
+  font-size: 16px;
+}
+
+.CommentBy {  
+/*
+  text-align: right; 
+  float: left;
+  margin-left: 20px;
+  line-height: 1.1em;
+*/
+  height: 50px;
+}
+
+#NewComment{  
+
+  width: 600px;
+  min-height: 200px;
+
+}
 
 
 /* -- body styles ----------------------------------------------------------- */
 
+textarea {   
+  resize: none;
+}
 
 input[type="button"], button, a.button { 
 

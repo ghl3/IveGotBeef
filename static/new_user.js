@@ -59,17 +59,20 @@ $(document).ready(function() {
 	function successfulCallback(data) {
 
 	    if( data["flag"]!=0 ) {
-		console.log("Error: failed to add User");
+		var message = data["Message"];
+		console.log( "Message: " + message );
+		$("#Result").html(message).show();
 		return false;
 	    }
 
 	    if( data["UserAdded"]!=0) {
-		console.log("Error: Failed to add user");
-		console.log(data["Message"]);
+		var message = data["Message"];
+		console.log( "Message: " + message );
+		$("#Result").html(message).show();
 		return false;
 	    }
 
-	    console.log("Successfully Added User");
+	    console.log("Successfully Added New User");
 	    console.log("Logging in user:");
 	    LoginUser(UserName, UserPass, next);
 
@@ -77,7 +80,7 @@ $(document).ready(function() {
 	}
 
 	//$.post("/api/add_user", {user: JSON.stringify(UserJSON)}, successfulCallback );
-	$.post("/api/add_user", NewUserForm.serialize(), successfulCallback );
+	$.post("/api/new_user", NewUserForm.serialize(), successfulCallback );
 
 	console.log("CreateUser() - End");
 	return false;

@@ -1,81 +1,28 @@
 
 import json
 import datetime
-from collections import OrderedDict
 
 from flask import jsonify
+from flask import render_template
 
-import pymongo
+#import pymongo
 import bson.objectid
 
 from flask.ext.login import current_user
 
 from common import *
 
-# import flask_login
-
-#
-# The tools used by the app
-# to connect to, update, and
-# display the beef.
-#
-
-items = ["BeefTitle", "BeefOpponent", "BeefDescription", "TimeCreated", "_id"]
-
-'''
-title_dict = {}
-title_dict["CreatedByName"] = "Created By"
-title_dict["CreatedById"] = "Created By (id)"
-title_dict["TimeCreated"] = "Creation Time"
-title_dict["BeefTitle"] = "Title"
-title_dict["beef_title"] = "Title" #deprecated
-title_dict["BeefOpponent"] = "Beef Against"
-title_dict["beef_opponent"] = "Against" #deprecated
-title_dict["BeefDescription"] = "Beef Description"
-title_dict["comment"] = "Beef Description"
-#title_dict["ArgumentLeft"] = "Beef's Argument"
-#title_dict["ArgumentRight"] = "Defence's Argument"
-title_dict["CommentList"] = "Comments"
-'''
-
-def _get_dict_subset(dict, items):
-    if items==None: return dict
-    beef_dict = OrderedDict()
-    for item in items:
-        beef_dict[item] = dict[item]
-    return beef_dict
+from wtforms import Form, BooleanField, TextField, TextAreaField, PasswordField, validators
 
 
-def _title_map(name):
-    """ A mapping of database column titles to html (pretty) titles
-
-    """
-
-    #if name in title_dict:
-    #    return title_dict[name]
-
-    return name
-
-     
-def _format_dict(beef_dict, items):
-    """ Format the titles of a return dict
-
-    """
-
-    beef_dict = _get_dict_subset(beef_dict, items)
-    beef_dict['TimeCreated'] = beef_dict["TimeCreated"].strftime("%a, %B %d, %Y")
-    '''
-    for key in beef_dict:
-        if key in title_dict:
-            new_key = _title_map(key)
-            beef_dict[new_key] = beef_dict.pop(key)
-        else:
-            pass
-    '''        
-    return beef_dict
+class BeefForm(Form):
+    Title = TextField('Title', [validators.Required(), validators.Length(min=3, max=25)])
+    Opponent = TextField('Against', [validators.Required(), validators.Length(min=3, max=25)])
+    Description = TextAreaField('Desription', [validators.Required(), validators.Length(min=5, max=1000)])
+    Argument = TextAreaField('Argument', [validators.Required(), validators.Length(min=5, max=5000)])
 
 
-def create_beef(request):
+def create_beef(beef_form):
     """ Add an activity to the database
 
     Each Beef in the database has the following entries:
@@ -93,33 +40,31 @@ def create_beef(request):
 
     print "add_beef - Begin()"
 
-    if request.method != 'POST':
-        print "add_beef - ERROR: Expected POST http request"
-        return jsonify(flag=1)
-
     # Get the serialized activity JSON object
     # from the request
-    if 'beef' not in request.form:
-        print "add_beef() - ERROR: 'beef' table not in request"
-        return jsonify(flag=1)
-        
-    form_dict = json.loads( request.form['beef'] )
-    if form_dict == None:
-        print "add_beef() - ERROR: Input beef_dict is 'None'"
-        return jsonify(flag=1)
+    form_dict = beef_form.data
     print form_dict
-    
+
+    # Make sure that the beef is against a valid opponent
+    beef_opponent_id = get_userId(form_dict["Opponent"])
+    if beef_opponent_id==None:
+        message =  "Unable to create beef, invalid opponent name: '%s'.  " % form_dict["Opponent"]
+        message += "Opponent must have a valid account"
+        print "Error: ", message
+        return jsonify(flag=1, message=message)
+
     # Create the dictionary to be added
     # to the database
     beef_dict = {}
-    beef_dict["BeefTitle"] = form_dict["BeefTitle"]
-    beef_dict["BeefOpponent"] = form_dict["BeefOpponent"]
-    beef_dict["BeefDescription"] = form_dict["BeefDescription"]
+    beef_dict["BeefTitle"] = form_dict["Title"]
+    beef_dict["BeefOpponent"] = form_dict["Opponent"]
+    beef_dict["BeefDescription"] = form_dict["Description"]
+    beef_dict["BeefOpponentId"] = beef_opponent_id
 
-    beef_dict["CreatedByName"] =  current_user.name
+    beef_dict["CreatedByName"] = current_user.name
     beef_dict["CreatedById"] = bson.objectid.ObjectId(current_user.id)
     beef_dict["TimeCreated"] = datetime.datetime.utcnow()
-    beef_dict["ArgumentLeft"]  = ""
+    beef_dict["ArgumentLeft"]  = form_dict["Argument"]
     beef_dict["ArgumentRight"] = ""
     beef_dict["CommentList"] = []
     beef_dict["VotesFor"] = 0
@@ -151,17 +96,43 @@ def create_beef(request):
     return jsonify(flag=0, beef_id=beef_id.__str__())
 
 
+def addToBeefDatabase(beef_dict, collection_name):
+    """ Add (or update) a beef to the database
+    
+    The argument is a dictionary of the beef information
+
+    """
+
+    beef_collection = getCollection(collection_name)
+    
+    try:
+        if "_id" in beef_dict:
+            print "Saving object with id: %s" % beef_dict["_id"]
+            beef_dict["_id"] = bson.objectid.ObjectId(beef_dict["_id"])
+
+        # Create or update the collection
+        saved_id = beef_collection.save(beef_dict)
+        print "Saved beef with id %s" % saved_id
+    except:
+        print "_addToBeefDatabase() - Error: Failed to add beef to database"
+        raise
+
+    return saved_id
+
+
 def latest(num_entries=10):
     """ Return a list of 10 entries
 
     """
 
+    items = ["BeefTitle", "CreatedByName", "CreatedById", "BeefOpponent", "BeefOpponentId", 
+             "BeefDescription", "TimeCreated", "_id"]
     beef_collection = getCollection("beef")
-    beef_list = beef_collection.find(limit=num_entries)
+    beef_list = beef_collection.find(limit=num_entries, sort=[("_id", -1)])
     
     return_list = []
     for entry in beef_list:
-        return_list.append(_format_dict(entry, items))
+        return_list.append(format_dict(entry, items))
 
     return return_list
 
@@ -177,18 +148,21 @@ def get_beef(_id):
     """
 
     # Be sure to fetch these parameters:
-    to_fetch = items + ["ArgumentLeft", "ArgumentRight", "VotesFor", "VotesAgainst"]
-
+    to_fetch = ["_id", "BeefTitle", "BeefDescription", 
+                "CreatedByName", "CreatedById", "BeefOpponent", "BeefOpponentId", 
+                "TimeCreated", "ArgumentLeft", "ArgumentRight", 
+                "VotesFor", "VotesAgainst", "CommentList"]
+    
     beef_collection = getCollection("beef")
     beef_entry = beef_collection.find_one({"_id" : bson.objectid.ObjectId(_id)})
     
     if beef_entry==None:
         print "get_beef(): Failed to find entry with _id %s:" % _id
-        raise InvalidEntry("Beef with Id Not Found")
+        raise InvalidBeef("Beef with Id Not Found")
     else:
         print "Successfully found entry: %s" % _id
 
-    beef_dict = _format_dict(beef_entry, to_fetch)
+    beef_dict = format_dict(beef_entry, to_fetch)
 
     # Now, get the parameters for the template generation
     kwargs = {}
@@ -197,16 +171,31 @@ def get_beef(_id):
     kwargs['VotesFor'] = beef_dict.pop("VotesFor")
     kwargs['VotesAgainst'] = beef_dict.pop("VotesAgainst")
 
-
-    beef_owner_id = get_beef_owner(_id)
-    if current_user.get_id() == beef_owner_id:
+    # Determie who started the beef
+    if current_user.get_id() == beef_dict["CreatedById"].__str__():
         kwargs['beef_owner']=True
     else:
         kwargs['beef_owner']=False
 
+    # Determie who the beef is against
+    if current_user.get_id() == beef_dict["BeefOpponentId"].__str__():
+        kwargs['beef_against']=True
+    else:
+        kwargs['beef_against']=False
+
+    # Now, fetch the comments
+    # Comments are stored as ObjectId's
+    comments_collection = getCollection("comments")
+    comment_id_list = beef_dict.pop("CommentList")
+
+    # Fetch all comments using a single query (sweet)
+    comment_list = list(comments_collection.find({"_id" : {'$in':comment_id_list} }))    
+    comment_list = map(lambda x: format_dict(x, ["username", "user_id",  "TimeCreated", "comment"]), comment_list)
+
     print beef_dict
+    print comment_list
     print kwargs
-    return (beef_dict, kwargs)
+    return (beef_dict, comment_list, kwargs)
 
 
 def get_beef_owner(_id):
@@ -233,11 +222,29 @@ def get_beef_list(user_id):
 
     beef_collection = getCollection("beef")
 
-    beef_list = []
-    for object_id in beef_id_list:
-        beef_entry = beef_collection.find_one({"_id" : object_id})
-        beef_entry = _format_dict(beef_entry, items)
-        beef_list.append(beef_entry)
+    items = ["BeefTitle", "CreatedByName", "CreatedById", "BeefOpponent", "BeefOpponentId", 
+             "BeefDescription", "TimeCreated", "_id"]
+
+    beef_list = list(beef_collection.find({"_id" : {'$in':beef_id_list} }))    
+    beef_list = map(lambda x: format_dict(x, items), beef_list)
+
+    print "Beef List: ", beef_list
+    return beef_list
+
+
+def get_beef_against_list(user_id):
+    """ Get the list of beef that is against this user
+
+    """
+
+    items = ["BeefTitle", "CreatedByName", "CreatedById", "BeefOpponent", "BeefOpponentId", 
+             "BeefDescription", "TimeCreated", "_id"]
+
+    print "Getting beef against user: ", user_id
+    beef_collection = getCollection("beef")
+
+    beef_list = list(beef_collection.find({"BeefOpponentId": bson.objectid.ObjectId(user_id)}))
+    beef_list = map(lambda x: format_dict(x, items), beef_list)
 
     print "Beef List: ", beef_list
     return beef_list
@@ -302,14 +309,13 @@ def vote(beef_id, user_id, vote_for):
     else:
         if vote_for=="for":
             action="increment_for"
-        elif vote_for=="aginst":
+        elif vote_for=="against":
             action="increment_against"
         else:
             print "Current Vote: ", vote_for
             raise InvalidVote
         pass
 
-    
     # If we don't need to do anything, return right away
     if action=="nothing":
         print "vote_for:", vote_for
@@ -358,3 +364,93 @@ def vote(beef_id, user_id, vote_for):
     print "Action Completed: ", action
     return jsonify(flag=0, action=action)
 
+
+def add_comment(user_id, beef_id, comment):
+    """ Add a comment to the db and return a response
+
+    The comment is added with the user_id of the
+    person who wrote it, the beef_id that it was
+    written on, and the string of the comment itself
+    
+    We of course have to add this comment's id to the
+    list of comments in the beef
+
+    We also need to add this comment's id to a 
+    user's list of comments
+
+    """
+
+    user_name = current_user.name 
+    current_datetime = datetime.datetime.utcnow()
+    time_string = current_datetime.strftime("%a, %B %d, %Y")
+
+    comment_dict = {}
+    comment_dict["user_id"] = bson.objectid.ObjectId(user_id)
+    comment_dict["username"] = user_name #current_user.name #bson.objectid.ObjectId(user_id)
+    comment_dict["beef_id"] = bson.objectid.ObjectId(beef_id)
+    comment_dict["comment"] = comment
+    comment_dict["TimeCreated"] = current_datetime #datetime.datetime.utcnow()
+
+    # First, add the comment to the comment collection
+    comments_collection = getCollection("comments")
+    comment_id = comments_collection.save(comment_dict)
+
+    # Then, add it to the beef
+    beef_collection = getCollection("beef")    
+    current_beef = beef_collection.find_one({"_id" : bson.objectid.ObjectId(beef_id)})
+    if current_beef == None:
+        print "Error: Cannot find beef in collection with id: ", beef_id
+        raise InvalidBeef
+    current_beef["CommentList"].append(comment_id)
+    beef_collection.save(current_beef)
+
+    # And finally, add it to the user
+    users_collection = getCollection("users")    
+    user_item = users_collection.find_one({"_id" : bson.objectid.ObjectId(user_id)})
+    if user_item == None:
+        print "Error: Cannot find user in collection with id: ", user_id
+        raise InvalidUser
+    user_item["comments"].append(comment_id)
+    users_collection.save(user_item)
+    
+    # Okay, we're done.  Boom Sauce
+    comment_div = render_template("comment.html", comment=format_dict(comment_dict))
+    return jsonify(flag=0, comment_div=comment_div )
+
+
+def update_argument(beef_id, argument, position):
+    """ Update a beef's argument in the database
+
+    """
+
+    print "Updating Beef argument"
+
+    # Get the user who is attempting to do the update
+    user_id = current_user.get_id()
+
+    beef_collection = getCollection("beef")
+    beef_entry = beef_collection.find_one({"_id": bson.objectid.ObjectId(beef_id)});
+    
+    # Check that the right user is trying to do the update
+    if not (position == "Left" or position == "Right"):
+        print "Invalid 'position' supplied: ", position
+        print "Must be 'Left' or 'Right'"
+        return jsonify(flag=1)
+    elif position=="Left" and user_id != beef_entry["CreatedById"].__str__():
+        print "Error: Only the Beef Creator can update the left argument"
+        print "Current User: ", user_id, " Beef Creator: ", beef_entry
+        return jsonify(flag=1)
+    elif position=="Right" and user_id != beef_entry["BeefOpponentId"].__str__():
+        print "Error: Only the Beef Against-ee can update the right argument"
+        return jsonify(flag=1)
+    else:
+        pass
+
+    if position=="Left":
+        beef_entry["ArgumentLeft"] = argument
+
+    if position=="Right":
+        beef_entry["ArgumentRight"] = argument
+
+    beef_collection.save(beef_entry)
+    return jsonify(flag=0)

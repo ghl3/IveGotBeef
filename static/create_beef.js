@@ -1,3 +1,6 @@
+
+
+
 $(document).ready(function() {
     $('#CreateBeef').live('click', function() {
 	
@@ -7,19 +10,16 @@ $(document).ready(function() {
 	// serialize it, 
 	// and send it to python
 	// using jquery/ajax
-	var NewBeefForm = $('#NewBeefForm');
-	var BeefArray = NewBeefForm.serializeArray();
+	var CreateBeefForm = $('#CreateBeefForm');
+	var BeefArray = CreateBeefForm.serializeArray();
 
-	// Create a javascript dict object out
-	// of that encoded dict
-	var BeefJSON = {};
-	for (i in BeefArray) {
-	    BeefJSON[BeefArray[i].name] = BeefArray[i].value
+	// Run jquery validation
+	CreateBeefForm.validate();
+	if( ! CreateBeefForm.valid() ) {
+	    console.log("Error: Form is invalid.");
+	    $("#Result").html("Error: Form is invalid.").show();
+	    return false;
 	}
-
-	console.log("Create new Beef and submit to DB");
-	console.log( JSON.stringify(BeefJSON) );
-	BeefJSON = JSON.stringify( BeefJSON );
 
 	// Create a call-back function
 	// for debugging and logging
@@ -34,11 +34,14 @@ $(document).ready(function() {
 	    }
 	    else {
 		console.log("ERROR: Failed to create beef");
+		var message = data["message"];
+		console.log( "Message: " + message );
+		$("#Result").html(message).show();
 	    }
 	}
 	
 	// Submit the AJAX query
-	$.post( "/api/create_beef", {beef : BeefJSON}, successCallback );
+	$.post( "/api/create_beef", CreateBeefForm.serialize(), successCallback );
 	console.log("CreateBeefFromForm() - Submittted Activity AJAX request");
 	console.log("CreateBeef() - End");
 	return false;

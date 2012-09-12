@@ -18,18 +18,21 @@ from flask.ext.login import current_user
 from flask.ext.login import login_user
 from flask.ext.login import logout_user
 
+from flask_sslify import SSLify
+
 #from Flask_Login import *
 #import flask_login
 #from flask.ext.login import UserMixin
 
 import pymongo
 
-from common import *
+from python.common import *
 
-import beef
-import login_tools
+import python.beef as beef
+import python.login_tools as login_tools
 
 app = Flask(__name__)
+sslify = SSLify(app)
 app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
 
 login_manager = LoginManager()
@@ -37,11 +40,13 @@ login_manager.login_view = "/login"
 login_manager.setup_app(app)
 
 
-
 # Public Pages:
 
 @app.route('/')
 def index():
+    """ The base of the site
+
+    """
     
     try:
         beef_list = beef.latest(10)
@@ -50,6 +55,14 @@ def index():
         return render_template('500.html')
         
     return render_template('index.html', beef_list=beef_list )
+
+
+@app.route('/About')
+def about():
+    """ The base of the site
+
+    """
+    return render_template('about.html')
 
 
 @app.route('/MyBeef')
@@ -72,11 +85,13 @@ def my_beef():
 
 
 @app.route('/CreateBeef')
+@login_required
 def create_beef():
     """ Create a new beef
 
     """
-    return render_template('create_beef.html')
+    beef_form = beef.BeefForm()
+    return render_template('create_beef.html', form=beef_form)
 
 
 @app.route('/Beef', methods=['GET'])
@@ -86,15 +101,37 @@ def get_beef():
     """
     try:
         _id = request.args.get('_id', '')
-        (beef_dict, kwargs) = beef.get_beef(_id)
-    except InvalidEntry:
+        (beef_dict, comment_list, kwargs) = beef.get_beef(_id)
+    except InvalidUser, InvalidBeef:
         print traceback.format_exc()
         return render_template('404.html')
     except:
         print traceback.format_exc()
         return render_template('500.html')
 
-    return render_template('get_beef.html', beef_dict=beef_dict, **kwargs)
+    return render_template('get_beef.html', beef_dict=beef_dict,
+                           comment_list=comment_list, **kwargs)
+
+
+@app.route('/User', methods=['GET'])
+def user():
+    """ Show a particular user
+
+    """
+    try:
+        _id = request.args.get('_id', '')
+        (user_dict, kwargs) = login_tools.get_user(_id)
+        beef_list = beef.get_beef_list(_id) 
+        beef_against_list = beef.get_beef_against_list(_id) 
+    except InvalidUser:
+        print traceback.format_exc()
+        return render_template("404.html")
+    except:
+        print traceback.format_exc()
+        return render_template('500.html')
+
+    return render_template("user.html", user=user_dict, beef_list=beef_list, 
+                           beef_against_list=beef_against_list, **kwargs)
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -127,19 +164,30 @@ def api_latest_beef():
 
 @app.route('/api/create_beef', methods=['GET', 'POST'])
 @login_required
-def api_submit_beef( ):
+def api_create_beef( ):
     """ Create a new beef activity to the db
 
     """
+    print "Creating Beef"
+    if request.method != 'POST':
+        print "Error: Requires POST requiest"
+        return jsonify(flag=1)
+
     try:
-        response = beef.create_beef(request)
+        form = beef.BeefForm(request.form)
+        if form.validate():
+            response = beef.create_beef(form)
+        else:
+            message = "Form is invalid: " + str(form.errors)
+            print message
+            return jsonify(flag=1, message=message)
     except:
         print traceback.format_exc()
         return jsonify(flag=1)
 
     return response
 
-
+'''
 @app.route('/api/get_beef', methods=['GET', 'POST'])
 def api_get_beef():
     """ Get a specific beef topic
@@ -152,23 +200,29 @@ def api_get_beef():
         return jsonify(flag=1)
 
     return response
+'''
 
-
-@app.route('/api/update_beef', methods=['GET', 'POST'])
+@app.route('/api/update_argument', methods=['GET', 'POST'])
 @login_required
-def api_update_beef( ):
+def api_update_argument():
     """ Update an activity in the db
 
     """
+
+    print "Updating beef argument"
     try:
-        response = beef.update()
+        print request.form
+        beef_id = request.form["beef_id"]
+        argument = request.form["argument"]
+        position = request.form["position"]
+        response = beef.update_argument(beef_id=beef_id, argument=argument, position=position)
     except:
         print traceback.format_exc()
         return jsonify(flag=1)
 
     return response
 
-
+'''
 @app.route('/api/delete_beef', methods=['GET', 'POST'])
 @login_required
 def api_delete_beef( ):
@@ -182,14 +236,14 @@ def api_delete_beef( ):
         return jsonify(flag=1)
         
     return response
+'''
 
-
-@app.route('/api/add_user', methods=['GET', 'POST'])
-def api_add_user( ):
+@app.route('/api/new_user', methods=['GET', 'POST'])
+def api_new_user( ):
     """ Add a user to the database
 
     """
-    print "Adding User"
+    print "Adding New User"
     if request.method != 'POST':
         print "Error: Requires POST requiest"
         return jsonify(flag=1)
@@ -197,9 +251,11 @@ def api_add_user( ):
     try:
         form = login_tools.RegistrationForm(request.form)
         if form.validate():
-            response = login_tools.add_user(form)
+            response = login_tools.new_user(form)
         else:
-            return jsonify(flag=1, message="Form Is Invalid")
+            message = "Form is invalid: " + str(form.errors)
+            print message
+            return jsonify(flag=1, message=message)
     except:
         print traceback.format_exc()
         return jsonify(flag=1)
@@ -257,6 +313,7 @@ def api_login():
 
 
 @app.route("/api/vote_for", methods=["GET", "POST"])
+@login_required
 def api_vote_for():
     """ Send a user's vote to the database, updating all necessary entries
 
@@ -272,6 +329,23 @@ def api_vote_for():
 
     return result
 
+
+@app.route("/api/add_comment", methods=["GET", "POST"])
+@login_required
+def api_add_comment():
+    """ Send a user's vote to the database, updating all necessary entries
+
+    """
+    try:
+        comment = request.form["comment"]
+        beef_id = request.form["beef_id"]
+        user_id = current_user.get_id()
+        result = beef.add_comment(user_id=user_id, beef_id=beef_id, comment=comment)
+    except:
+        print traceback.format_exc()
+        return jsonify(flag=1)
+
+    return result
 
 #
 # Errors

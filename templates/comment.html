@@ -1,0 +1,13 @@
+{#<!-- A single comment  -->#}
+{#<!-- Takes a dictionary 'comment'  -->#}
+{#<!-- Uses 'user_id', 'username', 'TimeCreated', -->#}
+{#<!-- and 'comment'  -->#}
+<div class="Comment">
+  <textarea readonly="true" class="Comment">
+    {{ comment["comment"] | e }}
+  </textarea>
+  <div class="CommentBy">
+    <a href="/User?_id={{ comment['user_id'] }}" >{{ comment["username"] }}</a> 
+    <div id="Time">{{ comment["TimeCreated"] }}</div>
+  </div>
+</div>
