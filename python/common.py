@@ -38,6 +38,20 @@ else:
     if '@' in url:
         user_pass = parsed.netloc.split('@')[0].split(':')
 
+
+def url_js(directory, **kwargs):
+    """ A wrapper for 'url_for' that
+    appends 'compiled/' to local javascript
+    scripts when not in app.debug mode
+
+    """
+
+    if app.debug:
+        return url_for(directory, **kwargs)
+    else:
+        return url_for(directory+'/compiled', **kwargs)
+
+
 def connectToDatabase():
     """ Get a handle on the mongo db object
 
