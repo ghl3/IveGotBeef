@@ -44,7 +44,7 @@ login_manager.setup_app(app)
 
 @app.route('/')
 def index():
-    """ The base of the site
+    """ The base of the site, ie the index
 
     """
     
