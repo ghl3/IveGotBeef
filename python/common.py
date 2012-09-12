@@ -6,7 +6,7 @@ from urlparse import urlsplit
 from pymongo import Connection
 from pymongo.collection import Collection
 
-from collections import OrderedDict
+#from collections import OrderedDict
 
 #
 # Common database tools for the app
@@ -122,7 +122,7 @@ def getCollection(collection_name):
 
 def get_dict_subset(dict, items):
     if items==None: return dict
-    beef_dict = OrderedDict()
+    beef_dict = {} #OrderedDict()
     for item in items:
         beef_dict[item] = dict[item]
     return beef_dict

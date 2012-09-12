@@ -225,11 +225,26 @@ def get_beef_list(user_id):
     items = ["BeefTitle", "CreatedByName", "CreatedById", "BeefOpponent", "BeefOpponentId", 
              "BeefDescription", "TimeCreated", "_id"]
 
-    beef_list = []
-    for object_id in beef_id_list:
-        beef_entry = beef_collection.find_one({"_id" : object_id})
-        beef_entry = format_dict(beef_entry, items)
-        beef_list.append(beef_entry)
+    beef_list = list(beef_collection.find({"_id" : {'$in':beef_id_list} }))    
+    beef_list = map(lambda x: format_dict(x, items), beef_list)
+
+    print "Beef List: ", beef_list
+    return beef_list
+
+
+def get_beef_against_list(user_id):
+    """ Get the list of beef that is against this user
+
+    """
+
+    items = ["BeefTitle", "CreatedByName", "CreatedById", "BeefOpponent", "BeefOpponentId", 
+             "BeefDescription", "TimeCreated", "_id"]
+
+    print "Getting beef against user: ", user_id
+    beef_collection = getCollection("beef")
+
+    beef_list = list(beef_collection.find({"BeefOpponentId": bson.objectid.ObjectId(userid)}))
+    beef_list = map(lambda x: format_dict(x, items), beef_list)
 
     print "Beef List: ", beef_list
     return beef_list
