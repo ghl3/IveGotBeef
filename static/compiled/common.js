@@ -1,0 +1,2 @@
+function getURLParameter(a){return decodeURIComponent((RegExp("[?|&]"+a+"=([^&;]+?)(&|#|;|$)").exec(location.search)||[,""])[1].replace(/\+/g,"%20"))||null}
+function LoginUser(a,d,b){$.post("/api/login",{username:a,password:d},function(c){0==c.flag&&(0!=c.UserLoggedIn?$("#LoginResult").html("Login failed.  Invalid Username Password Combination").show():($("#Login").hide(),$("#LoginResult").html("Successfully logged in.  Welcome, "+a+".").show(),window.location.href=null!=b?b:"/"))}).error(function(){$("#LoginResult").html("An Error Occurred.  Please Try again.").show()})};

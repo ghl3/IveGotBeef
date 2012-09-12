@@ -1,0 +1,1 @@
+$(document).ready(function(){$("#LoginUser").live("click",function(){if(!$("#LoginForm").valid())return $("#LoginResult").html("Error: Login form is invalid.").show(),!1;var a=$("#LoginTable #UserName").val(),b=$("#LoginTable #password").val(),c=getURLParameter("next");LoginUser(a,b,c);return!1})});

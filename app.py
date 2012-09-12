@@ -37,6 +37,7 @@ sslify = SSLify(app)
 app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
 
 # Use compiled javascript
+url_js.COMPILED=True
 app.jinja_env.globals.update(url_js=url_js)
 
 login_manager = LoginManager()
@@ -368,5 +369,5 @@ if __name__ == '__main__':
     # Bind to PORT if defined, otherwise default to 5000.
     port = int(os.environ.get('PORT', 5000))
     app.debug = True
-    url_js.COMPILED=True
+    url_js.COMPILED=True # False for debugging
     app.run(host='0.0.0.0', port=port)
